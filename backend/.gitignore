@@ -1,0 +1,8 @@
+dist/
+node_modules
+static/
+
+# Except for subfolder1
+# !storage/blog_cover/
+
+.env

@@ -1,0 +1,29 @@
+node {
+    stage('Clone Repository') {
+        // Checkout your source code repository ...
+        checkout scm
+    }
+
+    stage('Test') {
+	    // test
+    }
+
+    stage('Build Docker Image') {
+        // Define the Docker image name and tag
+        def dockerImage = 'scr.stemsi.cloud/stemsiweb-backend:latest'
+
+        // Build Docker image
+        script {
+            docker.withRegistry('https://scr.stemsi.cloud', 'docker-stemsi') {
+                def customImage = docker.build(dockerImage, "-f Dockerfile .")
+
+                // Push the Docker image to the registry
+                customImage.push()
+            }
+        }
+    }
+
+    stage('Deploy') {
+       // sh 'docker compose up'
+    }
+}
