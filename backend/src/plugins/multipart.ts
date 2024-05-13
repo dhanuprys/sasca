@@ -3,7 +3,7 @@ import multipart from '@fastify/multipart';
 
 export default fp(async function (fastify) {
   fastify.register(multipart, {
-    // attachFieldsToBody: 'keyValues',
+    attachFieldsToBody: 'keyValues',
     // limits: {
     //   fileSize: 5 * 1000000
     // }

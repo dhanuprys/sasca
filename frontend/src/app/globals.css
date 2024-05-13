@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply text-slate-800 antialiased;
+  @apply text-slate-700 bg-neutral-100 antialiased;
 }
 
 /* width */

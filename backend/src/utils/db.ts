@@ -8,12 +8,15 @@ const knexDB = Knex({
     port: process.env.DB_PORT as unknown as number || 5432,
     user: process.env.DB_USERNAME || 'postgres',
     password: process.env.DB_PASSWORD || 'stemsiweb',
-    database: process.env.DB_NAME || 'stemsiweb',
+    database: process.env.DB_NAME || 'sasca',
   },
 });
 
 export const knexDBHelpers = {
-  addTimeStamp: () => {
+  currentDate() {
+    return knexDB.raw('CURRENT_DATE')
+  },
+  addTimeStamp() {
     const currentTimestamp = knexDB.raw('CURRENT_TIMESTAMP');
 
     return {
@@ -21,7 +24,7 @@ export const knexDBHelpers = {
       updated_at: currentTimestamp
     }
   },
-  addUpdateTimeStamp: () => {
+  addUpdateTimeStamp() {
     return {
       updated_at: knexDB.raw('CURRENT_TIMESTAMP')
     }

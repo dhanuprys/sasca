@@ -1,6 +1,6 @@
 import { FastifyJWT } from '@fastify/jwt';
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { ApplicationStorage } from './plugins/storage';
+import * as faceapi from 'face-api.js';
 
 interface AuthenticatedDecoration {
   authenticated: (request: FastifyCustomRequestScheme, reply: FastifyReply) => Promise<any>
@@ -8,25 +8,29 @@ interface AuthenticatedDecoration {
   auth_safeerror: (request: FastifyCustomRequestScheme, reply: FastifyReply) => Promise<any>
   only_allowed_roles: (roles: UserRolesType[]) => 
                           (request: FastifyCustomRequestScheme, reply: FastifyReply) => Promise<any>
-  auth_familyonly: (request: FastifyCustomRequestScheme, reply: FastifyReply) => Promise<any>
   auth_adminonly: (request: FastifyCustomRequestScheme, reply: FastifyReply) => Promise<any>
 }
 
-interface IStorageHandler {
-  STORAGE_BASEPATH: string;
-  storage: ApplicationStorage;
-}
+// interface IStorageHandler {
+//   STORAGE_BASEPATH: string;
+//   storage: ApplicationStorage;
+// }
 
 export interface JWTUserPayload {
-  uid: number
-  role: 'admin' | 'family'
+  id: number;
+  entity_id: number;
+  username: string;
+  role: 'admin' | 'student' | 'counseling';
 }
 
 export type FastifyCustomRequestScheme<TReqBody = any> = FastifyRequest & FastifyJWT & { body: TReqBody };
-export type FastifyExtendedInstance = FastifyInstance & AuthenticatedDecoration & IStorageHandler;
+export type FastifyExtendedInstance = FastifyInstance 
+                                      & AuthenticatedDecoration 
+                                      // & IStorageHandler
+                                      & {
+                                        faceapi: typeof faceapi
+                                      };
 
-export const UserRoles = ['admin', 'family'] as const;
-export const CMSContentTypes = ['news', 'blog', 'announcement'] as const;
+export const UserRoles = ['admin', 'student', 'counseling'] as const;
 
 export type UserRolesType = typeof UserRoles[number];
-export type CMSType = typeof CMSContentTypes[number];

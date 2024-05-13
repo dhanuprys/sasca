@@ -5,23 +5,23 @@ import { FastifyReply } from 'fastify';
 
 export default fp(async function (fastify) {
   fastify.register(jwt, {
-    secret: 'ayamgoreng',
+    secret: process.env.JWT_SECRET || 'dinasayangggggg',
     cookie: {
-      cookieName: 'stemsi-jwt',
+      cookieName: 'sasca-jwt',
       signed: false
     }
   });
 
-  fastify.decorate(
-    'need_api_key',
-    async (
-      request: FastifyCustomRequestScheme,
-      reply: FastifyReply
-    ): Promise<any> => {
-      if (request.headers['x-api-key'] !== (process.env.API_KEY || 'dhanugantenk')) {
-        return reply.code(403).send('Access forbidden.');
-      }
-    })
+  // fastify.decorate(
+  //   'need_api_key',
+  //   async (
+  //     request: FastifyCustomRequestScheme,
+  //     reply: FastifyReply
+  //   ): Promise<any> => {
+  //     if (request.headers['x-api-key'] !== (process.env.API_KEY || 'dhanugantenk')) {
+  //       return reply.code(403).send('Access forbidden.');
+  //     }
+  //   })
 
   fastify.decorate(
     'authenticated',
@@ -29,7 +29,6 @@ export default fp(async function (fastify) {
       request: FastifyCustomRequestScheme,
       reply: FastifyReply
     ): Promise<any> => {
-      console.log(request.cookies)
       try {
         await request.jwtVerify();
       } catch (err) {
@@ -61,21 +60,8 @@ export default fp(async function (fastify) {
         const user = request.user as unknown as JWTUserPayload;
 
         if (user && !roles.includes(user.role)) {
-          return reply.code(403).send('Access forbidden. Organization only');
+          return reply.code(403).send('Access forbidden.');
         }
-      }
-    })
-
-  fastify.decorate(
-    'auth_familyonly',
-    async (
-      request: FastifyCustomRequestScheme,
-      reply: FastifyReply
-    ): Promise<any> => {
-      const user = request.user as unknown as JWTUserPayload;
-
-      if (user && user.role !== 'family') {
-        return reply.code(403).send('Access forbidden. Organization only');
       }
     })
 

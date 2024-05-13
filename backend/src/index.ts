@@ -6,7 +6,9 @@ import { FastifyExtendedInstance } from './blueprint';
 async function main() {
   const fastify: FastifyExtendedInstance = Fastify() as unknown as FastifyExtendedInstance
 
-  require('dotenv').config()
+  console.log('Loading ENV');
+  require('dotenv').config({ path: ['.env.local', '.env'] });
+  console.log(process.env);
 
   fastify.register(Autoload, {
     dir: path.join(__dirname, 'plugins')
@@ -27,7 +29,7 @@ async function main() {
     return reply.send('')
   })
 
-  fastify.listen({ port: 8080, host: '0.0.0.0' }, (err, address) => {
+  fastify.listen({ port: 8020, host: '0.0.0.0' }, (err, address) => {
     if (err) {
       console.error(err)
       process.exit(1)
