@@ -2,7 +2,10 @@
 
 import CameraHeader from "@/components/students/CameraHeader";
 import FaceRegistrationCamera from "@/components/students/registration/FaceRegistrationCamera";
+import { swrFetcher } from "@/utils/swrFetcher";
 import CommonWrapper from "@/wrappers/CommonWrapper";
+import { useRouter } from "next/navigation";
+import useSWRImmutable from "swr/immutable";
 
 /**
  * Pada saat melakukan deteksi wajah, ada dua komponen berbeda
@@ -13,6 +16,21 @@ import CommonWrapper from "@/wrappers/CommonWrapper";
  * @returns 
  */
 function FaceRegistration() {
+    const router = useRouter();
+    const { data: datasetAvailability, error: datasetError, isLoading: datasetLoading } = useSWRImmutable<any>(
+        '/api/v1/student/face-sample',
+        swrFetcher,
+        {
+            shouldRetryOnError: false
+        }
+    );
+
+    if (!datasetError) {
+        router.push('/student/home');
+
+        return <>Redirecting...</>
+    }
+    
     return (
         <div>
             <CameraHeader />

@@ -10,6 +10,13 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   safelist: [
+    'border-blue-600',
+    'border-gray-600',
+    'border-green-600',
+    'bg-green-800',
+    'bg-yellow-800',
+    'bg-orange-800',
+    'bg-red-500',
     {
       pattern: /(border|text|bg)-(sky|red|green)-(50|100|500)/,
     }

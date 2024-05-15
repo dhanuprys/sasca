@@ -59,6 +59,7 @@ export default fp(async function (fastify) {
       ): Promise<any> => {
         const user = request.user as unknown as JWTUserPayload;
 
+        // @ts-ignore
         if (user && !roles.includes(user.role)) {
           return reply.code(403).send('Access forbidden.');
         }

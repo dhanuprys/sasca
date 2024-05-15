@@ -1,6 +1,7 @@
 import { FastifyJWT } from '@fastify/jwt';
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import * as faceapi from 'face-api.js';
+import Roles from './constant/Roles';
 
 interface AuthenticatedDecoration {
   authenticated: (request: FastifyCustomRequestScheme, reply: FastifyReply) => Promise<any>
@@ -20,7 +21,7 @@ export interface JWTUserPayload {
   id: number;
   entity_id: number;
   username: string;
-  role: 'admin' | 'student' | 'counseling';
+  role: Roles;
 }
 
 export type FastifyCustomRequestScheme<TReqBody = any> = FastifyRequest & FastifyJWT & { body: TReqBody };

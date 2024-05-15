@@ -1,4 +1,5 @@
 import IntuitiveBackground from "@/components/IntuitiveBackground";
+import BottomSpacer from "@/components/miscellaneous/BottomSpacer";
 import FlexColumn from "@/components/miscellaneous/FlexColumn";
 import BottomNavButton from "@/layouts/student/BottomNavButton";
 import Classroom from "@/layouts/student/Classroom";
@@ -15,6 +16,7 @@ export default function NotificationPage() {
           <Classroom />
         </FlexColumn>
       </CommonWrapper>
+      <BottomSpacer />
       <BottomNavButton />
     </div>
   );

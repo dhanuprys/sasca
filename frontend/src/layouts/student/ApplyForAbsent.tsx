@@ -1,7 +1,6 @@
 'use client';
 
 import Skeleton from "@/components/Skeleton";
-import FlexColumn from "@/components/miscellaneous/FlexColumn";
 import { swrFetcher } from "@/utils/swrFetcher";
 import { ReactNode } from "react";
 import { HiOutlineDocument } from "react-icons/hi2";
@@ -33,11 +32,23 @@ function ApplyForAbsent() {
         }
     );
 
+    const { data: checkStatus } = useSWRImmutable<any>(
+        '/api/v1/student/attendance/check',
+        swrFetcher,
+        {
+            shouldRetryOnError: false
+        }
+    );
+
     if (scheduleLoading) {
         return <Skeleton style={{ height: '100px' }} />
     }
 
-    if (!todaySchedule || todaySchedule.holiday_reason) {
+    if (
+        !todaySchedule 
+        || todaySchedule.holiday_reason 
+        || (checkStatus && (checkStatus.check_in_time || checkStatus.status))
+    ) {
         return null;
     }
     

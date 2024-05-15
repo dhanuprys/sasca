@@ -1,4 +1,5 @@
 import ApplicationVersionBadge from "@/components/ApplicationVersionBadge";
+import BottomSpacer from "@/components/miscellaneous/BottomSpacer";
 import FlexColumn from "@/components/miscellaneous/FlexColumn";
 import ProfileHero from "@/components/students/profile/ProfileHero";
 import ProfileMenu from "@/components/students/profile/ProfileMenu";
@@ -15,6 +16,7 @@ export default function Home() {
           <ApplicationVersionBadge />
         </div>
       </CommonWrapper>
+      <BottomSpacer />
       <BottomNavButton />
     </div>
   );

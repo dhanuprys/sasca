@@ -1,4 +1,5 @@
 import IntuitiveBackground from "@/components/IntuitiveBackground";
+import BottomSpacer from "@/components/miscellaneous/BottomSpacer";
 import FlexColumn from "@/components/miscellaneous/FlexColumn";
 import ApplicationTestingBanner from "@/layouts/common/ApplicationTestingBanner";
 import ApplyForAbsent from "@/layouts/student/ApplyForAbsent";
@@ -20,6 +21,7 @@ export default function Home() {
           <ApplicationTestingBanner />
         </FlexColumn>
       </CommonWrapper>
+      <BottomSpacer />
       <BottomNavButton />
     </div>
   );

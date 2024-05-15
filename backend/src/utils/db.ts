@@ -1,5 +1,8 @@
 import Knex from 'knex';
 import { attachPaginate } from 'knex-paginate';
+import pg from 'pg';
+
+pg.types.setTypeParser(1082, (str: string) => str);
 
 const knexDB = Knex({
   client: 'pg',
@@ -13,9 +16,8 @@ const knexDB = Knex({
 });
 
 export const knexDBHelpers = {
-  currentDate() {
-    return knexDB.raw('CURRENT_DATE')
-  },
+  CURRENT_DATE: knexDB.raw('CURRENT_DATE'),
+  CURENT_TIME: knexDB.raw("TO_CHAR(CURRENT_TIME::TIME, 'HH24:MI:SS')::TIME"),
   addTimeStamp() {
     const currentTimestamp = knexDB.raw('CURRENT_TIMESTAMP');
 

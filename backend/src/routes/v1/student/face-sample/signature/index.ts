@@ -39,7 +39,7 @@ async function handler(fastify: FastifyExtendedInstance) {
        */
       const createFaceSignature = async (result: FaceDetection) => {
         const padding = 20;
-        const fileName = `${entity_id}_${result.score}`;
+        const fileName = `${entity_id}_${result.score}.png`;
 
         // Meimotong gambar sesuai dengan ukuran wajah untuk optimalisasi
         // pada saat absensi
@@ -51,7 +51,7 @@ async function handler(fastify: FastifyExtendedInstance) {
         }).toBuffer();
 
         // Menyimpan hasil potongan wajah ke dalam file
-        await fs.outputFile(`./samples/${fileName}.png`, faceBuffer);
+        await fs.outputFile(`./samples/${fileName}`, faceBuffer);
 
         return fileName;
       }

@@ -25,3 +25,48 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-slate-300;
 }
+
+.moving-object {
+  position: relative; /* Necessary for relative positioning */
+  animation: moveLeftRight 5s linear infinite;
+}
+
+@keyframes moveLeftRight {
+  0% {
+    left: 0;
+    transform: scaleX(1); /* Normal orientation */
+  }
+  25% {
+    left: calc(100% - 120px); /* Middle of the screen */
+    transform: scaleX(1); /* Normal orientation */
+  }
+
+  40% {
+    left: calc(100% - 120px); /* Middle of the screen */
+    transform: scaleX(1); /* Normal orientation */
+  }
+
+  50% {
+    left: calc(100% - 120px); /* Right edge */
+    transform: scaleX(-1); /* Flipped horizontally */
+  }
+  75% {
+    left: calc(100% - 120px); /* Middle of the screen */
+    transform: scaleX(-1); /* Flipped horizontally */
+  }
+
+  90% {
+    left: 0;
+    transform: scaleX(-1); /* Normal orientation */
+  }
+
+  95% {
+    left: 0;
+    transform: scaleX(-1);
+  }
+
+  100% {
+    left: 0;
+    transform: scaleX(1);
+  }
+}

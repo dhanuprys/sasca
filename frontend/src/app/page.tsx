@@ -1,3 +1,4 @@
+import BottomSpacer from "@/components/miscellaneous/BottomSpacer";
 import FlexColumn from "@/components/miscellaneous/FlexColumn";
 import ApplicationTestingBanner from "@/layouts/common/ApplicationTestingBanner";
 import AttendanceButton from "@/layouts/student/AttendanceButton";
@@ -15,6 +16,7 @@ export default function Home() {
           <ApplicationTestingBanner />
         </FlexColumn>
       </CommonWrapper>
+      <BottomSpacer />
       <BottomNavButton />
     </div>
   );

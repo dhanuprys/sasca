@@ -1,7 +1,7 @@
 import { TbHome2 } from "react-icons/tb";
 
 interface HolidayStatusProps {
-    reason: string;
+    reason?: string;
 }
 
 function HolidayStatus({ reason }: HolidayStatusProps) {

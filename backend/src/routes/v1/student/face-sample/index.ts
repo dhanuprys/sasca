@@ -43,11 +43,14 @@ async function handler(fastify: FastifyExtendedInstance) {
           signatures: yup.array().required()
         }).required()
       },
+      onRequest: [
+        fastify.authenticated,
+        fastify.only_allowed_roles(['student'])
+      ]
     },
     async function (request, reply) {
       const FORCE_COMMIT = true;
-      // const { entity_id } = request.user as JWTUserPayload;
-      const entity_id = 0;
+      const { entity_id } = request.user as JWTUserPayload;
       const { signatures } = request.body as { signatures: string[] };
       let files = [];
 

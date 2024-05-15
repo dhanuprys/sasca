@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/navigation';
+import { mutate } from 'swr';
 
 function LoginCard() {
     const router = useRouter();
@@ -49,7 +50,11 @@ function LoginCard() {
                                 loginResponse = await loginUser(username, password);
 
                                 if (loginResponse.status === 200) {
-                                    router.push('/student/home');
+                                    mutate('/api/v1/me');
+                                    
+                                    setTimeout(() => {
+                                        router.push('/student/home');
+                                    }, 3000);
                                 }
                             } catch (error) {
                                 

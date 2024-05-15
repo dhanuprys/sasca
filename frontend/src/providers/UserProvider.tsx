@@ -7,8 +7,15 @@ import { ReactNode, createContext } from "react";
 import useSWRImmutable from "swr/immutable";
 
 interface UserAuthPayload {
-    id: number;
     role: string;
+    user: {
+        id: number;
+        name: string;
+        avatar_path: string;
+        nis: string;
+        nisn: string;
+        class_name: string;
+    }
 }
 
 interface IUserContext {
@@ -36,8 +43,10 @@ function UserProvider({ children, strict = true, splash, allowedRoles }: UserPro
         return <SplashScreen />;
     }
 
-    if (error && strict) {
+    if ((error && error.response.status === 401) && strict) {
         router.push('/auth/login');
+
+        return <>INVALID</>;
     }
 
     if (user && allowedRoles && !allowedRoles.includes(user.role)) {
