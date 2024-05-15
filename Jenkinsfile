@@ -12,14 +12,14 @@ node {
         // Build Docker image
         script {
             docker.withRegistry('https://scr.stemsi.cloud', 'docker-stemsi') {
-                def customImage = docker.build(frontendDockerImageName, '-f Dockerfile ./frontend')
+                def customImage = docker.build(frontendDockerImageName, '-f ./frontend/Dockerfile ./frontend')
 
                 // Push the Docker image to the registry
                 customImage.push()
             }
 
             docker.withRegistry('https://scr.stemsi.cloud', 'docker-stemsi') {
-                def customImage = docker.build(backendDockerImageName, '-f Dockerfile ./backend')
+                def customImage = docker.build(backendDockerImageName, '-f ./backend/Dockerfile ./backend')
 
                 // Push the Docker image to the registry
                 customImage.push()
