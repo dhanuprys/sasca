@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import { CiFaceSmile } from "react-icons/ci";
@@ -6,8 +7,11 @@ import { FaCheck } from "react-icons/fa";
 import { FiCameraOff, FiCamera } from "react-icons/fi";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import Webcam from "react-webcam";
+import { mutate } from "swr";
 
 function FaceRegistrationCamera() {
+    const router = useRouter();
+
     const ICON_LOADING = <AiOutlineLoading className="animate-spin text-[4rem] text-blue-500" />;
     const ICON_CHECKING = <CiFaceSmile className="text-[8rem]" />;
     const ICON_SUCCESS = <FaCheck className="icon-enter text-green-500 text-[8rem]" />;
@@ -43,8 +47,10 @@ function FaceRegistrationCamera() {
             setActiveIcon(ICON_SUCCESS);
             setDetectionMessage('Berhasil menambahkan sampel wajah');
 
+            mutate('/api/v1/student/face-sample');
+
             setTimeout(() => {
-                window.location.href = '/siswa/beranda';
+                router.push('/siswa/beranda');
             }, 2500);
         }).catch((err) => {
             // Jika terjadi error pada saat pengiriman data
