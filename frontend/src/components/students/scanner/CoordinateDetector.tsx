@@ -56,7 +56,7 @@ function CoordinateDetector() {
         // Jika coordinate satu dan dua dianggap sudah valid
         // maka selanjutnya sistem akan mendeteksi jarak antara
         // koordinat kedua dengan jarak sumbu dari lokasi sekolah
-        if ((calculateDistance([-8.1145793,115.0962127], coordinate) * 1000) >= 100) {
+        if ((calculateDistance([-8.1145793,115.0962127], coordinate) * 1000) >= 200) {
             setProgress(0);
             setIcon(
                 <div className="flex justify-center">
