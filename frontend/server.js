@@ -2,6 +2,7 @@
 const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 require('dotenv').config({
     path: ['.env.local', '.env']
@@ -11,16 +12,18 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const BACKEND_PROXY_URL = process.env.BACKEND_PROXY_URL;
 
 // Define the rewrite rule
 const rewriteMiddleware = createProxyMiddleware({
-    target: process.env.BACKEND_PROXY_URL, // Adjust to your backend URL
+    target: BACKEND_PROXY_URL, // Adjust to your backend URL
     changeOrigin: true,
     pathRewrite: {
         '^/api': '/', // Rewrite path
     },
 });
+
+console.log('Starting proxy to ' + BACKEND_PROXY_URL);
 
 app.prepare().then(() => {
     createServer((req, res) => {
