@@ -31,7 +31,7 @@ function NavButton({ icon, label, target, activePaths }: NavButtonProps) {
 
 function BottomNavButton() {
     return (
-        <div className="fixed bottom-0 left-0 w-full bg-white shadow">
+        <div className="fixed bottom-0 left-0 w-full bg-white shadow z-[600]">
             <CommonWrapper>
                 <div className="grid grid-cols-5">
                     <NavButton icon={<MdHome />} label="Beranda" target="/student/home" activePaths={['/student/home']} />
