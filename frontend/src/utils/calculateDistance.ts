@@ -1,9 +1,11 @@
-function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+import { LatLngExpression } from "leaflet";
+
+function calculateDistance(coordinate1: [number, number], coordinate2: [number, number]) {
   // Convert latitude and longitude from degrees to radians
-  const radLat1 = (Math.PI / 180) * lat1;
-  const radLon1 = (Math.PI / 180) * lon1;
-  const radLat2 = (Math.PI / 180) * lat2;
-  const radLon2 = (Math.PI / 180) * lon2;
+  const radLat1 = (Math.PI / 180) * coordinate1[0];
+  const radLon1 = (Math.PI / 180) * coordinate1[1];
+  const radLat2 = (Math.PI / 180) * coordinate2[0];
+  const radLon2 = (Math.PI / 180) * coordinate2[1];
 
   // Haversine formula
   const dLat = radLat2 - radLat1;

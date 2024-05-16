@@ -25,17 +25,17 @@ function IntuitiveMapContainer() {
         if (!coords) return 0;
 
         return Math.floor(calculateDistance(
-            -8.1145793,
-            115.0962127,
-            coords.latitude,
-            coords.longitude
+            [-8.1145793, 115.0962127],
+            [coords.latitude, coords.longitude]
         ) * 1000);
     }, [coords]);
 
     return (
         <div className="border rounded-xl">
             <div className="w-full h-[300px] rounded-t-xl bg-slate-300 relative">
-                <MapCore center={coords ? [coords.latitude, coords.longitude] : [-8.1145793, 115.0962127]} />
+                <MapCore 
+                    center={coords ? [coords.latitude, coords.longitude] : [-8.1145793, 115.0962127]}
+                    zoom={17} />
                 {
                     (!isGeolocationEnabled || !isGeolocationAvailable) && 
                     <div>

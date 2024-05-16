@@ -5,11 +5,20 @@ import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useCallback, useLayoutEffect, useState } from 'react';
 
+const MapController = ({ center, zoom }: { center: LatLngExpression, zoom: number }) => {
+    const map = useMap();
+
+    // Memindahkan posisi kursor
+    map.flyTo(center, zoom);
+
+    return null;
+};
 interface MapCoreProps {
     center: LatLngExpression;
+    zoom: number;
 }
 
-function MapCore({ center }: MapCoreProps) {
+function MapCore({ center, zoom }: MapCoreProps) {
     const [isMapReady, setMapReady] = useState(false);
     const markIcon = L.icon({ iconUrl: '/man.png' });
 
@@ -20,15 +29,6 @@ function MapCore({ center }: MapCoreProps) {
             setMapReady(false);
         };
     });
-
-    const MapController = ({ center }: { center: LatLngExpression }) => {
-        const map = useMap();
-
-        // Memindahkan posisi kursor
-        map.flyTo(center);
-
-        return null;
-    };
 
     return (
         <MapContainer
@@ -43,10 +43,8 @@ function MapCore({ center }: MapCoreProps) {
             doubleClickZoom={false}
             zoomSnap={0}
             trackResize={false}
-            zoom={
-                18
-            }>
-            <MapController center={center} />
+            zoom={zoom}>
+            <MapController center={center} zoom={zoom} />
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />

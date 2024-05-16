@@ -1,8 +1,10 @@
 'use client';
 
 import useScannerStore from "@/context/useScannerStore";
+import calculateDistance from "@/utils/calculateDistance";
 import { ReactNode, useEffect, useState } from "react";
 import { useGeolocated } from "react-geolocated";
+import { GiPathDistance } from "react-icons/gi";
 import { IoIosWalk } from "react-icons/io";
 import { MdOutlineShareLocation, MdOutlineWrongLocation } from "react-icons/md";
 
@@ -22,10 +24,10 @@ function CoordinateDetector() {
     const [progress, setProgress] = useState(0);
     const [icon, setIcon] = useState<ReactNode | null>(
         <div className="flex justify-center">
-            <MdOutlineShareLocation className="text-8xl text-sky-800" />
+            <MdOutlineShareLocation className="w-[180px] h-[180px] text-sky-800" />
         </div>
     );
-    const [title, setTitle] = useState('Mendeteksi Kordinat');
+    const [title, setTitle] = useState('Mendeteksi Lokasi');
     const [description, setDescription] = useState('Harap menunggu beberapa saat selagi kami menyiapkan kordinat');
 
     useEffect(() => {
@@ -34,11 +36,8 @@ function CoordinateDetector() {
 
         const coordinate: [number, number] = [geolocation.coords.latitude, geolocation.coords.longitude];
 
-        // DEV ONLY!
-        if (LOCATION_FEATURE_SKIP) {
-            return setCoordinates(coordinate);
-        }
-
+        // Jika coordinate yang akan dipakai sebagai sampel awal belum tersedia
+        // maka program akan mengisinya terlebih dahulu
         if (!initialCoordinates) {
             setIcon(<IoIosWalk className="moving-object w-[120px] h-[120px]" />)
             setTitle('Harap untuk berpindah tempat');
@@ -48,7 +47,25 @@ function CoordinateDetector() {
             return;
         }
 
+        // Jika coordinate sebelumnya sama dengan coordinate yang
+        // baru, maka koordinat dianggap belum valid
         if (initialCoordinates.join('') === coordinate.join('')) {
+            return;
+        }
+
+        // Jika coordinate satu dan dua dianggap sudah valid
+        // maka selanjutnya sistem akan mendeteksi jarak antara
+        // koordinat kedua dengan jarak sumbu dari lokasi sekolah
+        if ((calculateDistance([-8.1145793,115.0962127], coordinate) * 1000) >= 100) {
+            setProgress(0);
+            setIcon(
+                <div className="flex justify-center">
+                    <GiPathDistance className="w-[180px] h-[180px]" />
+                </div>
+                );
+            setTitle('Jarak Terlalu Jauh');
+            setDescription('Harap melakukan absensi di area sekolah');
+
             return;
         }
 
