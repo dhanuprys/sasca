@@ -2,7 +2,7 @@ FROM node:20.10.0
 
 WORKDIR /app
 
-RUN apt update && apt install iputils-ping nano
+RUN apt update && apt install iputils-ping nano -y
 
 COPY . .
 
