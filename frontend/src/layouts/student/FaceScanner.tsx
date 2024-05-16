@@ -77,7 +77,7 @@ function FaceScanner({ checkType }: FaceScannerProps) {
         phoneType === null
             ? <p>loading...</p>
             : phoneType === 'iPhone'
-                ? <FaceScannerIOS />
+                ? <FaceScannerIOS checkType={checkType} />
                 : <FaceScannerCommon checkType={checkType} />
 
         , [phoneType]);
