@@ -1,5 +1,6 @@
 'use client';
 
+import useUser from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 import { IoIosArrowForward } from "react-icons/io";
@@ -27,6 +28,7 @@ function MenuItem({ icon, label, onClick }: MenuItemProps) {
 
 function ProfileMenu() {
     const router = useRouter();
+    const { signOut } = useUser();
 
     return (
         <div className="rounded-xl bg-white border">
@@ -34,7 +36,7 @@ function ProfileMenu() {
             <hr />
             <MenuItem onClick={() => router.push('/auth/change-password')} icon={<TbKey />} label="Ganti Password" />
             <hr />
-            <MenuItem onClick={() => router.push('/api/v1/auth/logout')} icon={<TbLogout2 className="text-red-500" />} label={<span className="text-red-500">Logout</span>} />
+            <MenuItem onClick={signOut} icon={<TbLogout2 className="text-red-500" />} label={<span className="text-red-500">Logout</span>} />
         </div>
     );
 }

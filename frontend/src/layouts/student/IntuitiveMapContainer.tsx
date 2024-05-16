@@ -62,7 +62,7 @@ function IntuitiveMapContainer() {
                     <div className="flex items-center col-span-5">
                         <RiPinDistanceLine className="text-3xl" />
                         <div className="pl-4">
-                            <span className="font-semibold block text-sm text-blue-700">100 M</span>
+                            <span className="font-semibold block text-sm text-blue-700">200 M</span>
                             <span className="text-slate-400 text-xs">Maks. Jarak</span>
                         </div>
                     </div>

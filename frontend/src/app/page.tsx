@@ -1,23 +1,23 @@
-import BottomSpacer from "@/components/miscellaneous/BottomSpacer";
-import FlexColumn from "@/components/miscellaneous/FlexColumn";
-import ApplicationTestingBanner from "@/layouts/common/ApplicationTestingBanner";
-import AttendanceButton from "@/layouts/student/AttendanceButton";
-import BottomNavButton from "@/layouts/student/BottomNavButton";
-import StudentHeader from "@/layouts/student/StudentHeader";
-import CommonWrapper from "@/wrappers/CommonWrapper";
+'use client';
+
+import useUser from "@/hooks/useUser";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+  const { user, error, loading, signIn } = useUser();
+
+  if (error && !loading) {
+    signIn();
+  }
+
+  if (user && !loading) {
+    router.push(`/${user.role}/home`);
+  }
+
   return (
     <div>
-      <StudentHeader />
-      <CommonWrapper>
-        <FlexColumn>
-          <AttendanceButton />
-          <ApplicationTestingBanner />
-        </FlexColumn>
-      </CommonWrapper>
-      <BottomSpacer />
-      <BottomNavButton />
+      Loading...
     </div>
   );
 }

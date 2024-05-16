@@ -45,14 +45,14 @@ function FaceRegistrationCamera() {
 
         axios.post('/api/v1/student/face-sample', {
             signatures
-        }).then((res) => {
+        }).then(async (res) => {
             setActiveIcon(ICON_SUCCESS);
             setDetectionMessage('Berhasil menambahkan sampel wajah');
 
-            mutate('/api/v1/student/face-sample');
+            await mutate('/api/v1/student/face-sample');
 
             setTimeout(() => {
-                router.push('/student/home');
+                router.replace('/student/home');
             }, 2500);
         }).catch((err) => {
             // Jika terjadi error pada saat pengiriman data
