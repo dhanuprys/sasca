@@ -1,11 +1,12 @@
 'use client';
 
-import MapCore from "@/components/MapCore";
 import calculateDistance from "@/utils/calculateDistance";
+import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { useGeolocated } from "react-geolocated";
-import { FaLocationArrow } from "react-icons/fa6";
 import { RiMapPinLine, RiPinDistanceLine } from "react-icons/ri";
+
+const MapCore = dynamic(() => import('@/components/MapCore'), { ssr: false });
 
 function IntuitiveMapContainer() {
     const {
