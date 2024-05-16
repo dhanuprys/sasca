@@ -50,7 +50,7 @@ function FaceRegistrationCamera() {
             mutate('/api/v1/student/face-sample');
 
             setTimeout(() => {
-                router.push('/siswa/beranda');
+                router.push('/student/home');
             }, 2500);
         }).catch((err) => {
             // Jika terjadi error pada saat pengiriman data
