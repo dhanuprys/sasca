@@ -33,7 +33,7 @@ function FaceRegistration() {
     
     return (
         <div>
-            <CameraHeader />
+            <CameraHeader title="DAFTARKAN WAJAH" />
             <CommonWrapper>
                 <FaceRegistrationCamera />
             </CommonWrapper>

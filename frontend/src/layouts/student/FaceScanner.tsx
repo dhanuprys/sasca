@@ -58,6 +58,9 @@ function FaceScanner({ checkType }: FaceScannerProps) {
         setPhoneType(md.phone() || 'android');
     });
 
+    const scannerTitle = useMemo(() => {
+        return checkType === 'in' ? 'ABSEN DATANG' : 'ABSEN PULANG'
+    }, []);
     const isHoliday = useMemo(() => (todaySchedule && todaySchedule.holiday_reason), [todaySchedule]);
     const isChecked = useMemo(() => {
         if (!checkStatus || ['in', 'out'].includes(checkType)) return false;
@@ -92,7 +95,7 @@ function FaceScanner({ checkType }: FaceScannerProps) {
 
     return (
         <div>
-            <CameraHeader />
+            <CameraHeader title={scannerTitle} />
             <CommonWrapper>
                 {
                     !coordinates

@@ -30,7 +30,7 @@ function StudentStats() {
 
     return (
         <div className="grid grid-cols-4 p-4 bg-white border rounded-xl">
-            <StatItem label="Hadir" count={stats.present} />
+            <StatItem label="Hadir" count={stats.present + stats.present_late} />
             <StatItem label="Izin" count={stats.permission_absent} />
             <StatItem label="Sakit" count={stats.sick} />
             <StatItem label="Alpha" count={stats.not_confirmed_absent} />

@@ -3,7 +3,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IoIosArrowBack, IoIosRefresh } from "react-icons/io";
 
-function CameraHeader() {
+interface CameraHeaderProps {
+    title: string;
+}
+
+function CameraHeader({ title }: CameraHeaderProps) {
     const router = useRouter();
 
     return (
@@ -14,7 +18,7 @@ function CameraHeader() {
                         <IoIosArrowBack />
                     </Link>
                 </div>
-                <div className="col-span-4 text-center">ABSEN DATANG</div>
+                <div className="col-span-4 text-center">{title}</div>
                 <div className="col-span-2 flex justify-end">
                     <Link href="#" onClick={() => router.refresh()} className="p-2">
                         <IoIosRefresh />
