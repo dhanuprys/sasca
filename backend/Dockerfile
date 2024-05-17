@@ -2,7 +2,7 @@ FROM node:20.10.0
 
 WORKDIR /app
 
-RUN apt update && apt install supervisor libpq-dev g++ make -y
+RUN apt update && apt install supervisor libpq-dev g++ make iputils-ping nano -y
 
 COPY . .
 COPY supervisord.conf /etc/supervisord.conf
