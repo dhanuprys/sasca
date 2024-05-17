@@ -3,7 +3,7 @@
 import { MapContainer, TileLayer, CircleMarker, Tooltip, Marker, useMap, Popup, Polyline } from 'react-leaflet';
 import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 const MapController = ({ center, zoom }: { center: LatLngExpression, zoom: number }) => {
     const map = useMap();
@@ -21,6 +21,7 @@ interface MapCoreProps {
 function MapCore({ center, zoom }: MapCoreProps) {
     const [isMapReady, setMapReady] = useState(false);
     const markIcon = L.icon({ iconUrl: '/man.png' });
+    const mapRef = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
         setMapReady(true);
@@ -30,13 +31,24 @@ function MapCore({ center, zoom }: MapCoreProps) {
         };
     });
 
+    // Attribution remove
+    useEffect(() => {
+        if (!isMapReady) return;
+
+        const attribution = document.body.querySelector('.leaflet-control-attribution');
+
+        if (attribution) {
+            attribution.remove();
+        }
+    }, [isMapReady]);
+
     return (
         <MapContainer
             className="rounded border h-full"
             center={center}
             zoomControl={false}
             scrollWheelZoom={false}
-            dragging={true}
+            dragging={false}
             tap={false}
             touchZoom={false}
             boxZoom={false}

@@ -19,12 +19,12 @@ function CalendarHeader() {
 }
 
 interface CalendarProps {
-    onCell?: (date: string, days: number) => ReactNode | undefined;
+    onCell?: (date: string, dateInfo: { days: number; position: 'prev' | 'current' | 'next' }) => ReactNode | undefined;
     onDateChange: (date: DateTime<true>) => void;
 }
 
 function Calendar({ onDateChange, onCell }: CalendarProps) {
-    const [currentMonth, setCurrentDate] = useState(DateTime.now());
+    const [currentMonth, setCurrentDate] = useState(DateTime.now().set({ day: 1 }));
 
     const openPrevMonth = () => {
         setCurrentDate(currentMonth.minus({ month: 1 }));
@@ -35,12 +35,13 @@ function Calendar({ onDateChange, onCell }: CalendarProps) {
     }
 
     const baseCalendarInformation = useMemo(() => {
-        // const previousMonth = currentMonth.minus({ month: 1 });
+        const previousMonth = currentMonth.minus({ month: 1 });
         // const nextMonth = currentMonth.plus({ month: 1 });
 
         const fullTableRows = Array.from({ length: 42 }, (_, index) => index + 1);
 
         return {
+            prevStartDay: previousMonth.daysInMonth - currentMonth.weekday + 1,
             today: DateTime.now().toFormat('yyyy-MM-dd'),
             startMainTable: currentMonth.weekday,
             maxDay: currentMonth.daysInMonth!,
@@ -73,29 +74,45 @@ function Calendar({ onDateChange, onCell }: CalendarProps) {
 
                 {
                     (() => {
+                        let prevDays = baseCalendarInformation.prevStartDay;
                         let currentDays = 0;
+                        let nextDays = 0;
+                        let withPrev = false;
+
+                        console.log(currentMonth.weekday);
 
                         return baseCalendarInformation.fullTableRows.map((row) => {
-                            const activeDate = DateTime.fromFormat(`${currentMonth.toFormat('yyyy-MM')}-${currentDays+1}`, 'yyyy-MM-d').toFormat('yyyy-MM-dd');
-
+                            const activeDate = DateTime.fromFormat(`${currentMonth.toFormat('yyyy-MM')}-${currentDays + 1}`, 'yyyy-MM-d').toFormat('yyyy-MM-dd');
+                            console.log({ withPrev })
                             return (
                                 <div className={`flex items-center gap-1 justify-center p-2 text-sm rounded ${baseCalendarInformation.today === activeDate ? 'bg-slate-100' : ''} hover:bg-slate-200`}>
                                     {(() => {
+                                        let output = 0;
+                                        let position: 'prev' | 'current' | 'next' = 'current';
 
-                                        if (row < baseCalendarInformation.startMainTable-1
-                                            || currentDays+1 > baseCalendarInformation.maxDay) {
-                                            return null;
+                                        console.log({ row, d: baseCalendarInformation.maxDay });
+
+                                        if (row < baseCalendarInformation.startMainTable) {
+                                            position = 'prev';
+                                            output = ++prevDays;
+                                            withPrev = true;
+                                        } else if (currentDays >= baseCalendarInformation.maxDay) {
+                                            position = 'next';
+                                            output = ++nextDays;
+                                        } else {
+                                            output = ++currentDays;
                                         }
-
-                                        currentDays++;
 
                                         const renderRow = onCell
                                             ? onCell(
                                                 activeDate,
-                                                currentDays
+                                                {
+                                                    days: output,
+                                                    position
+                                                }
                                             )
                                             : <div className="flex flex-col items-center">
-                                                <span className="text-sm md:text-base">{currentDays}</span>
+                                                <span className="text-sm md:text-base">{output}</span>
                                             </div>;
 
                                         return renderRow;

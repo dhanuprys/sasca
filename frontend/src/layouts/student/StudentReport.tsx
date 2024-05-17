@@ -31,17 +31,17 @@ function StudentReport() {
         switch (status) {
             case AttendanceStatus.PRESENT:
                 output = 'bg-green-800';
-            break;
+                break;
             case AttendanceStatus.PRESENT_LATE:
                 output = 'bg-yellow-800';
-            break;
+                break;
             case AttendanceStatus.SICK:
             case AttendanceStatus.PERMISSION_ABSENT:
                 output = 'bg-orange-800';
-            break;
+                break;
             case AttendanceStatus.NOT_CONFIRMED_ABSENT:
                 output = 'bg-red-500';
-            break;
+                break;
         }
 
         if (checkIn && output === '') output = 'bg-slate-500';
@@ -49,17 +49,20 @@ function StudentReport() {
         return output;
     }, []);
 
-    const handleCell = useCallback((fullDate: string, days: number) => {
-        const attendance = getDateFromList(attendances, fullDate);
-        const holiday = getDateFromList(holidays, fullDate);
-        
-        return (
-            <div className="flex flex-col items-center relative font-semibold">
-                <span className={`text-sm md:text-base ${holiday ? 'text-red-500' : ''}`}>{days}</span>
-                <div className={`w-full h-[3px] rounded-full ${getCircleColor(attendance?.check_in_time, attendance?.status)}`}></div>
-            </div>
-        );
-    }, [attendances, holidays]);
+    const handleCell = useCallback(
+        (fullDate: string, { days, position }: { days: number, position: 'prev' | 'current' | 'next' }) => {
+            const attendance = getDateFromList(attendances, fullDate);
+            const holiday = getDateFromList(holidays, fullDate);
+
+            return (
+                <div className="flex flex-col items-center relative font-semibold">
+                    <span className={`text-sm md:text-base ${position === 'current' && holiday ? 'text-red-500' : position !== 'current' ? 'text-slate-400' : ''}`}>{days}</span>
+                    <div className={`w-full h-[3px] rounded-full ${getCircleColor(attendance?.check_in_time, attendance?.status)}`}></div>
+                </div>
+            );
+        }, 
+        [attendances, holidays]
+    );
 
     useEffect(() => {
         setAttendances([]);
@@ -83,6 +86,7 @@ function StudentReport() {
 
     return (
         <div>
+            <div className="fixed bottom-0 z-[1010]">HELLO BRO</div>
             <Calendar onDateChange={setDate} onCell={handleCell} />
         </div>
     );

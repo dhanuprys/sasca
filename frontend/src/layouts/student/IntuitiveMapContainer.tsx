@@ -53,7 +53,7 @@ function IntuitiveMapContainer() {
                         <RiMapPinLine className="text-3xl" />
                         <div className="pl-4">
                             <span className="font-semibold block text-sm">{distance} M</span>
-                            <span className="text-slate-400 text-xs">Jarak</span>
+                            <span className="text-slate-400 text-xs">Jarak Anda</span>
                         </div>
                     </div>
                     <div className="col-span-2 flex justify-center">
