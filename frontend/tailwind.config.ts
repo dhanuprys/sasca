@@ -17,6 +17,7 @@ const config: Config = {
     'bg-yellow-800',
     'bg-orange-800',
     'bg-red-500',
+    'max-w-auto',
     {
       pattern: /(border|text|bg)-(sky|red|green)-(50|100|500)/,
     }

@@ -1,10 +1,14 @@
 'use client'
 
+import BottomModal from "@/components/BottomModal";
 import Calendar from "@/components/Calendar";
 import AttendanceStatus from "@/constant/AttendanceStatus";
+import useBottomModalStore from "@/context/useBottomModal";
 import now from "@/utils/now";
+import CommonWrapper from "@/wrappers/CommonWrapper";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import useSWRImmutable from "swr/immutable";
 
 interface ListWithDate {
     date: string;
@@ -20,10 +24,22 @@ function getDateFromList(attendances: ListWithDate[], findDate: string): any {
     return null;
 }
 
+function AttendanceDetail() {
+    // useSWRImmutable();
+    
+    return (
+        <div className="bg-blue-500">
+            HELLO BRO
+        </div>
+    );
+}
+
 function StudentReport() {
     const [date, setDate] = useState(now());
     const [attendances, setAttendances] = useState([]);
     const [holidays, setHolidays] = useState([]);
+
+    const { open: openModal } = useBottomModalStore();
 
     const getCircleColor = useCallback((checkIn?: string, status?: string) => {
         let output = '';
@@ -64,6 +80,10 @@ function StudentReport() {
         [attendances, holidays]
     );
 
+    const handleCellClick = (fullDate: string) => {
+        openModal(<AttendanceDetail />)
+    };
+
     useEffect(() => {
         setAttendances([]);
 
@@ -86,8 +106,7 @@ function StudentReport() {
 
     return (
         <div>
-            <div className="fixed bottom-0 z-[1010]">HELLO BRO</div>
-            <Calendar onDateChange={setDate} onCell={handleCell} />
+            <Calendar onDateChange={setDate} onCellClick={handleCellClick} onCell={handleCell} />
         </div>
     );
 }

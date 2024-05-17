@@ -20,10 +20,11 @@ function CalendarHeader() {
 
 interface CalendarProps {
     onCell?: (date: string, dateInfo: { days: number; position: 'prev' | 'current' | 'next' }) => ReactNode | undefined;
+    onCellClick?: (date: string) => void;
     onDateChange: (date: DateTime<true>) => void;
 }
 
-function Calendar({ onDateChange, onCell }: CalendarProps) {
+function Calendar({ onDateChange, onCell, onCellClick }: CalendarProps) {
     const [currentMonth, setCurrentDate] = useState(DateTime.now().set({ day: 1 }));
 
     const openPrevMonth = () => {
@@ -79,18 +80,14 @@ function Calendar({ onDateChange, onCell }: CalendarProps) {
                         let nextDays = 0;
                         let withPrev = false;
 
-                        console.log(currentMonth.weekday);
-
                         return baseCalendarInformation.fullTableRows.map((row) => {
                             const activeDate = DateTime.fromFormat(`${currentMonth.toFormat('yyyy-MM')}-${currentDays + 1}`, 'yyyy-MM-d').toFormat('yyyy-MM-dd');
-                            console.log({ withPrev })
+
                             return (
-                                <div className={`flex items-center gap-1 justify-center p-2 text-sm rounded ${baseCalendarInformation.today === activeDate ? 'bg-slate-100' : ''} hover:bg-slate-200`}>
+                                <div onClick={() => onCellClick && onCellClick(activeDate)} className={`flex items-center gap-1 justify-center p-2 text-sm rounded ${baseCalendarInformation.today === activeDate ? 'bg-slate-100' : ''} hover:bg-slate-200`}>
                                     {(() => {
                                         let output = 0;
                                         let position: 'prev' | 'current' | 'next' = 'current';
-
-                                        console.log({ row, d: baseCalendarInformation.maxDay });
 
                                         if (row < baseCalendarInformation.startMainTable) {
                                             position = 'prev';
