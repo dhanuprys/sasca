@@ -81,7 +81,7 @@ function MapCore({ center, zoom, radiusCenter, pinLocation }: MapCoreProps) {
             scrollWheelZoom={false}
             dragging={true}
             tap={false}
-            touchZoom={false}
+            touchZoom={true}
             boxZoom={false}
             doubleClickZoom={false}
             zoomSnap={0}

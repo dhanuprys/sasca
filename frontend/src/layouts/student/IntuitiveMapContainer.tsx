@@ -56,11 +56,12 @@ function IntuitiveMapContainer() {
             </div>
             <div className="bg-white p-4 rounded-b-xl">
                 <h2 className="font-semibold text-center">SMK Negeri 3 Singaraja</h2>
+                <p className="text-center text-slate-400 text-xs md:text-sm">Jl. Gempol, Banyuning, Kec. Buleleng, Kabupaten Buleleng, Bali 81112</p>
                 <div className="grid grid-cols-12 gap-2 mt-6">
                     <div className="flex items-center col-span-5">
                         <RiMapPinLine className="text-3xl" />
                         <div className="pl-4">
-                            <span className="font-semibold block text-sm">{distance} M</span>
+                            <span className="font-semibold block text-sm">{distance > 1000 ? `${Math.floor(distance / 1000)} KM` : `${distance} M`}</span>
                             <span className="text-slate-400 text-xs">Jarak Anda</span>
                         </div>
                     </div>
