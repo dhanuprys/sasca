@@ -3,7 +3,8 @@
 import { MapContainer, TileLayer, CircleMarker, Tooltip, Marker, useMap, Popup, Polyline } from 'react-leaflet';
 import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import addDistance from '@/utils/addDistance';
 
 const MapController = ({ center, zoom }: { center: LatLngExpression, zoom: number }) => {
     const map = useMap();
@@ -16,12 +17,42 @@ const MapController = ({ center, zoom }: { center: LatLngExpression, zoom: numbe
 interface MapCoreProps {
     center: LatLngExpression;
     zoom: number;
+    radiusCenter?: LatLngExpression;
+    pinLocation?: LatLngExpression;
 }
 
-function MapCore({ center, zoom }: MapCoreProps) {
+function MapCore({ center, zoom, radiusCenter, pinLocation }: MapCoreProps) {
     const [isMapReady, setMapReady] = useState(false);
-    const markIcon = L.icon({ iconUrl: '/man.png' });
+    const markIcon = L.icon({
+        iconUrl: '/man.png',
+        iconSize: [
+            13, 39
+        ],
+        iconAnchor: [
+            0, 45
+        ],
+        tooltipAnchor: [
+            0, -30
+        ]
+    });
     const mapRef = useRef<HTMLDivElement>(null);
+
+    const radiusPaths = useMemo(() => {
+        if (!radiusCenter) return [];
+
+        let result = [];
+        for (let i = 1; i <= 360; i++) {
+            result.push(
+                addDistance(
+                    radiusCenter as [number, number],
+                    200,
+                    i
+                ) as LatLngExpression
+            )
+        }
+
+        return result;
+    }, []);
 
     useLayoutEffect(() => {
         setMapReady(true);
@@ -48,7 +79,7 @@ function MapCore({ center, zoom }: MapCoreProps) {
             center={center}
             zoomControl={false}
             scrollWheelZoom={false}
-            dragging={false}
+            dragging={true}
             tap={false}
             touchZoom={false}
             boxZoom={false}
@@ -60,14 +91,12 @@ function MapCore({ center, zoom }: MapCoreProps) {
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Polyline pathOptions={{ fill: true, fillColor: 'blue' }} positions={[]} />
+            <Polyline pathOptions={{ fill: true, fillColor: 'blue' }} positions={radiusPaths} />
 
             {
-                // !coords
-                //     ? null
-                //     : <Marker icon={markIcon} position={[coords.latitude, coords.longitude]}>
-                //         <Popup>Anda</Popup>
-                //     </Marker>
+                pinLocation && <Marker icon={markIcon} position={pinLocation}>
+                    <Tooltip>Gede Dhanu Purnayasa</Tooltip>
+                </Marker>
             }
         </MapContainer>
     );

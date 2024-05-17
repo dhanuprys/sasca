@@ -25,24 +25,32 @@ function IntuitiveMapContainer() {
         if (!coords) return 0;
 
         return Math.floor(calculateDistance(
-            [-8.1145793, 115.0962127],
+            [-8.114308077832172, 115.09855832420878],
             [coords.latitude, coords.longitude]
         ) * 1000);
     }, [coords]);
 
     return (
         <div className="border rounded-xl">
-            <div className="w-full h-[300px] rounded-t-xl bg-slate-300 relative">
-                <MapCore 
-                    center={coords ? [coords.latitude, coords.longitude] : [-8.1145793, 115.0962127]}
+            <div className="w-full h-[400px] rounded-t-xl bg-slate-300 relative">
+                <MapCore
+                    center={coords ? [coords.latitude, coords.longitude] : [-8.114308077832172, 115.09855832420878]}
+                    radiusCenter={[-8.114308077832172, 115.09855832420878]}
+                    pinLocation={coords ? [coords.latitude, coords.longitude] : undefined}
                     zoom={17} />
                 {
-                    (!isGeolocationEnabled || !isGeolocationAvailable) && 
+                    (!isGeolocationEnabled || !isGeolocationAvailable) &&
                     <div>
                         <div className="absolute top-0 left-0 z-[500] w-full h-full bg-black opacity-55 rounded-t-xl"></div>
                         <div className="absolute top-0 left-0 z-[501] w-full h-full flex justify-center items-center">
                             <span className="text-white font-semibold">Hidupkan akses lokasi</span>
                         </div>
+                    </div>
+                }
+
+                {
+                    distance > 200 && <div className="absolute bottom-0 left-0 z-[502] w-full text-sm text-center animate-pulse bg-yellow-400 text-white px-4 py-2">
+                        Jarak anda terlalu jauh!
                     </div>
                 }
             </div>
