@@ -38,6 +38,7 @@ function BottomModal() {
                             {/* CONTENT */}
                             <CommonWrapper className="min-h-[300px] overflow-auto max-h-[60vh]">
                                 {content}
+                                <div className="min-h-12"></div>
                             </CommonWrapper>
                         </div>
                     </motion.div>

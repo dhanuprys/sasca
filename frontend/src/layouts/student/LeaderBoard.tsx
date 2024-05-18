@@ -83,11 +83,12 @@ function LeaderBoard() {
                 <h1 className="text-white text-2xl font-semibold pb-8">Top 100</h1>
 
                 <div className="w-[80px] h-[80px] relative mt-5">
+                    <div className="absolute top-1/2 left-1/2 glowing-effect"></div>
                     <FaCrown className="absolute -top-1/2 left-1/2 w-[50px] h-[50px] -translate-x-1/2 text-yellow-500" />
-                    <Image className="w-full h-full object-cover rounded-full bg-slate-100 ring-4 ring-yellow-500" src="/user.webp" width={100} height={100} alt="" />
+                    <Image className="relative z-[20] w-full h-full object-cover rounded-full bg-slate-100 ring-4 ring-yellow-500" src="/user.webp" width={100} height={100} alt="" />
                 </div>
-                <h2 className="font-semibold text-lg text-white px-4 text-center">{adoptedRank.top.name}</h2>
-                <div className="[&>*]:text-yellow-500 flex items-center gap-2">
+                <h2 className="font-semibold text-lg text-white px-4 text-center relative z-[20]">{adoptedRank.top.name}</h2>
+                <div className="[&>*]:text-yellow-500 flex items-center gap-2 relative z-[20]">
                     <RiMedalLine />
                     <span className="font-semibold">{adoptedRank.top.total_points}</span>
                 </div>

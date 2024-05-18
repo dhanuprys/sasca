@@ -9,13 +9,13 @@ import CommonWrapper from "@/wrappers/CommonWrapper";
 export default function NotificationPage() {
   return (
     <div>
-      <IntuitiveBackground />
-      <StudentHeader />
-      <CommonWrapper className="mt-5">
+      <IntuitiveBackground className="bg-sky-950" />
+      {/* <StudentHeader /> */}
+      {/* <CommonWrapper className="mt-5"> */}
         <FlexColumn>
           <LeaderBoard />
         </FlexColumn>
-      </CommonWrapper>
+      {/* </CommonWrapper> */}
       <BottomSpacer />
       <BottomNavButton />
     </div>
