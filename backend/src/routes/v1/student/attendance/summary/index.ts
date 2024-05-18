@@ -6,7 +6,7 @@ import {
   type FastifyExtendedInstance
 } from '../../../../../blueprint';
 import { FastifyReply } from 'fastify';
-import AttendanceSummaryModel from '../../../../../models/AttendanceSummaryMode';
+import AttendanceSummaryModel from '../../../../../models/AttendanceSummaryModel';
 
 async function handler(fastify: FastifyExtendedInstance) {
   fastify.get(

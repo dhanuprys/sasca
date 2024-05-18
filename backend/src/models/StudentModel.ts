@@ -10,6 +10,13 @@ class StudentModel {
         return student;
     }
 
+    static async getAllStudentId() {
+        const students = await knexDB('students')
+                        .select('id');
+                        
+        return students.map((student) => student.id);
+    }
+
     static async getStudentClassroomWithTodaysAttendance(studentId: number) {
         const student = await StudentModel.getStudentById(studentId);
         

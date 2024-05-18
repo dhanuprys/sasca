@@ -149,9 +149,9 @@ class AttendanceModel {
 
     static async getStudentByDate(studentId: number, date: string) {
         const result = await knexDB('attendances')
-                        .where('student_id', studentId)
-                        .andWhere('date', date)
-                        .first();
+                            .where('student_id', studentId)
+                            .andWhere('date', date)
+                            .first();
 
         return result;
     }
@@ -177,6 +177,29 @@ class AttendanceModel {
                             .andWhere('date', knexDBHelpers.CURRENT_DATE)
                             // .orderByRaw('RANDOM()')
                             .limit(150);
+
+        return result;
+    }
+
+    static async giveAlphaStatus(studentId: number, date: string) {
+        const result = await knexDB('attendances')
+                            .insert({
+                                student_id: studentId,
+                                date,
+                                status: AttendanceStatus.NOT_CONFIRMED_ABSENT
+                            }, 'date');
+    
+        return result;
+    }
+
+    static async giveCheckInOnlyStatus(attendanceId: number) {
+        const result = await knexDB('attendances')
+                            .update({
+                                status: AttendanceStatus.CHECK_IN_ONLY
+                            })
+                            .where({
+                                id: attendanceId
+                            });
 
         return result;
     }

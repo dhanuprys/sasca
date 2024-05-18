@@ -2,6 +2,14 @@ import { Knex } from "knex";
 import knexDB, { knexDBHelpers } from "../utils/db";
 
 class SchoolDayScheduleModel {
+    static async getFirstDay() {
+        const result = await knexDB('school_day_schedule')
+                            .orderBy('date')
+                            .first();
+
+        return result;
+    }
+
     static async getToday() {
         return await this.getByDate(knexDBHelpers.CURRENT_DATE);
     }
