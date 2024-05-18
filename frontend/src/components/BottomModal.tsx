@@ -25,12 +25,17 @@ function BottomModal() {
                         transition={{ bounce: false }}
                         className="absolute bottom-0 left-0 w-full">
                         <div className="bg-white shadow-xl p-4 rounded-t-xl">
-                            <div className="pb-4 flex flex-col gap-2 items-center justify-center">
+                            {/* HEADER */}
+                            <div
+                                onDoubleClick={closeAndClear}
+                                className="pb-4 flex flex-col gap-2 items-center justify-center">
                                 <div className="w-full">
                                     <div className="h-2 bg-slate-200 rounded-full mx-auto w-[150px]"></div>
                                 </div>
                                 <h1 className="text-xl text-center font-semibold py-4">{title}</h1>
                             </div>
+
+                            {/* CONTENT */}
                             <CommonWrapper className="min-h-[300px] overflow-auto max-h-[60vh]">
                                 {content}
                             </CommonWrapper>

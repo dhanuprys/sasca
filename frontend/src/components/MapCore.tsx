@@ -3,7 +3,7 @@
 import { MapContainer, TileLayer, CircleMarker, Tooltip, Marker, useMap, Popup, Polyline } from 'react-leaflet';
 import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import addDistance from '@/utils/addDistance';
 import Skeleton from './Skeleton';
 
@@ -18,7 +18,7 @@ const MapController = ({ center, zoom }: { center: LatLngExpression, zoom: numbe
 
 interface LocationPin {
     coordinates: LatLngExpression;
-    label?: string;
+    label?: ReactNode;
 }
 
 interface MapCoreProps {
@@ -83,11 +83,13 @@ function MapCore({ center, zoom, radiusCenter, pins }: MapCoreProps) {
         return <Skeleton style={{ height: '300px' }} />
     }
 
+    console.log(pins!.length);
+
     return (
         <MapContainer
             className="rounded border h-full"
             center={center}
-            zoomControl={false}
+            zoomControl={true}
             scrollWheelZoom={false}
             dragging={true}
             tap={false}
@@ -106,7 +108,7 @@ function MapCore({ center, zoom, radiusCenter, pins }: MapCoreProps) {
             {
                 pins && pins.map((pin) => {
                     return (
-                        <Marker icon={markIcon} position={pin.coordinates}>
+                        <Marker key={0} icon={markIcon} position={pin.coordinates}>
                             {pin.label && <Tooltip>{pin.label}</Tooltip>}
                         </Marker>
                     )

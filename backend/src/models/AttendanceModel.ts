@@ -3,6 +3,7 @@ import knexDB, { knexDBHelpers } from "../utils/db";
 import SchoolDayScheduleModel from "./SchoolDayScheduleModel";
 import { DateTime } from "luxon";
 import AttendanceStatus from "../constant/AttendanceStatus";
+import StudentModel from "./StudentModel";
 
 type Coordinates = [number, number];
 class AttendanceModel {
@@ -19,8 +20,6 @@ class AttendanceModel {
     }
 
     static async getFullCheckPoint(studentId: number, date?: string) {
-        console.log('GET FULL CHECK POINT');
-        
         return await knexDB('attendances').where({
             student_id: studentId,
             date: date || knexDBHelpers.CURRENT_DATE
@@ -153,6 +152,31 @@ class AttendanceModel {
                         .where('student_id', studentId)
                         .andWhere('date', date)
                         .first();
+
+        return result;
+    }
+
+    static async getRandomStudentCooordinates(studentId: number) {
+        const student = await StudentModel.getStudentById(studentId);
+
+        if (!student) {
+            return [];
+        }
+
+        const result = await knexDB('attendances')
+                            .join('students', 'students.id', '=', 'attendances.student_id')
+                            .select([
+                                'students.name',
+                                'attendances.check_in_time',
+                                'attendances.check_out_time',
+                                'attendances.check_in_coordinate',
+                                'attendances.check_out_coordinate'
+                            ])
+                            .where('students.grade_id', student.grade_id)
+                            .andWhere('students.major_id', student.major_id)
+                            .andWhere('date', knexDBHelpers.CURRENT_DATE)
+                            // .orderByRaw('RANDOM()')
+                            .limit(150);
 
         return result;
     }

@@ -67,8 +67,8 @@ function MainDetail({ attendance }: MainDetailProps) {
     return (
         <div>
             <div className="grid grid-cols-2 rounded-xl text-sm p-0.5 border mb-2">
-                <div onClick={openCheckIn} className={`hover:cursor-pointer py-2 text-center ${checkInPanelOpen ? 'text-sky-700 font-semibold bg-slate-100' : ''}  rounded-xl`}>DATANG</div>
-                <div onClick={openCheckOut} className={`hover:cursor-pointer py-2 text-center ${!checkInPanelOpen ? 'text-sky-700 font-semibold bg-slate-100' : ''} rounded-xl`}>PULANG</div>
+                <div onClick={openCheckIn} className={`hover:cursor-pointer py-2 text-center ${checkInPanelOpen ? 'text-sky-700 font-semibold bg-slate-100' : 'hover:bg-slate-50'}  rounded-xl`}>DATANG</div>
+                <div onClick={openCheckOut} className={`hover:cursor-pointer py-2 text-center ${!checkInPanelOpen ? 'text-sky-700 font-semibold bg-slate-100' : 'hover:bg-slate-50'} rounded-xl`}>PULANG</div>
             </div>
             <div ref={detailPanel} className="max-w-full overflow-hidden">
                 <div className="w-[200%] grid grid-cols-2">

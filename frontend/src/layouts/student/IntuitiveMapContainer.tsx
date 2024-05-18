@@ -1,10 +1,12 @@
 'use client';
 
 import calculateDistance from "@/utils/calculateDistance";
+import { swrFetcher } from "@/utils/swrFetcher";
 import dynamic from "next/dynamic";
-import { useMemo } from "react";
+import { useActionState, useMemo } from "react";
 import { useGeolocated } from "react-geolocated";
 import { RiMapPinLine, RiPinDistanceLine } from "react-icons/ri";
+import useSWR from "swr";
 
 const MapCore = dynamic(() => import('@/components/MapCore'), { ssr: false });
 
@@ -16,10 +18,35 @@ function IntuitiveMapContainer() {
     } = useGeolocated({
         positionOptions: {
             enableHighAccuracy: true,
+            // maximumAge: 1000
         },
         watchPosition: true,
         userDecisionTimeout: 10_000,
     });
+
+    const { data: friendsLocation, error } = useSWR(
+        '/api/v1/student/attendance/map',
+        swrFetcher
+    );
+
+    const friendsCoordinates = useMemo(() => {
+        if (!friendsLocation) return [];
+
+        let output = [];
+
+        for (const friend of friendsLocation) {
+            output.push({
+                label: <>
+                    {friend.name}<br />
+                    {friend.check_out_time || friend.check_in_time}<br />
+                    {friend.check_out_time ? 'SUDAH PULANG' : ''}
+                </>,
+                coordinates: friend.check_out_coordinate || friend.check_in_coordinate
+            });
+        }
+
+        return output;
+    }, friendsLocation);
 
     const distance = useMemo(() => {
         if (!coords) return 0;
@@ -36,7 +63,16 @@ function IntuitiveMapContainer() {
                 <MapCore
                     center={coords ? [coords.latitude, coords.longitude] : [-8.114308077832172, 115.09855832420878]}
                     radiusCenter={[-8.114308077832172, 115.09855832420878]}
-                    pins={coords ? [{coordinates: [coords.latitude, coords.longitude]}] : []}
+                    pins={
+                        coords
+                            ? [
+                                ...friendsCoordinates,
+                                {
+                                    coordinates: [coords.latitude, coords.longitude]
+                                }
+                            ]
+                            : friendsCoordinates
+                    }
                     zoom={17} />
                 {
                     (!isGeolocationEnabled || !isGeolocationAvailable) &&
