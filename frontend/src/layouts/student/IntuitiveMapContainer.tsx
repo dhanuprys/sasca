@@ -36,7 +36,7 @@ function IntuitiveMapContainer() {
                 <MapCore
                     center={coords ? [coords.latitude, coords.longitude] : [-8.114308077832172, 115.09855832420878]}
                     radiusCenter={[-8.114308077832172, 115.09855832420878]}
-                    pinLocation={coords ? [coords.latitude, coords.longitude] : undefined}
+                    pins={coords ? [{coordinates: [coords.latitude, coords.longitude]}] : []}
                     zoom={17} />
                 {
                     (!isGeolocationEnabled || !isGeolocationAvailable) &&

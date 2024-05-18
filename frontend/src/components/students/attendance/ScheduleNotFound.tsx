@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { TbCalendarOff, TbUserScan } from "react-icons/tb";
 
-function ScheduleNotFound() {
+interface ScheduleNotFoundProps {
+    borderless?: boolean;
+}
+
+function ScheduleNotFound({ borderless }: ScheduleNotFoundProps) {
     return (
-        <div className="flex flex-col items-center gap-4 border rounded-lg px-4 py-8 md:p-8 bg-white">
+        <div className={`flex flex-col items-center gap-4 ${borderless ? '' : 'border'} rounded-lg px-4 py-8 md:p-8 bg-white`}>
             <div className="flex justify-center">
                 <TbCalendarOff className="text-8xl text-yellow-600" />
             </div>

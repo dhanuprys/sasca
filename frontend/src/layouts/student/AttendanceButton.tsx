@@ -2,8 +2,8 @@
 
 import Skeleton from "@/components/Skeleton";
 import DatasetUnavailable from "@/components/students/DatasetUnavailable";
-import HolidayStatus from "@/components/students/HolidayStatus";
-import ScheduleNotFound from "@/components/students/ScheduleNotFound";
+import HolidayStatus from "@/components/students/attendance/HolidayStatus";
+import ScheduleNotFound from "@/components/students/attendance/ScheduleNotFound";
 import { swrFetcher } from "@/utils/swrFetcher";
 import { TbLogin2, TbLogout2 } from "react-icons/tb";
 import useSWRImmutable from "swr/immutable";
@@ -16,7 +16,7 @@ import { useMemo } from "react";
 import now from "@/utils/now";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import AttendanceClosed from "@/components/students/AttendanceClosed";
-import AttendanceStatusBanner from "@/components/students/AttendanceStatusBanner";
+import AttendanceStatusBanner from "@/components/students/attendance/AttendanceStatusBanner";
 
 interface AttendanceButtonItemProps {
     label: string;

@@ -5,6 +5,7 @@ import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import addDistance from '@/utils/addDistance';
+import Skeleton from './Skeleton';
 
 const MapController = ({ center, zoom }: { center: LatLngExpression, zoom: number }) => {
     const map = useMap();
@@ -14,14 +15,20 @@ const MapController = ({ center, zoom }: { center: LatLngExpression, zoom: numbe
 
     return null;
 };
+
+interface LocationPin {
+    coordinates: LatLngExpression;
+    label?: string;
+}
+
 interface MapCoreProps {
     center: LatLngExpression;
     zoom: number;
     radiusCenter?: LatLngExpression;
-    pinLocation?: LatLngExpression;
+    pins?: LocationPin[];
 }
 
-function MapCore({ center, zoom, radiusCenter, pinLocation }: MapCoreProps) {
+function MapCore({ center, zoom, radiusCenter, pins }: MapCoreProps) {
     const [isMapReady, setMapReady] = useState(false);
     const markIcon = L.icon({
         iconUrl: '/man.png',
@@ -35,7 +42,6 @@ function MapCore({ center, zoom, radiusCenter, pinLocation }: MapCoreProps) {
             0, -30
         ]
     });
-    const mapRef = useRef<HTMLDivElement>(null);
 
     const radiusPaths = useMemo(() => {
         if (!radiusCenter) return [];
@@ -73,6 +79,10 @@ function MapCore({ center, zoom, radiusCenter, pinLocation }: MapCoreProps) {
         }
     }, [isMapReady]);
 
+    if (!isMapReady) {
+        return <Skeleton style={{ height: '300px' }} />
+    }
+
     return (
         <MapContainer
             className="rounded border h-full"
@@ -94,9 +104,13 @@ function MapCore({ center, zoom, radiusCenter, pinLocation }: MapCoreProps) {
             <Polyline pathOptions={{ fill: true, fillColor: 'blue' }} positions={radiusPaths} />
 
             {
-                pinLocation && <Marker icon={markIcon} position={pinLocation}>
-                    <Tooltip>Gede Dhanu Purnayasa</Tooltip>
-                </Marker>
+                pins && pins.map((pin) => {
+                    return (
+                        <Marker icon={markIcon} position={pin.coordinates}>
+                            {pin.label && <Tooltip>{pin.label}</Tooltip>}
+                        </Marker>
+                    )
+                })
             }
         </MapContainer>
     );

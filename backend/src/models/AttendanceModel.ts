@@ -147,6 +147,15 @@ class AttendanceModel {
 
         return result;
     }
+
+    static async getStudentByDate(studentId: number, date: string) {
+        const result = await knexDB('attendances')
+                        .where('student_id', studentId)
+                        .andWhere('date', date)
+                        .first();
+
+        return result;
+    }
 }
 
 export default AttendanceModel;

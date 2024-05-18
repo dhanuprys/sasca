@@ -19,8 +19,9 @@ async function handler(fastify: FastifyExtendedInstance) {
     {
       schema: {
         querystring: createSchema((yup) => ({
-          month: yup.number().required(),
-          year: yup.number().required()
+          date: yup.string().nullable(),
+          month: yup.number().nullable(),
+          year: yup.number().nullable()
         }))
       },
       onRequest: [
@@ -33,10 +34,16 @@ async function handler(fastify: FastifyExtendedInstance) {
       reply: FastifyReply
     ) {
       const { entity_id } = request.user as JWTUserPayload;
-      const { month, year } = request.query as { month: number, year: number };
+      const { date, month, year } = request.query as { date: string, month: number, year: number };
 
       // Mendapatkan jadwal libur pada bulan ini
-      const attendances = await AttendanceModel.getMonthlyReport(entity_id, month, year);
+      let attendances = null;
+
+      if (date) {
+        attendances = await AttendanceModel.getStudentByDate(entity_id, date);
+      } else {
+        attendances = await AttendanceModel.getMonthlyReport(entity_id, month, year);
+      }
 
       return reply.send(attendances);
     });

@@ -2,6 +2,7 @@
 
 import BottomModal from "@/components/BottomModal";
 import Calendar from "@/components/Calendar";
+import AttendanceDetail from "@/components/students/attendance/AttendanceDetails";
 import AttendanceStatus from "@/constant/AttendanceStatus";
 import useBottomModalStore from "@/context/useBottomModal";
 import now from "@/utils/now";
@@ -22,16 +23,6 @@ function getDateFromList(attendances: ListWithDate[], findDate: string): any {
     }
 
     return null;
-}
-
-function AttendanceDetail() {
-    // useSWRImmutable();
-    
-    return (
-        <div className="bg-blue-500">
-            HELLO BRO
-        </div>
-    );
 }
 
 function StudentReport() {
@@ -81,7 +72,7 @@ function StudentReport() {
     );
 
     const handleCellClick = (fullDate: string) => {
-        openModal(<AttendanceDetail />)
+        openModal(<AttendanceDetail date={fullDate} />);
     };
 
     useEffect(() => {

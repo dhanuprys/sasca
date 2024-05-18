@@ -6,9 +6,10 @@ import { MdOutlineHolidayVillage } from "react-icons/md";
 
 interface AttendanceStatusBannerProps {
     status: string;
+    borderless?: boolean;
 }
 
-function AttendanceStatusBanner({ status }: AttendanceStatusBannerProps) {
+function AttendanceStatusBanner({ status, borderless }: AttendanceStatusBannerProps) {
     const message = useMemo(() => {
         let output = {
             icon: <IoIosCheckmarkCircleOutline className="text-8xl text-sky-800" />,
@@ -37,7 +38,7 @@ function AttendanceStatusBanner({ status }: AttendanceStatusBannerProps) {
     }, []);
 
     return (
-        <div className="flex flex-col items-center gap-4 border rounded-lg px-4 py-8 md:p-8 bg-white">
+        <div className={`flex flex-col items-center gap-4 ${borderless ? '' : 'border'} rounded-lg px-4 py-8 md:p-8 bg-white`}>
             <div className="flex justify-center">
                 {message.icon}
             </div>

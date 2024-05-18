@@ -2,11 +2,12 @@ import { TbHome2 } from "react-icons/tb";
 
 interface HolidayStatusProps {
     reason?: string;
+    borderless?: boolean;
 }
 
-function HolidayStatus({ reason }: HolidayStatusProps) {
+function HolidayStatus({ reason, borderless }: HolidayStatusProps) {
     return (
-        <div className="flex flex-col items-center gap-4 border rounded-lg px-4 py-8 md:p-8 bg-white">
+        <div className={`flex flex-col items-center gap-4 ${borderless ? '' : 'border'} rounded-lg px-4 py-8 md:p-8 bg-white`}>
             <div className="flex justify-center">
                 <TbHome2 className="text-8xl text-sky-800" />
             </div>
