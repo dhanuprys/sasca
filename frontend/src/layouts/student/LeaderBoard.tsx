@@ -7,7 +7,7 @@ import { VscArrowSmallUp } from 'react-icons/vsc';
 
 function LeaderBoard() {
     return (
-        <div className="border">
+        <div className="">
             <div className="rounded-t-xl flex flex-col gap-2 items-center justify-center px-4 py-8 bg-gradient-to-t from-black to-sky-950">
                 <div className="w-[80px] h-[80px] relative mt-5">
                     <FaCrown className="absolute -top-1/2 left-1/2 w-[50px] h-[50px] -translate-x-1/2 text-yellow-500" />

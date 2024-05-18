@@ -15,7 +15,6 @@ export default function Home() {
       <CommonWrapper className="mt-5">
         <FlexColumn>
           <StudentReport />
-          <LeaderBoard />
         </FlexColumn>
       </CommonWrapper>
       <BottomSpacer />

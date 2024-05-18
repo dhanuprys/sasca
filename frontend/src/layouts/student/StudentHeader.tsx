@@ -17,7 +17,7 @@ function StudentHeader() {
             <CommonWrapper>
                 <div className="grid grid-cols-4 items-center py-4 text-white">
                     <div className="col-span-3 flex gap-4 items-center">
-                        <div>
+                        <div className="shrink-0">
                             <Image className="w-[37px] h-[37px] bg-slate-200 rounded-full" src="/user.webp" alt="image" width={50} height={50} />
                         </div>
                         <div className="flex flex-col gap-1">
@@ -41,7 +41,7 @@ function StudentHeader() {
                         <div>
                             {/* <IoNotifications className="w-[13px] h-[13px] box-content p-2 rounded-full text-sky-800 bg-white" /> */}
                         </div>
-                        <div className="px-2 py-1 rounded-full bg-yellow-600 text-white text-xs">TESTING</div>
+                        <div className="px-2 py-1 rounded-full bg-yellow-600 text-white text-xs">beta</div>
                     </div>
                 </div>
             </CommonWrapper>
