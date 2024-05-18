@@ -58,7 +58,7 @@ function MainDetail({ attendance }: MainDetailProps) {
         );
     }
 
-    if (![AttendanceStatus.PRESENT, AttendanceStatus.PRESENT_LATE].includes(status)) {
+    if (![AttendanceStatus.PRESENT, AttendanceStatus.PRESENT_LATE, null].includes(status)) {
         return (
             <AttendanceStatusBanner borderless={true} status={status} />
         );
