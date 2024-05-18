@@ -81,10 +81,11 @@ function Calendar({ onDateChange, onCell, onCellClick }: CalendarProps) {
                         let withPrev = false;
 
                         return baseCalendarInformation.fullTableRows.map((row) => {
-                            const activeDate = DateTime.fromFormat(`${currentMonth.toFormat('yyyy-MM')}-${currentDays + 1}`, 'yyyy-MM-d').toFormat('yyyy-MM-dd');
+                            const activeDate = DateTime.fromFormat(`${currentMonth.toFormat('yyyy-MM')}-${currentDays + 1}`, 'yyyy-MM-d');
+                            const activeDateFormat = activeDate.toFormat('yyyy-MM-dd');
 
                             return (
-                                <div onClick={() => onCellClick && onCellClick(activeDate)} className={`flex items-center gap-1 justify-center p-2 text-sm rounded ${baseCalendarInformation.today === activeDate ? 'bg-slate-100' : ''} hover:bg-slate-200`}>
+                                <div onClick={() => onCellClick && activeDate.isValid  && onCellClick(activeDateFormat)} className={`flex items-center gap-1 justify-center p-2 text-sm rounded ${baseCalendarInformation.today === activeDateFormat ? 'bg-slate-100' : ''} hover:bg-slate-200`}>
                                     {(() => {
                                         let output = 0;
                                         let position: 'prev' | 'current' | 'next' = 'current';
@@ -102,7 +103,7 @@ function Calendar({ onDateChange, onCell, onCellClick }: CalendarProps) {
 
                                         const renderRow = onCell
                                             ? onCell(
-                                                activeDate,
+                                                activeDateFormat,
                                                 {
                                                     days: output,
                                                     position

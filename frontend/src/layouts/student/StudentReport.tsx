@@ -1,15 +1,12 @@
 'use client'
 
-import BottomModal from "@/components/BottomModal";
 import Calendar from "@/components/Calendar";
 import AttendanceDetail from "@/components/students/attendance/AttendanceDetails";
 import AttendanceStatus from "@/constant/AttendanceStatus";
 import useBottomModalStore from "@/context/useBottomModal";
 import now from "@/utils/now";
-import CommonWrapper from "@/wrappers/CommonWrapper";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import useSWRImmutable from "swr/immutable";
 
 interface ListWithDate {
     date: string;

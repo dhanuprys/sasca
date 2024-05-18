@@ -6,11 +6,11 @@ import { DateTime } from "luxon";
 import ScheduleNotFound from "./ScheduleNotFound";
 import AttendanceStatus from "@/constant/AttendanceStatus";
 import AttendanceStatusBanner from "./AttendanceStatusBanner";
-import AttendanceMap from "./AttendanceMap";
 import MapCore from "@/components/MapCore";
 import { useRef, useState } from "react";
 import { MdOutlineAccessTime } from "react-icons/md";
 import AttendanceNotFound from "./AttendanceNotFound";
+import { FaArrowDown } from "react-icons/fa6";
 
 interface MainDetailProps {
     attendance: {
@@ -105,8 +105,10 @@ function MainDetail({ attendance }: MainDetailProps) {
 }
 
 interface ScheduleDetail {
-    check_in_time: string;
-    check_out_time: string;
+    checkin_start_time: string;
+    checkin_end_time: string;
+    checkout_start_time: string;
+    checkout_end_time: string;
     is_holiday: boolean;
     holiday_reason: string;
 }
@@ -116,17 +118,25 @@ interface ScheduleDetailProps {
 }
 
 function ScheduleDetail({ schedule }: ScheduleDetailProps) {
+    const { checkin_start_time, checkin_end_time, checkout_start_time, checkout_end_time } = schedule;
+
     return (
         <div>
             {
                 schedule.is_holiday
                     ? <HolidayStatus borderless={true} reason={schedule.holiday_reason} />
-                    : <div className="grid grid-cols-2">
-                        <div className="bg-slate-100 rounded-xl p-4">
-
+                    : <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-slate-100 rounded-xl p-4 flex flex-col gap-1 items-center justify-center">
+                            <span className="font-semibold">Datang</span>
+                            <span className="text-sky-800 font-semibold">{checkin_start_time}</span>
+                            <FaArrowDown className="text-blue-700" />
+                            <span className="text-sky-800 font-semibold">{checkin_end_time}</span>
                         </div>
-                        <div>
-
+                        <div className="bg-slate-100 rounded-xl p-4 flex flex-col gap-1 items-center justify-center">
+                            <span className="font-semibold">Pulang</span>
+                            <span className="text-sky-800 font-semibold">{checkout_start_time}</span>
+                            <FaArrowDown className="text-blue-700" />
+                            <span className="text-sky-800 font-semibold">{checkout_end_time}</span>
                         </div>
                     </div>
             }
