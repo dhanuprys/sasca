@@ -3,8 +3,10 @@ import LastAttendanceCheckingDateModel from '../../../models/LastAttendanceCheck
 import AttendanceModel from '../../../models/AttendanceModel';
 import StudentModel from '../../../models/StudentModel';
 import { DateTime } from 'luxon';
+import chalk from 'chalk';
 
 async function autoAlpha() {
+    const now = DateTime.now();
     const startSchoolDay = await SchoolDayScheduleModel.getFirstDay();
     const lastChecked = await LastAttendanceCheckingDateModel.getLastCheckDate();
 
@@ -19,17 +21,17 @@ async function autoAlpha() {
     })();
 
     let startCheckingDate;
-    let endCheckingDate = DateTime.now();
+    let endCheckingDate = DateTime.now().startOf('day');
     const studentIds = await StudentModel.getAllStudentId();
 
     const checkDateRange = [];
 
     if (!rawStartCheckingDate) {
-        console.log('Belum ada jadwal untuk memulai');
+        console.log(chalk.red('Belum ada jadwal untuk memulai'));
         return;
     }
 
-    startCheckingDate = DateTime.fromFormat(rawStartCheckingDate, 'yyyy-MM-dd');
+    startCheckingDate = DateTime.fromFormat(rawStartCheckingDate, 'yyyy-MM-dd').startOf('day');
 
     // Jika melebihi dari hari ini
     if (startCheckingDate > endCheckingDate) {
@@ -53,8 +55,18 @@ async function autoAlpha() {
 
         // Melompati proses jika tidak ada jadwal ditemukan pada
         // tanggal yang dicari atau ketika tanggal tersebut adalah libur
-        if (!currentSchedule || currentSchedule.is_holiday) {
+        if (!currentSchedule || currentSchedule.is_holiday || currentSchedule.checkout_end_time) {
             console.log(`Schedule not found [${currentDate}]`);
+            continue;
+        }
+
+        // Jika yang akan di cek adalah hari ini maka sistem harus
+        // melihat jadwal terlebih dahulu
+        if (
+            currentDate === now.toFormat('yyyy-MM-dd')
+            && now.toFormat('HH:mm:ss') < currentSchedule.checkout_end_time
+        ) {
+            console.log(`Belum dapat mengeksekusi sistem pada ${currentDate} karena jam masih kurang dari jadwal`);
             continue;
         }
 
@@ -77,6 +89,7 @@ async function autoAlpha() {
         }
     }
 
+    // Mencatat tanggal pengecekan terakkhir
     LastAttendanceCheckingDateModel.addLastDate(endCheckingDate.toFormat('yyyy-MM-dd'));
 }
 

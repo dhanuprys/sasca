@@ -35,3 +35,10 @@ export type FastifyExtendedInstance = FastifyInstance
 export const UserRoles = ['admin', 'student', 'counseling'] as const;
 
 export type UserRolesType = typeof UserRoles[number];
+
+export interface CronJobItem {
+    name: string;
+    description: string;
+    executor: () => Promise<void> | void;
+    schedule: string;
+}
