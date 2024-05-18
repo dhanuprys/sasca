@@ -31,7 +31,7 @@ function BottomModal() {
                                 </div>
                                 <h1 className="text-xl text-center font-semibold py-4">{title}</h1>
                             </div>
-                            <CommonWrapper className="min-h-[300px] overflow-auto max-h-[70vh]">
+                            <CommonWrapper className="min-h-[300px] overflow-auto max-h-[60vh]">
                                 {content}
                             </CommonWrapper>
                         </div>
