@@ -39,6 +39,8 @@ cron.schedule('0 19 * * *', async () => {
         FROM 
             rank_data;
     `);
+}, {
+    timezone: 'Asia/Makassar'
 });
 
 async function autoAlpha() {
@@ -122,4 +124,6 @@ async function autoAlpha() {
 console.log('Registering auto-alpha cron every 08:00 PM');
 cron.schedule('0 20 * * *', async () => {
     await autoAlpha();
+}, {
+    timezone: 'Asia/Makassar'
 });
