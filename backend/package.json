@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "migrate:up": "node ./scripts/migrate-up.js",
     "migrate": "node-pg-migrate",
     "cron": "node ./dist/daemon/cron/cron.js",
     "test": "echo \"Error: no test specified\" && exit 1",
