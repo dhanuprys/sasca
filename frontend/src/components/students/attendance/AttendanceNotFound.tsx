@@ -1,6 +1,6 @@
-import Link from "next/link";
+'use client';
+
 import { LuCircleSlash2 } from "react-icons/lu";
-import { TbCalendarOff, TbUserScan } from "react-icons/tb";
 
 interface AttendanceNotFoundProps {
     borderless?: boolean;

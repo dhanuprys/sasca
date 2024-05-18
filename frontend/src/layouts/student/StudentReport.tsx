@@ -6,6 +6,7 @@ import AttendanceStatus from "@/constant/AttendanceStatus";
 import useBottomModalStore from "@/context/useBottomModal";
 import now from "@/utils/now";
 import axios from "axios";
+import { DateTime } from "luxon";
 import { useCallback, useEffect, useState } from "react";
 
 interface ListWithDate {
@@ -69,7 +70,12 @@ function StudentReport() {
     );
 
     const handleCellClick = (fullDate: string) => {
-        openModal(<AttendanceDetail date={fullDate} />);
+        openModal(
+            <AttendanceDetail date={fullDate} />,
+            DateTime.fromFormat(fullDate, 'yyyy-MM-dd')
+                    .setLocale('id')
+                    .toFormat('cccc, dd LLLL yyyy')
+        );
     };
 
     useEffect(() => {

@@ -5,14 +5,14 @@ import CommonWrapper from "@/wrappers/CommonWrapper";
 import { AnimatePresence, motion } from "framer-motion";
 
 function BottomModal() {
-    const { isOpen, content, closeAndClear } = useBottomModalStore();
+    const { isOpen, title, content, closeAndClear } = useBottomModalStore();
 
     return (
         <AnimatePresence>
             {
                 isOpen
                 && <div className="fixed shadow-xl left-0 top-0 w-screen h-screen z-[650]">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 0.3 }}
                         exit={{ opacity: 0 }}
@@ -24,13 +24,15 @@ function BottomModal() {
                         animate={{ translateY: 0 }}
                         transition={{ bounce: false }}
                         className="absolute bottom-0 left-0 w-full">
-                        <div className="bg-white shadow-xl p-4 rounded-t-xl min-h-[300px] overflow-auto max-h-[70vh]">
-                            <CommonWrapper>
-                                <div className="mb-8 h-2 bg-slate-200 rounded-full w-1/3 mx-auto"></div>
-                                
-                                <div>
-                                    {content}
+                        <div className="bg-white shadow-xl p-4 rounded-t-xl">
+                            <div className="pb-4 flex flex-col gap-2 items-center justify-center">
+                                <div className="w-full">
+                                    <div className="h-2 bg-slate-200 rounded-full mx-auto w-[150px]"></div>
                                 </div>
+                                <h1 className="text-xl text-center font-semibold py-4">{title}</h1>
+                            </div>
+                            <CommonWrapper className="min-h-[300px] overflow-auto max-h-[70vh]">
+                                {content}
                             </CommonWrapper>
                         </div>
                     </motion.div>

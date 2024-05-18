@@ -3,18 +3,22 @@ import { create } from "zustand";
 
 interface BottomModalState {
     isOpen: boolean;
+    title?: ReactNode;
     content?: ReactNode;
-    open: (content?: ReactNode) => void;
+    open: (content?: ReactNode, title?: string) => void;
     close: () => void;
     closeAndClear: () => void;
 }
 
 const useBottomModalStore = create<BottomModalState>((set, get) => ({
     isOpen: false,
-    open(content?: ReactNode) {
+    open(content?: ReactNode, title?: string) {
+        const current = get();
+
         set({
             isOpen: true,
-            content: content || get().content
+            title: title || current.title,
+            content: content || current.content
         })
     },
     close() {
@@ -25,6 +29,7 @@ const useBottomModalStore = create<BottomModalState>((set, get) => ({
     closeAndClear() {
         set({
             isOpen: false,
+            title: null,
             content: null
         })
     }
