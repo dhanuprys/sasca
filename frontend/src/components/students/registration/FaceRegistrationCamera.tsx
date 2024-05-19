@@ -50,6 +50,7 @@ function FaceRegistrationCamera() {
             setDetectionMessage('Berhasil menambahkan sampel wajah');
 
             await mutate('/api/v1/student/face-sample');
+            await mutate('/api/v1/me');
 
             setTimeout(() => {
                 router.replace('/student/home');

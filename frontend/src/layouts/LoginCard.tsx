@@ -48,7 +48,7 @@ function LoginCard() {
                                     await mutate('/api/v1/me');
                                     
                                     setTimeout(() => {
-                                        router.push('/student/home');
+                                        router.replace('/student/home');
                                     }, 1000);
                                 }
                             } catch (error) {

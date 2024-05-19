@@ -183,6 +183,7 @@ class AttendanceModel {
                             .where('students.grade_id', student.grade_id)
                             .andWhere('students.major_id', student.major_id)
                             .andWhere('date', knexDBHelpers.CURRENT_DATE)
+                            .andWhereNot('attendances.student_id', studentId)
                             // .orderByRaw('RANDOM()')
                             .limit(150);
 
