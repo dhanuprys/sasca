@@ -107,7 +107,7 @@ async function handler(fastify: FastifyExtendedInstance) {
         }, FaceLandmarks68>> | undefined
       ) => {
         console.log('load reference');
-        let reference = (await canvas.loadImage(`./samples/${referencePath}`)) as unknown as TNetInput;
+        let reference = (await canvas.loadImage(`./storage/samples/${referencePath}`)) as unknown as TNetInput;
 
         console.log('get reference face descriptor');
         const referenceFace = await faceapi
