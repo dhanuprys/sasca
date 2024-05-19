@@ -11,7 +11,7 @@ node {
         // Build Docker image
         script {
             docker.withRegistry('https://scr.stemsi.cloud', 'docker-stemsi') {
-                def customImage = docker.build(dockerImage, '-f Dockerfile ./frontend')
+                def customImage = docker.build(dockerImage, '-f Dockerfile .')
 
                 // Push the Docker image to the registry
                 customImage.push()
