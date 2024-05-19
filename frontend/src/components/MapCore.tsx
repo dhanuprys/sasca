@@ -46,7 +46,7 @@ interface MapCoreProps {
 
 function MapCore({ center, zoom, radius, pins, minUpdateInterval }: MapCoreProps) {
     const [isMapReady, setMapReady] = useState(false);
-    const { isAllowUpdate, allowUpdate } = useMapStore();
+    const { isAllowUpdate, allowUpdate, setPreviousCoordinates } = useMapStore();
 
     const markIcon = L.icon({
         iconUrl: '/man.png',
@@ -95,6 +95,8 @@ function MapCore({ center, zoom, radius, pins, minUpdateInterval }: MapCoreProps
         if (attribution) {
             attribution.remove();
         }
+
+        setPreviousCoordinates(center as [number, number]);
     }, [isMapReady]);
 
     useEffect(() => {
