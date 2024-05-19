@@ -76,7 +76,8 @@ function IntuitiveMapContainer() {
                             ]
                             : friendsCoordinates
                     }
-                    zoom={17} />
+                    zoom={17}
+                    minUpdateInterval={30_000} />
                 {
                     (!isGeolocationEnabled || !isGeolocationAvailable) &&
                     <div>

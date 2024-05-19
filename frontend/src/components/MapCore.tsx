@@ -1,17 +1,23 @@
 'use client';
 
-import { MapContainer, TileLayer, CircleMarker, Tooltip, Marker, useMap, Popup, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Tooltip, Marker, useMap, Polyline } from 'react-leaflet';
 import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { ReactNode, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import addDistance from '@/utils/addDistance';
 import Skeleton from './Skeleton';
+import useMapStore from '@/context/useMapStore';
 
 const MapController = ({ center, zoom }: { center: LatLngExpression, zoom: number }) => {
+    const { isAllowUpdate, restrictUpdate } = useMapStore();
     const map = useMap();
+
+    if (!isAllowUpdate) return null;
 
     // Memindahkan posisi kursor
     map.flyTo(center, zoom);
+
+    restrictUpdate();
 
     return null;
 };
@@ -29,10 +35,13 @@ interface MapCoreProps {
         length: number;
     };
     pins?: LocationPin[];
+    minUpdateInterval?: number;
 }
 
-function MapCore({ center, zoom, radius, pins }: MapCoreProps) {
+function MapCore({ center, zoom, radius, pins, minUpdateInterval }: MapCoreProps) {
     const [isMapReady, setMapReady] = useState(false);
+    const { isAllowUpdate, allowUpdate } = useMapStore();
+
     const markIcon = L.icon({
         iconUrl: '/man.png',
         iconSize: [
@@ -82,11 +91,19 @@ function MapCore({ center, zoom, radius, pins }: MapCoreProps) {
         }
     }, [isMapReady]);
 
+    useEffect(() => {
+        if (!isMapReady || isAllowUpdate) return;
+
+        let unlocker = setTimeout(() => {
+            allowUpdate();
+        }, minUpdateInterval || 0);
+
+        return () => clearTimeout(unlocker);
+    }, [isMapReady, isAllowUpdate]);
+
     if (!isMapReady) {
         return <Skeleton style={{ height: '300px' }} />
     }
-
-    console.log(pins!.length);
 
     return (
         <MapContainer
