@@ -1,10 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import CommonWrapper from "@/wrappers/CommonWrapper";
 import useUser from '@/hooks/useUser';
 import Skeleton from '@/components/Skeleton';
-import rawImageLoader from '@/utils/rawImageLoader';
 
 function StudentHeader() {
     const { loading, user, error } = useUser();
