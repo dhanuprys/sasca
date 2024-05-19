@@ -24,11 +24,14 @@ interface LocationPin {
 interface MapCoreProps {
     center: LatLngExpression;
     zoom: number;
-    radiusCenter?: LatLngExpression;
+    radius?: {
+        center: LatLngExpression;
+        length: number;
+    };
     pins?: LocationPin[];
 }
 
-function MapCore({ center, zoom, radiusCenter, pins }: MapCoreProps) {
+function MapCore({ center, zoom, radius, pins }: MapCoreProps) {
     const [isMapReady, setMapReady] = useState(false);
     const markIcon = L.icon({
         iconUrl: '/man.png',
@@ -44,14 +47,14 @@ function MapCore({ center, zoom, radiusCenter, pins }: MapCoreProps) {
     });
 
     const radiusPaths = useMemo(() => {
-        if (!radiusCenter) return [];
+        if (!radius) return [];
 
         let result = [];
         for (let i = 1; i <= 360; i++) {
             result.push(
                 addDistance(
-                    radiusCenter as [number, number],
-                    200,
+                    radius.center as [number, number],
+                    radius.length,
                     i
                 ) as LatLngExpression
             )

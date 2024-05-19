@@ -62,7 +62,10 @@ function IntuitiveMapContainer() {
             <div className="w-full h-[400px] rounded-t-xl bg-slate-300 relative">
                 <MapCore
                     center={coords ? [coords.latitude, coords.longitude] : [-8.114308077832172, 115.09855832420878]}
-                    radiusCenter={[-8.114308077832172, 115.09855832420878]}
+                    radius={{
+                        center: [-8.114308077832172, 115.09855832420878],
+                        length: 1000
+                    }}
                     pins={
                         coords
                             ? [
@@ -85,7 +88,7 @@ function IntuitiveMapContainer() {
                 }
 
                 {
-                    distance > 200 && <div className="absolute bottom-0 left-0 z-[502] w-full text-sm text-center animate-pulse bg-yellow-400 text-white px-4 py-2">
+                    distance > 200_000 && <div className="absolute bottom-0 left-0 z-[502] w-full text-sm text-center animate-pulse bg-yellow-400 text-white px-4 py-2">
                         Jarak anda terlalu jauh!
                     </div>
                 }
@@ -107,7 +110,7 @@ function IntuitiveMapContainer() {
                     <div className="flex items-center col-span-5">
                         <RiPinDistanceLine className="text-3xl" />
                         <div className="pl-4">
-                            <span className="font-semibold block text-sm text-blue-700">200 M</span>
+                            <span className="font-semibold block text-sm text-blue-700">200 KM</span>
                             <span className="text-slate-400 text-xs">Maks. Jarak</span>
                         </div>
                     </div>

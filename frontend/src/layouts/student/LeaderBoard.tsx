@@ -94,7 +94,7 @@ function LeaderBoard() {
                 </div>
             </div>
             <div className="p-4 bg-black">
-
+                <div className="max-w-[28rem] md:max-w-[40rem] mx-auto">
                 {
                     adoptedRank && adoptedRank.followers.map((follower: any) => {
                         return <RankItem
@@ -105,7 +105,7 @@ function LeaderBoard() {
                             previousRank={follower.previous_rank} />
                     })
                 }
-
+                </div>
             </div>
 
             <div className="rounded-b-xl bg-black py-4 flex justify-center">
