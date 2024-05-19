@@ -4,7 +4,7 @@ import path from 'path';
 
 export default fp(async function (fastify) {
   fastify.register(staticServer, {
-    root: process.env.STORAGE_PUBLIC_PATH || path.join(__dirname, '../../static/public'),
+    root: process.env.STORAGE_PUBLIC_PATH || path.join(__dirname, '../../storage/public'),
     prefix: '/_static/'
   })
 });

@@ -10,6 +10,16 @@ class StudentModel {
         return student;
     }
 
+    static async setPhotoProfile(studentId: number, photoPath: string) {
+        const result = await knexDB('students')
+                            .where('id', studentId)
+                            .update({
+                                avatar_path: photoPath
+                            });
+
+        return result;
+    }
+
     static async getAllStudentId() {
         const students = await knexDB('students')
                         .select('id');
@@ -37,6 +47,7 @@ class StudentModel {
         const result = await knexDB('students')
                         .select([
                             'students.id',
+                            'students.avatar_path',
                             'students.name',
                             'check_in_time',
                             'attendances.status'

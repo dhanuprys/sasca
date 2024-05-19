@@ -4,6 +4,7 @@ import Image from 'next/image';
 import CommonWrapper from "@/wrappers/CommonWrapper";
 import useUser from '@/hooks/useUser';
 import Skeleton from '@/components/Skeleton';
+import rawImageLoader from '@/utils/rawImageLoader';
 
 function StudentHeader() {
     const { loading, user, error } = useUser();
@@ -18,7 +19,11 @@ function StudentHeader() {
                 <div className="grid grid-cols-4 items-center py-4 text-white">
                     <div className="col-span-3 flex gap-4 items-center">
                         <div className="shrink-0">
-                            <Image className="w-[37px] h-[37px] bg-slate-200 rounded-full" src="/user.webp" alt="image" width={50} height={50} />
+                            {
+                                user && user.user
+                                    ? <img className="w-[37px] h-[37px] bg-slate-200 rounded-full" src={user.user.avatar_path ? `/api/_static/${user.user.avatar_path}` : '/user.webp'} alt="image" />
+                                    : <Skeleton style={{ height: '37px', width: '37px' }} />
+                            }
                         </div>
                         <div className="flex flex-col gap-1">
                             <h2 className="font-semibold text-xs">

@@ -10,6 +10,7 @@ import { FastifyReply } from 'fastify';
 import knexDB from '../../../../utils/db';
 import shuffleArray from 'shuffle-array';
 import FaceSampleModel from '../../../../models/FaceSampleModel';
+import StudentModel from '../../../../models/StudentModel';
 
 async function handler(fastify: FastifyExtendedInstance) {
   fastify.get(
@@ -90,21 +91,18 @@ async function handler(fastify: FastifyExtendedInstance) {
 
       await knexDB.transaction(async () => {
         // Menghapus semua data yang ada       
-        await knexDB('face_samples').where({ student_id: entity_id }).delete();
+        await FaceSampleModel.clearStudentSample(entity_id);
 
         // Menyimpan seluruh nama file terkait pada database
         for (const fileMeta of files) {
-          await knexDB('face_samples').insert({
-            student_id: entity_id,
-            sample_path: fileMeta.name,
-            accuration: fileMeta.accuracy
-          });
+          await FaceSampleModel.createSample(entity_id, fileMeta.name, fileMeta.accuracy);
         }
 
         // Menyimpan photo profile secara acak berdasarkan sampel
-        knexDB('students')
-          .where({ student_id: entity_id })
-          .update({ avatar_path: shuffleArray(files)[0].name })
+        await StudentModel.setPhotoProfile(
+          entity_id,
+          `samples/${shuffleArray(files)[0].name}`
+        )
       })
 
       return reply.send({

@@ -7,11 +7,8 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
-/samples/*
-!/samples/.gitkeep
-
-/storage/samples/*
-!/storage/*/.gitkeep
+/storage/public/samples/*
+!/storage/public/samples/.gitkeep
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

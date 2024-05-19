@@ -17,6 +17,22 @@ class FaceSampleModel {
 
         return result;
     }
+
+    static async createSample(studentId: number, sampleName: string, accuracy: number) {
+        const result = await knexDB('face_samples').insert({
+            student_id: studentId,
+            sample_path: sampleName,
+            accuration: accuracy
+        });
+
+        return result;
+    }
+
+    static async clearStudentSample(studentId: number) {
+        const result = await knexDB('face_samples').where({ student_id: studentId }).delete();
+
+        return result;
+    }
 }
 
 export default FaceSampleModel;

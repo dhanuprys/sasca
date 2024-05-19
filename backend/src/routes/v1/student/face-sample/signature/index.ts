@@ -51,7 +51,7 @@ async function handler(fastify: FastifyExtendedInstance) {
         }).toBuffer();
 
         // Menyimpan hasil potongan wajah ke dalam file
-        await fs.outputFile(`./storage/samples/${fileName}`, faceBuffer);
+        await fs.outputFile(`./storage/public/samples/${fileName}`, faceBuffer);
 
         return fileName;
       }

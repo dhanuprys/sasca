@@ -107,7 +107,7 @@ async function handler(fastify: FastifyExtendedInstance) {
         }, FaceLandmarks68>> | undefined
       ) => {
         console.log('load reference');
-        let reference = (await canvas.loadImage(`./storage/samples/${referencePath}`)) as unknown as TNetInput;
+        let reference = (await canvas.loadImage(`./storage/public/samples/${referencePath}`)) as unknown as TNetInput;
 
         console.log('get reference face descriptor');
         const referenceFace = await faceapi
@@ -115,10 +115,13 @@ async function handler(fastify: FastifyExtendedInstance) {
           .withFaceLandmarks()
           .withFaceDescriptor();
 
-        console.log('cant detect reference or compare face');
+        console.log(referenceFace);
+
         // Jika sistem tidak bisa mendeteksi salah satu atau kedua dari reference dan 
         // gambar absensi, maka sistem akan menyatakan kesalahan
         if (!referenceFace || !compareFace) {
+          console.log('cant detect reference or compare face');
+
           return null;
         }
 

@@ -16,7 +16,7 @@ function ProfileHero() {
 
                 </div>
                 <div className="flex flex-col items-center justify-center py-5">
-                    <Image className="w-[100px] h-[100px] object-cover rounded-full ring-4 ring-blue-500 bg-white" src="/user.webp" alt="profile" width={200} height={200} />
+                    <img className="w-[100px] h-[100px] object-cover rounded-full ring-4 ring-blue-500 bg-white" src={user && user.user.avatar_path ? `/api/_static/${user.user.avatar_path}` : '/user.webp'} alt="profile" />
                     <h2 className="font-semibold text-lg text-white text-center mt-4">
                         {
                             user
