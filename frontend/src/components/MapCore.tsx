@@ -9,14 +9,20 @@ import Skeleton from './Skeleton';
 import useMapStore from '@/context/useMapStore';
 
 const MapController = ({ center, zoom }: { center: LatLngExpression, zoom: number }) => {
-    const { isAllowUpdate, restrictUpdate } = useMapStore();
+    const { previousCoordinates, setPreviousCoordinates, isAllowUpdate, restrictUpdate } = useMapStore();
     const map = useMap();
 
-    if (!isAllowUpdate) return null;
+    if (
+        !isAllowUpdate 
+        || (previousCoordinates && (JSON.stringify(center) === JSON.stringify(previousCoordinates)))
+    ) {
+        return null;
+    }
 
     // Memindahkan posisi kursor
     map.flyTo(center, zoom);
 
+    setPreviousCoordinates(center as [number, number]);
     restrictUpdate();
 
     return null;
