@@ -2,6 +2,7 @@ import { FastifyJWT } from '@fastify/jwt';
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import * as faceapi from 'face-api.js';
 import Roles from './constant/Roles';
+import Queue from 'bull';
 
 interface AuthenticatedDecoration {
   authenticated: (request: FastifyCustomRequestScheme, reply: FastifyReply) => Promise<any>
@@ -41,4 +42,13 @@ export interface CronJobItem {
     description: string;
     executor: () => Promise<void> | void;
     schedule: string;
+}
+
+export interface QueueJobItem {
+  name: string;
+  description: string;
+  queue: {
+    instance: Queue.Queue,
+    processor: Queue.ProcessCallbackFunction<any>
+  }
 }

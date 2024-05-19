@@ -11,7 +11,6 @@ async function main() {
 
   console.log('Loading ENV');
   require('dotenv').config({ path: ['.env.local', '.env'] });
-  console.log(process.env);
 
   fastify.register(Autoload, {
     dir: path.join(__dirname, 'plugins')

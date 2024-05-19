@@ -12,6 +12,7 @@ import AttendanceModel from '../../../../models/AttendanceModel';
 import createSchema from '../../../../utils/schema';
 import FaceSampleModel from '../../../../models/FaceSampleModel';
 import { FaceDetection, FaceLandmarks68, TNetInput, WithFaceDescriptor, WithFaceLandmarks } from 'face-api.js';
+import AttendanceNotifier from '../../../../daemon/queue/jobs/AttendanceNotifier';
 
 async function handler(fastify: FastifyExtendedInstance) {
   fastify.get(
@@ -70,6 +71,7 @@ async function handler(fastify: FastifyExtendedInstance) {
         loc_long,
         photo
       } = request.body as { type: 'in' | 'out' | string, loc_lat: number, loc_long: number, photo: Buffer };
+      const { notifyStudentAttendance } = AttendanceNotifier.model!;
 
       console.log('TRAFFIC PROCESS STARTING');
 
@@ -148,6 +150,8 @@ async function handler(fastify: FastifyExtendedInstance) {
       }
 
       const createAttendance = async () => {
+        let result;
+
         if (type === 'in') {
           result = await AttendanceModel.checkIn(
             entity_id,
@@ -161,6 +165,8 @@ async function handler(fastify: FastifyExtendedInstance) {
             [loc_lat, loc_long]
           )
         }
+        
+        return result;
       };
 
       const inputImage = await convertToComparableImage(photo);
@@ -171,7 +177,15 @@ async function handler(fastify: FastifyExtendedInstance) {
 
           if (!result) continue;
 
-          await createAttendance();
+          const attendanceResult = await createAttendance();
+
+          if (!attendanceResult) {
+            return reply.code(500).send({
+              message: 'Attendance error'
+            });
+          }
+
+          await notifyStudentAttendance(attendanceResult[0].id);
 
           return reply.send({
             accuracy: result.accuracy

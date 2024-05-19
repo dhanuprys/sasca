@@ -7,6 +7,14 @@ import StudentModel from "./StudentModel";
 
 type Coordinates = [number, number];
 class AttendanceModel {
+    static async getAttendanceById(attendanceId: number) {
+        const result = await knexDB('attendances')
+                            .where('id', attendanceId)
+                            .first();
+
+        return result;
+    }
+
     static async getCheckPoint(checkType: 'in' | 'out' | string, studentId: number, date?: string) {
         if (checkType === 'in') {
             return AttendanceModel.getCheckIn(studentId, date);
@@ -86,7 +94,7 @@ class AttendanceModel {
                 check_in_time: time,
                 check_in_coordinate: JSON.stringify(coordinates),
                 date
-            }, 'date');
+            }, ['id', 'date']);
 
         return result;
     }
@@ -125,7 +133,7 @@ class AttendanceModel {
                 check_out_time: time,
                 check_out_coordinate: JSON.stringify(coordinates),
                 status
-            }, 'date');
+            }, ['id', 'date']);
 
         return result;
     }

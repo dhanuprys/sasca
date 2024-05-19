@@ -6,7 +6,8 @@
   "scripts": {
     "migrate:up": "node ./scripts/migrate-up.js",
     "migrate": "node-pg-migrate",
-    "cron": "node ./dist/daemon/cron/cron.js",
+    "cron": "node ./dist/daemon/cron/main.js",
+    "queue": "node ./dist/daemon/queue/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.json",
     "start": "npm rebuild @tensorflow/tfjs-node --build-addon-from-source && node ./dist/index.js",
