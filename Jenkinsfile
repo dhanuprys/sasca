@@ -49,4 +49,9 @@ node {
             sh "docker rm ${containerId}"
         }
     }
+
+    stage('Cleanup Image') {
+        sh 'docker rmi scr.stemsi.cloud/sasca-frontend'
+        sh 'docker rmi scr.stemsi.cloud/sasca-backend'
+    }
 }
