@@ -126,9 +126,12 @@ function MapCore({ center, zoom, radius, pins, minUpdateInterval }: MapCoreProps
             doubleClickZoom={false}
             zoomSnap={0}
             trackResize={false}
-            zoom={zoom}>
+            zoom={zoom}
+            maxZoom={22}>
             <MapController center={center} zoom={zoom} />
             <TileLayer
+                maxZoom={25}
+                maxNativeZoom={25}
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <Polyline pathOptions={{ fill: true, fillColor: 'blue' }} positions={radiusPaths} />
