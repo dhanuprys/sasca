@@ -13,6 +13,7 @@ class AttendanceRank {
                                 'calculation_date'
                             ])
                             .orderBy('rank')
+                            .where('calculation_date', knexDB.raw('(SELECT MAX(calculation_date) FROM attendance_rank)'))
                             .limit(limit);
 
         return result;
