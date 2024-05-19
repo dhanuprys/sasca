@@ -73,8 +73,12 @@ function LeaderBoard() {
         }
     }, [ranks]);
 
-    if (!adoptedRank) {
+    if (!ranks) {
         return <Skeleton style={{ height: '400px' }} />;
+    }
+
+    if (!adoptedRank) {
+        return <div>Halaman ini belum tersedia</div>
     }
 
     return (

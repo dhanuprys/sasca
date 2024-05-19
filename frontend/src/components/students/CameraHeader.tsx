@@ -10,19 +10,27 @@ interface CameraHeaderProps {
 function CameraHeader({ title }: CameraHeaderProps) {
     const router = useRouter();
 
+    const backToHome = () => {
+        router.replace('/student/home');
+    };
+
+    const forceRefresh = () => {
+        window.location.href = window.location.href;
+    }
+
     return (
         <CommonWrapper>
             <div className="grid grid-cols-8 py-6 items-center">
                 <div className="col-span-2">
-                    <Link  href="/student/home" className="p-2">
+                    <button onClick={backToHome}  className="p-2">
                         <IoIosArrowBack />
-                    </Link>
+                    </button>
                 </div>
                 <div className="col-span-4 text-center">{title}</div>
                 <div className="col-span-2 flex justify-end">
-                    <Link href="#" onClick={() => router.refresh()} className="p-2">
+                    <button onClick={forceRefresh} className="p-2">
                         <IoIosRefresh />
-                    </Link>
+                    </button>
                 </div>
             </div>
         </CommonWrapper>

@@ -115,7 +115,7 @@ async function handler(fastify: FastifyExtendedInstance) {
           .withFaceLandmarks()
           .withFaceDescriptor();
 
-        console.log(referenceFace);
+        // console.log(referenceFace);
 
         // Jika sistem tidak bisa mendeteksi salah satu atau kedua dari reference dan 
         // gambar absensi, maka sistem akan menyatakan kesalahan
