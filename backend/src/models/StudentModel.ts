@@ -3,9 +3,19 @@ import knexDB, { knexDBHelpers } from "../utils/db";
 class StudentModel {
     static async getStudentById(studentId: number) {
         const student = await knexDB('students')
-            .where({
-                id: studentId
-            }).first();
+            .select([
+                'students.id',
+                'students.avatar_path',
+                'students.name',
+                'students.nisn',
+                'students.nis',
+                'students.gender',
+                knexDB.raw("CONCAT(student_grades.long_name, ' ', student_majors.long_Name, ' ', students.group_num) AS class_name")
+            ])
+            .join('student_grades', 'student_grades.id', 'students.grade_id')
+            .join('student_majors', 'student_majors.id', 'students.major_id')
+            .where('students.id', studentId)
+            .first();
 
         return student;
     }

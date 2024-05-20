@@ -19,13 +19,11 @@ interface StudentItemProps {
 }
 
 function StudentItem({ id, name, avatarPath, nisn, nis }: StudentItemProps) {
+    const router = useRouter();
     const { open: openModal } = useBottomModalStore();
 
     const openDetail = () => {
-        openModal(
-            <StudentDetail id={id} />,
-            'Profil Siswa'
-        );
+        router.push(`/counselor/student/${id}`);
     };
 
     return (
