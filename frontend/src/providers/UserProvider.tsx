@@ -4,7 +4,7 @@ import SplashScreen from "@/components/SplashScreen";
 import { swrFetcher } from "@/utils/swrFetcher";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { ReactNode, createContext, useCallback } from "react";
+import { ReactNode, createContext, useCallback, useEffect, useState } from "react";
 import useSWRImmutable from "swr/immutable";
 
 interface UserAuthPayload {
@@ -13,9 +13,14 @@ interface UserAuthPayload {
         id: number;
         name: string;
         avatar_path: string;
+
+        // student only
         nis: string;
         nisn: string;
         class_name: string;
+
+        // teacher only
+        nip: string;
     }
 }
 
@@ -44,6 +49,8 @@ interface UserProviderProps {
 
 function UserProvider({ children, strict = true, splash, allowedRoles, hitOnce }: UserProviderProps) {
     const router = useRouter();
+    const [isAllowOpen, setAllowOpen] = useState(false);
+    
     const { data: user, error, isLoading } = useSWRImmutable<UserAuthPayload>(
         '/api/v1/me',
         swrFetcher,
@@ -62,7 +69,13 @@ function UserProvider({ children, strict = true, splash, allowedRoles, hitOnce }
         router.replace('/auth/login');
     }, []);
 
-    if (isLoading && !user && splash) {
+    useEffect(() => {
+        setTimeout(() => {
+            setAllowOpen(true);
+        }, 2500);
+    }, []);
+
+    if ((isLoading && !user && splash) || !isAllowOpen) {
         return <SplashScreen />;
     }
 

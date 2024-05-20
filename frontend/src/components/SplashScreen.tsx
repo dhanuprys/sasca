@@ -1,3 +1,5 @@
+'use client';
+
 function SplashScreen() {
     return (
         <div className="h-screen flex justify-center items-center bg-sky-800">

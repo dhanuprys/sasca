@@ -5,6 +5,7 @@ import FlexColumn from "@/components/miscellaneous/FlexColumn";
 import BottomNavButton from "@/layouts/counselor/BottomNavButton";
 import Classroom from "@/layouts/counselor/Classroom";
 import CounselorClasses from "@/layouts/counselor/CounselorClasses";
+import CounselorHeader from "@/layouts/counselor/CounselorHeader";
 import StudentHeader from "@/layouts/student/StudentHeader";
 import CommonWrapper from "@/wrappers/CommonWrapper";
 
@@ -12,13 +13,12 @@ export default function Home({ params }: { params: { classesId: number } }) {
   return (
     <div>
       <IntuitiveBackground />
-      <StudentHeader />
+      <CounselorHeader />
       <CommonWrapper className="mt-5 !p-0">
         <FlexColumn>
           <Classroom classesId={params.classesId} />
         </FlexColumn>
       </CommonWrapper>
-      <BottomSpacer />
       <BottomNavButton />
     </div>
   );

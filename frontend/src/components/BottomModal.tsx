@@ -36,7 +36,7 @@ function BottomModal() {
                             </div>
 
                             {/* CONTENT */}
-                            <CommonWrapper className="min-h-[300px] overflow-auto max-h-[60vh]">
+                            <CommonWrapper className="min-h-[70vh] overflow-auto max-h-[60vh]">
                                 {content}
                                 <div className="min-h-14"></div>
                             </CommonWrapper>

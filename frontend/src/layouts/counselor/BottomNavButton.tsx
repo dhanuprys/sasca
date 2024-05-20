@@ -48,7 +48,7 @@ function BottomNavButton() {
         <div className="fixed bottom-0 left-0 w-full bg-white shadow z-[600]">
             <CommonWrapper>
                 <div className="grid grid-cols-4">
-                    <NavButton icon={<MdHome />} label="Beranda" target="/student/home" activePaths={['/counselor/home']} />
+                    <NavButton icon={<MdHome />} label="Beranda" target="/counselor/home" activePaths={['/counselor/home']} />
                     {/* <NavButton icon={<MdNotifications />} label="Notifikasi" target="/counselor/notification" activePaths={['/counselor/notification']} /> */}
                     <NavButton icon={<FaChalkboardTeacher />} label="Kelas" target="/counselor/classroom" activePaths={['/counselor/classroom']} />
                     {/* <NavButton icon={<IoMedalOutline />} special={true} label="Peringkat" target="/counselor/leaderboard" activePaths={['/counselor/leaderboard']} /> */}

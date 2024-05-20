@@ -1,6 +1,8 @@
 'use client';
 
 import Skeleton from "@/components/Skeleton";
+import StudentDetail from "@/components/counselor/StudentDetail";
+import useBottomModalStore from "@/context/useBottomModal";
 import { swrFetcher } from "@/utils/swrFetcher";
 import Image from "next/image";
 import { FaRegCircle } from "react-icons/fa6";
@@ -15,8 +17,17 @@ interface StudentItemProps {
 }
 
 function StudentItem({ name, avatarPath, nisn, nis }: StudentItemProps) {
+    const { open: openModal } = useBottomModalStore();
+
+    const openDetail = () => {
+        openModal(
+            <StudentDetail />,
+            'Profil Siswa'
+        );
+    };
+
     return (
-        <div className="flex items-center gap-2 hover:bg-slate-100 p-4">
+        <div onClick={openDetail} className="flex items-center gap-2 hover:bg-slate-100 p-4">
             <div className="flex-auto flex items-center gap-2">
                 <div className="shrink-0">
                     <img src={avatarPath ? `/api/_static/${avatarPath}` : '/user.webp'} alt="profile" className="w-[40px] h-[40px] rounded-full bg-slate-200" />
@@ -66,7 +77,7 @@ function Classroom({ classesId }: ClassroomProps) {
     );
 
     return (
-        <div className="flex flex-col gap-4 rounded-lg bg-white border">
+        <div className="flex flex-col gap-4 min-h-screen bg-white border">
             <h1 className="text-2xl font-semibold p-4">Ruang Kelas</h1>
             {/* <hr /> */}
             
