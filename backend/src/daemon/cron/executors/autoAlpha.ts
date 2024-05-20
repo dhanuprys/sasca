@@ -48,6 +48,8 @@ async function autoAlpha() {
         checkDateRange.push(currentDate.toFormat('yyyy-MM-dd'));
     }
 
+    console.log(`Checking from ${startCheckingDate.toFormat('yyyy-MM-dd')}-${endCheckingDate.toFormat('yyyy-MM-dd')}`);
+
     // Memproses kehadiran berdasarkan daftar tanggal yang 
     // sudah disiapkan
     for (const currentDate of checkDateRange) {
@@ -55,10 +57,12 @@ async function autoAlpha() {
 
         // Melompati proses jika tidak ada jadwal ditemukan pada
         // tanggal yang dicari atau ketika tanggal tersebut adalah libur
-        if (!currentSchedule || currentSchedule.is_holiday || currentSchedule.checkout_end_time) {
+        if (!currentSchedule || currentSchedule.is_holiday) {
             console.log(`Schedule not found [${currentDate}]`);
             continue;
         }
+
+        console.log(`Schedule for ${currentDate} successfully fetched!`);
 
         // Jika yang akan di cek adalah hari ini maka sistem harus
         // melihat jadwal terlebih dahulu
@@ -72,6 +76,12 @@ async function autoAlpha() {
 
         for (const studentId of studentIds) {
             const studentStatus = await AttendanceModel.getStudentByDate(studentId, currentDate);
+
+            // Jika statusnya sudah di set
+            if (studentStatus.status) {
+                console.log(`Skipping [${currentDate}][${studentId}]`);
+                continue;
+            } 
 
             // Jika sama sekali tidak ada tanda-tanda absensi
             if (!studentStatus) {
@@ -90,7 +100,7 @@ async function autoAlpha() {
     }
 
     // Mencatat tanggal pengecekan terakkhir
-    LastAttendanceCheckingDateModel.addLastDate(endCheckingDate.toFormat('yyyy-MM-dd'));
+    await LastAttendanceCheckingDateModel.addLastDate(endCheckingDate.toFormat('yyyy-MM-dd'));
 }
 
 export default autoAlpha;
