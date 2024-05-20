@@ -4,6 +4,7 @@ import AttendanceModel from '../../../models/AttendanceModel';
 import StudentModel from '../../../models/StudentModel';
 import { DateTime } from 'luxon';
 import chalk from 'chalk';
+import knexDB from '../../../utils/db';
 
 async function autoAlpha() {
     const now = DateTime.now();
@@ -28,7 +29,7 @@ async function autoAlpha() {
 
     if (!rawStartCheckingDate) {
         console.log(chalk.red('Belum ada jadwal untuk memulai'));
-        return;
+        return null;
     }
 
     startCheckingDate = DateTime.fromFormat(rawStartCheckingDate, 'yyyy-MM-dd').startOf('day');
@@ -36,7 +37,7 @@ async function autoAlpha() {
     // Jika melebihi dari hari ini
     if (startCheckingDate > endCheckingDate) {
         console.log(`Belum dapat memulai proses ${startCheckingDate.toFormat('yyyy-MM-dd')} > ${endCheckingDate.toFormat('yyyy-MM-dd')}`);
-        return;
+        return null;
     }
 
     // Mendapatkan rentangan tanggal yang harus diproses
@@ -101,6 +102,8 @@ async function autoAlpha() {
 
     // Mencatat tanggal pengecekan terakkhir
     await LastAttendanceCheckingDateModel.addLastDate(endCheckingDate.toFormat('yyyy-MM-dd'));
+
+    return 0;
 }
 
 export default autoAlpha;
