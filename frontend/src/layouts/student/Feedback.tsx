@@ -2,7 +2,6 @@
 
 import { swrFetcher } from "@/utils/swrFetcher";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
@@ -10,17 +9,19 @@ import useSWR, { mutate } from "swr";
 import useSWRImmutable from "swr/immutable";
 
 function Feedback() {
-    const router = useRouter();
     const [stars, setStars] = useState(0);
     const [message, setMessage] = useState('');
     const [isShow, setShow] = useState(true);
+    const [isSubmitting, setSubmitting] = useState(false);
 
-    const { data: feedback, error, isLoading } = useSWRImmutable(
+    const { data: feedback, error } = useSWRImmutable(
         '/api/v1/student/feedback?today=1',
         swrFetcher
     );
 
     const sendFeedback = () => {
+        setSubmitting(true);
+
         axios.post('/api/v1/student/feedback', {
             stars,
             message
@@ -28,7 +29,7 @@ function Feedback() {
             await mutate('/api/v1/student/feedback');
             setShow(false);
         }).catch(() => {
-
+            setSubmitting(false);
         });
     };
 
@@ -37,10 +38,10 @@ function Feedback() {
     }
 
     return (
-        <div className="border rounded-xl bg-white shadow-md p-4 flex flex-col gap-4">
+        <div className="border rounded-xl bg-white shadow-md p-4 flex flex-col gap-6">
             <h1 className="text-xl text-center font-semibold">Ulasan & Saran</h1>
             <div>
-                <label className="block mb-2 font-semibold">Ulasan</label>
+                <label className="block mb-3 font-semibold">Ulasan</label>
                 <div className="grid grid-cols-5">
                     <div className="flex justify-center">
                         {
@@ -80,11 +81,11 @@ function Feedback() {
                 </div>
             </div>
             <div>
-                <label className="block mb-2 font-semibold">Saran</label>
+                <label className="block mb-3 font-semibold">Saran</label>
                 <textarea onChange={(e) => setMessage(e.target.value)} className="px-4 py-2 border rounded-xl w-full" placeholder="Masukkan saran dan masukkan"></textarea>
             </div>
             <div>
-                <button onClick={sendFeedback} className="w-full bg-sky-800 text-white px-4 py-2 rounded-xl">KIRIM</button>
+                <button disabled={isSubmitting} onClick={sendFeedback} className="disabled:bg-sky-500 w-full bg-sky-800 text-white px-4 py-2 rounded-xl">KIRIM</button>
             </div>
         </div>
     );
