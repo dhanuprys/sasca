@@ -3,7 +3,7 @@
 import calculateDistance from "@/utils/calculateDistance";
 import { swrFetcher } from "@/utils/swrFetcher";
 import dynamic from "next/dynamic";
-import { useActionState, useMemo } from "react";
+import { useMemo } from "react";
 import { useGeolocated } from "react-geolocated";
 import { RiMapPinLine, RiPinDistanceLine } from "react-icons/ri";
 import useSWR from "swr";
@@ -35,6 +35,10 @@ function IntuitiveMapContainer() {
         let output = [];
 
         for (const friend of friendsLocation) {
+            if (!friend.check_in_time || !friend.check_in_coordinate) {
+                continue;
+            }
+
             output.push({
                 label: <>
                     {friend.name}<br />
