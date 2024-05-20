@@ -9,8 +9,8 @@ type Coordinates = [number, number];
 class AttendanceModel {
     static async getAttendanceById(attendanceId: number) {
         const result = await knexDB('attendances')
-                            .where('id', attendanceId)
-                            .first();
+            .where('id', attendanceId)
+            .first();
 
         return result;
     }
@@ -40,7 +40,7 @@ class AttendanceModel {
             'check_in_time',
             'check_in_coordinate',
             'date'
-        ]).where({ 
+        ]).where({
             student_id: studentId,
             date: date || knexDBHelpers.CURRENT_DATE
         }).first();
@@ -120,9 +120,9 @@ class AttendanceModel {
             return null;
         }
 
-        const status =  studentCheckIn.check_in_time > todaySchedule.checkin_end_time 
-                        ? AttendanceStatus.PRESENT_LATE 
-                        : AttendanceStatus.PRESENT;
+        const status = studentCheckIn.check_in_time > todaySchedule.checkin_end_time
+            ? AttendanceStatus.PRESENT_LATE
+            : AttendanceStatus.PRESENT;
 
         time = time || knexDBHelpers.CURENT_TIME;
         date = date || knexDBHelpers.CURRENT_DATE;
@@ -138,28 +138,50 @@ class AttendanceModel {
         return result;
     }
 
+    static async addOrUpdateStatus(studentId: number, date: string, status: string) {
+        const findByDate = await this.getStudentByDate(studentId, date);
+
+        console.log({ studentId, date, status })
+
+        return await knexDB.transaction(async () => {
+            if (findByDate) {
+                // delete first
+                await knexDB('attendances')
+                    .where('id', findByDate.id)
+                    .delete();
+            }
+
+            return await knexDB('attendances')
+                .insert({
+                    student_id: studentId,
+                    date,
+                    status
+                });
+        });
+    }
+
     static async getMonthlyReport(studentId: number, month: number, year: number) {
-        const result =  await knexDB('attendances')
-                        .select([
-                            'id',
-                            'check_in_time',
-                            'status',
-                            'date'
-                        ])
-                        .whereRaw(`
-                            student_id = ?
-                            AND EXTRACT(MONTH FROM date) = ?
-                            AND EXTRACT(YEAR FROM date) = ?
-                        `, [studentId, month, year]);
+        const result = await knexDB('attendances')
+            .select([
+                'id',
+                'check_in_time',
+                'status',
+                'date'
+            ])
+            .whereRaw(`
+                student_id = ?
+                AND EXTRACT(MONTH FROM date) = ?
+                AND EXTRACT(YEAR FROM date) = ?
+            `, [studentId, month, year]);
 
         return result;
     }
 
     static async getStudentByDate(studentId: number, date: string) {
         const result = await knexDB('attendances')
-                            .where('student_id', studentId)
-                            .andWhere('date', date)
-                            .first();
+            .where('student_id', studentId)
+            .andWhere('date', date)
+            .first();
 
         return result;
     }
@@ -172,43 +194,43 @@ class AttendanceModel {
         }
 
         const result = await knexDB('attendances')
-                            .join('students', 'students.id', '=', 'attendances.student_id')
-                            .select([
-                                'students.name',
-                                'attendances.check_in_time',
-                                'attendances.check_out_time',
-                                'attendances.check_in_coordinate',
-                                'attendances.check_out_coordinate'
-                            ])
-                            .where('students.grade_id', student.grade_id)
-                            .andWhere('students.major_id', student.major_id)
-                            .andWhere('date', knexDBHelpers.CURRENT_DATE)
-                            .andWhereNot('attendances.student_id', studentId)
-                            // .orderByRaw('RANDOM()')
-                            .limit(150);
+            .join('students', 'students.id', '=', 'attendances.student_id')
+            .select([
+                'students.name',
+                'attendances.check_in_time',
+                'attendances.check_out_time',
+                'attendances.check_in_coordinate',
+                'attendances.check_out_coordinate'
+            ])
+            .where('students.grade_id', student.grade_id)
+            .andWhere('students.major_id', student.major_id)
+            .andWhere('date', knexDBHelpers.CURRENT_DATE)
+            .andWhereNot('attendances.student_id', studentId)
+            // .orderByRaw('RANDOM()')
+            .limit(150);
 
         return result;
     }
 
     static async giveAlphaStatus(studentId: number, date: string) {
         const result = await knexDB('attendances')
-                            .insert({
-                                student_id: studentId,
-                                date,
-                                status: AttendanceStatus.NOT_CONFIRMED_ABSENT
-                            }, 'date');
-    
+            .insert({
+                student_id: studentId,
+                date,
+                status: AttendanceStatus.NOT_CONFIRMED_ABSENT
+            }, 'date');
+
         return result;
     }
 
     static async giveCheckInOnlyStatus(attendanceId: number) {
         const result = await knexDB('attendances')
-                            .update({
-                                status: AttendanceStatus.CHECK_IN_ONLY
-                            })
-                            .where({
-                                id: attendanceId
-                            });
+            .update({
+                status: AttendanceStatus.CHECK_IN_ONLY
+            })
+            .where({
+                id: attendanceId
+            });
 
         return result;
     }

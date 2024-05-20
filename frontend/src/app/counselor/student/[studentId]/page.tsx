@@ -6,10 +6,7 @@ import BottomSpacer from "@/components/miscellaneous/BottomSpacer";
 import FlexColumn from "@/components/miscellaneous/FlexColumn";
 import BottomNavButton from "@/layouts/counselor/BottomNavButton";
 import CalendarReport from "@/layouts/counselor/CalendarReport";
-import Classroom from "@/layouts/counselor/Classroom";
-import CounselorClasses from "@/layouts/counselor/CounselorClasses";
 import CounselorHeader from "@/layouts/counselor/CounselorHeader";
-import StudentHeader from "@/layouts/student/StudentHeader";
 import CommonWrapper from "@/wrappers/CommonWrapper";
 
 export default function Home({ params }: { params: { studentId: number } }) {
@@ -24,6 +21,7 @@ export default function Home({ params }: { params: { studentId: number } }) {
           <CalendarReport studentId={params.studentId} />
         </FlexColumn>
       </CommonWrapper>
+      <BottomSpacer />
       <BottomNavButton />
     </div>
   );

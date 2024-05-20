@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { FaRegFaceSadCry } from "react-icons/fa6";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { MdOutlineHolidayVillage } from "react-icons/md";
+import { ImCancelCircle } from "react-icons/im";
 
 interface AttendanceStatusBannerProps {
     status: string;
@@ -30,7 +31,14 @@ function AttendanceStatusBanner({ status, borderless }: AttendanceStatusBannerPr
                     icon: <MdOutlineHolidayVillage className="text-8xl text-sky-800" />,
                     title: 'Izin kamu diterima',
                     description: 'Selamat menikmati izin sekolah. Cepat balik yaa!!'
-                }
+                };
+            break;
+            case AttendanceStatus.NOT_CONFIRMED_ABSENT:
+                output = {
+                    icon: <ImCancelCircle className="text-8xl text-red-800" />,
+                    title: 'Alpha',
+                    description: 'Anda tidak masuk ke sekolah pada hari ini dan tidak melakukan konfirmasi'
+                };
             break;
         }
 
