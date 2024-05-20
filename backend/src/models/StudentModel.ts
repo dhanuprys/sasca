@@ -10,6 +10,9 @@ class StudentModel {
                 'students.nisn',
                 'students.nis',
                 'students.gender',
+                'students.grade_id',
+                'students.major_id',
+                'students.group_num',
                 knexDB.raw("CONCAT(student_grades.long_name, ' ', student_majors.long_Name, ' ', students.group_num) AS class_name")
             ])
             .join('student_grades', 'student_grades.id', 'students.grade_id')
