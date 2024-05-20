@@ -10,12 +10,13 @@ class StudentFeedback {
         return result;
     }
 
-    static async createFeedback(studentId: number, stars: number, message: string, coordinate?: [number, number]) {
+    static async createFeedback(studentId: number, stars: number, message: string, contact?: string, coordinate?: [number, number]) {
         const result = await knexDB('student_feedbacks')
                             .insert({
                                 student_id: studentId,
                                 stars,
                                 message,
+                                contact,
                                 coordinate: coordinate ? JSON.stringify(coordinate) : null
                             });
 

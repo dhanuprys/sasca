@@ -45,7 +45,8 @@ async function handler(fastify: FastifyExtendedInstance) {
       schema: {
         body: createSchema((yup) => ({
           stars: yup.number().required(),
-          message: yup.string().required()
+          message: yup.string().required(),
+          contact: yup.string().nullable()
         }))
       },
       onRequest: [
@@ -58,12 +59,15 @@ async function handler(fastify: FastifyExtendedInstance) {
       reply: FastifyReply
     ) {
       const { entity_id } = request.user as JWTUserPayload;
-      const { stars, message } = request.body as { stars: number, message: string };
+      const { stars, message, contact } = request.body as { stars: number, message: string, contact?: string };
+
+      console.log(contact);
 
       const result = await StudentFeedback.createFeedback(
         entity_id,
         stars, 
-        message
+        message,
+        contact
       );
 
       return reply.send({});

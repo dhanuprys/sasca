@@ -11,6 +11,7 @@ import useSWRImmutable from "swr/immutable";
 function Feedback() {
     const [stars, setStars] = useState(0);
     const [message, setMessage] = useState('');
+    const [phone, setPhone] = useState('');
     const [isShow, setShow] = useState(true);
     const [isSubmitting, setSubmitting] = useState(false);
 
@@ -24,7 +25,8 @@ function Feedback() {
 
         axios.post('/api/v1/student/feedback', {
             stars,
-            message
+            message,
+            contact: phone
         }).then(async () => {
             await mutate('/api/v1/student/feedback');
             setShow(false);
@@ -79,6 +81,11 @@ function Feedback() {
                         }
                     </div>
                 </div>
+            </div>
+            <div>
+                <label className="block mb-3 font-semibold">No. Whatsapp</label>
+                <p className="text-slate-400 text-sm my-2">Kami akan menghubungi anda jika diperlukan. <span className="text-red-500">Harap memasukkan data valid</span></p>
+                <input onChange={(e) => setPhone(e.target.value)} type="number" className="px-4 py-2 border rounded-xl w-full" placeholder="6282xxxxxx" />
             </div>
             <div>
                 <label className="block mb-3 font-semibold">Saran</label>
