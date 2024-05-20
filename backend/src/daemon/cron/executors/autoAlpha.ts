@@ -17,7 +17,7 @@ async function autoAlpha() {
                             .toFormat('yyyy-MM-dd');
         }
 
-        return startSchoolDay || null;
+        return startSchoolDay.date || null;
     })();
 
     let startCheckingDate;

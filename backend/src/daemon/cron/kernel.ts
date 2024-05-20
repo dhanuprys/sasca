@@ -7,7 +7,7 @@ const schedules: CronJobItem[] = [
         name: 'Attendance checking system',
         description: 'Check and give alpha in missing row',
         executor: autoAlpha,
-        schedule: '0 20 * * *'
+        schedule: '45 20 * * *'
     },
     {
         name: 'Daily Student Ranking',
