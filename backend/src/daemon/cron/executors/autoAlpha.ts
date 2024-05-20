@@ -77,16 +77,16 @@ async function autoAlpha() {
         for (const studentId of studentIds) {
             const studentStatus = await AttendanceModel.getStudentByDate(studentId, currentDate);
 
-            // Jika statusnya sudah di set
-            if (studentStatus.status) {
-                console.log(`Skipping [${currentDate}][${studentId}]`);
-                continue;
-            } 
-
             // Jika sama sekali tidak ada tanda-tanda absensi
             if (!studentStatus) {
                 console.log(`Student alpha [${currentDate}][${studentId}]`);
                 await AttendanceModel.giveAlphaStatus(studentId, currentDate);
+                continue;
+            }
+
+            // Jika statusnya sudah di set
+            if (studentStatus.status) {
+                console.log(`Skipping [${currentDate}][${studentId}]`);
                 continue;
             }
 
