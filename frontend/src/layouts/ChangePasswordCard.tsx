@@ -51,7 +51,7 @@ function ChangePasswordCard() {
                                 loginResponse = await changePassword(old_password, password);
 
                                 if (loginResponse.status === 200) {
-                                    router.push('/student/home');
+                                    router.push('/');
                                 }
                             } catch (error) {
                                 
