@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { IoCalendarClearOutline } from "react-icons/io5";
 
 function CurrentDateBadge() {
-    const currentDate = useMemo(() => DateTime.now().toFormat('dd LLL yyyy'), []);
+    const currentDate = useMemo(() => DateTime.now().setLocale('id').toFormat('dd LLL yyyy'), []);
 
     return (
         <div className="flex items-center gap-1 [&>*]:!text-xs">
