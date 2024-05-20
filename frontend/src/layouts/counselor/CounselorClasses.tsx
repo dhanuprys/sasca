@@ -13,11 +13,11 @@ interface ClassItemProps {
 
 function ClassItem({ classesId, className }: ClassItemProps) {
     return (
-        <Link href={`/counselor/classroom/${classesId}`} className="hover:bg-slate-100 px-4 py-2 hover:cursor-pointer flex justify-between items-center">
+        <Link href={`/counselor/classroom/${classesId}`} className="hover:bg-slate-100 p-4 hover:cursor-pointer flex justify-between items-center">
             <div>
                 <h2 className="font-semibold text-blue-700">{className}</h2>
                 <div className="text-slate-400 text-sm">
-                    Siswa (98)
+                    {/* Siswa (98) */}
                 </div>
             </div>
             <IoIosArrowForward />

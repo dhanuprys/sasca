@@ -44,7 +44,7 @@ function StudentHeader() {
                         <div>
                             {/* <IoNotifications className="w-[13px] h-[13px] box-content p-2 rounded-full text-sky-800 bg-white" /> */}
                         </div>
-                        <div className="px-2 py-1 rounded-full bg-yellow-600 text-white text-xs">beta</div>
+                        <div className="px-2 py-1 rounded-full bg-yellow-600 text-white text-xs">SISWA</div>
                     </div>
                 </div>
             </CommonWrapper>

@@ -5,23 +5,25 @@ import StudentDetail from "@/components/counselor/StudentDetail";
 import useBottomModalStore from "@/context/useBottomModal";
 import { swrFetcher } from "@/utils/swrFetcher";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { FaRegCircle } from "react-icons/fa6";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import useSWRImmutable from "swr/immutable";
 
 interface StudentItemProps {
+    id: number;
     name: string;
     avatarPath?: string;
     nisn: string;
     nis: string;
 }
 
-function StudentItem({ name, avatarPath, nisn, nis }: StudentItemProps) {
+function StudentItem({ id, name, avatarPath, nisn, nis }: StudentItemProps) {
     const { open: openModal } = useBottomModalStore();
 
     const openDetail = () => {
         openModal(
-            <StudentDetail />,
+            <StudentDetail id={id} />,
             'Profil Siswa'
         );
     };
@@ -36,7 +38,7 @@ function StudentItem({ name, avatarPath, nisn, nis }: StudentItemProps) {
                     <h3 className="font-semibold text-sm">{name}</h3>
                     <div className="flex items-center gap-2 text-slate-400 text-xs">
                         <span>{nisn}</span>
-                        
+
                         <span>{nis}</span>
                     </div>
                 </div>
@@ -71,16 +73,25 @@ interface ClassroomProps {
 }
 
 function Classroom({ classesId }: ClassroomProps) {
+    const router = useRouter();
+
     const { data: classroom } = useSWRImmutable(
         `/api/v1/counselor/classroom/${classesId}`,
         swrFetcher
     );
 
     return (
-        <div className="flex flex-col gap-4 min-h-screen bg-white border">
-            <h1 className="text-2xl font-semibold p-4">Ruang Kelas</h1>
+        <div className="flex flex-col gap-4 min-h-screen md:rounded-xl bg-white border">
+            <div className="p-4 flex items-center gap-2">
+                <IoIosArrowBack onClick={() => router.back()} className="text-2xl box-content py-4 pr-2 hover:cursor-pointer" />
+
+                <div>
+                    <span className="text-xl font-semibold mr-2">Ruang Kelas</span>
+                    <span className="text-xl font-semibold text-sky-800">{classroom && classroom.length >= 1 && <>{classroom[0].class_name}</>}</span>
+                </div>
+            </div>
             {/* <hr /> */}
-            
+
             <div>
                 {
                     classroom
@@ -88,6 +99,7 @@ function Classroom({ classesId }: ClassroomProps) {
                             return (
                                 <StudentItem
                                     key={classmate.id}
+                                    id={classmate.id}
                                     name={classmate.name}
                                     nisn={classmate.nisn}
                                     nis={classmate.nis}

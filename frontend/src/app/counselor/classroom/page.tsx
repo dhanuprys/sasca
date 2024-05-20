@@ -3,7 +3,7 @@ import BottomSpacer from "@/components/miscellaneous/BottomSpacer";
 import FlexColumn from "@/components/miscellaneous/FlexColumn";
 import BottomNavButton from "@/layouts/counselor/BottomNavButton";
 import CounselorClasses from "@/layouts/counselor/CounselorClasses";
-import StudentHeader from "@/layouts/student/StudentHeader";
+import CounselorHeader from "@/layouts/counselor/CounselorHeader";
 import CommonWrapper from "@/wrappers/CommonWrapper";
 
 export default function Home({ params }: { params: any }) {
@@ -11,7 +11,7 @@ export default function Home({ params }: { params: any }) {
   return (
     <div>
       <IntuitiveBackground />
-      <StudentHeader />
+      <CounselorHeader />
       <CommonWrapper className="mt-5">
         <FlexColumn>
           <CounselorClasses />
