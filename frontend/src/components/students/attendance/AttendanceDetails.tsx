@@ -53,13 +53,16 @@ function MainDetail({ attendance }: MainDetailProps) {
         });
     }
 
-    if (!check_in_time) {
+    if (!check_in_time && !status) {
         return (
             <AttendanceNotFound borderless={true} />
         );
     }
 
-    if (![AttendanceStatus.PRESENT, AttendanceStatus.PRESENT_LATE, null].includes(status)) {
+    if (
+        ![AttendanceStatus.PRESENT, AttendanceStatus.PRESENT_LATE, null].includes(status)
+        || (!check_in_time && !check_out_time && status)
+    ) {
         return (
             <AttendanceStatusBanner borderless={true} status={status} />
         );
