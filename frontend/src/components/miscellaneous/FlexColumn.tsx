@@ -7,7 +7,7 @@ interface FlexColumnProps {
 
 function FlexColumn({ children, className }: FlexColumnProps) {
     return (
-        <div className={`${className} flex flex-col gap-4`}>
+        <div className={`${className || ''} flex flex-col gap-4`}>
             {children}
         </div>
     );

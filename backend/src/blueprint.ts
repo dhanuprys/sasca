@@ -33,7 +33,7 @@ export type FastifyExtendedInstance = FastifyInstance
                                         faceapi: typeof faceapi
                                       };
 
-export const UserRoles = ['admin', 'student', 'counseling'] as const;
+export const UserRoles = ['admin', 'student', 'counselor'] as const;
 
 export type UserRolesType = typeof UserRoles[number];
 

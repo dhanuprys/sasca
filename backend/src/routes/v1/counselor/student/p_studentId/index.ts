@@ -4,8 +4,10 @@ import {
   JWTUserPayload,
   type FastifyCustomRequestScheme,
   type FastifyExtendedInstance
-} from '../blueprint';
+} from '../../../../../blueprint';
 import { FastifyReply } from 'fastify';
+import CounselorClassesModel from '../../../../../models/CounselorClassesModel';
+import StudentModel from '../../../../../models/StudentModel';
 
 async function handler(fastify: FastifyExtendedInstance) {
   fastify.get(
@@ -18,8 +20,8 @@ async function handler(fastify: FastifyExtendedInstance) {
         // }))
       },
       onRequest: [
-        // fastify.authenticated,
-        // fastify.only_allowed_roles(['counselor'])
+        fastify.authenticated,
+        fastify.only_allowed_roles(['counselor'])
       ]
     },
     async function (
@@ -27,8 +29,17 @@ async function handler(fastify: FastifyExtendedInstance) {
       reply: FastifyReply
     ) {
       // const { entity_id } = request.user as JWTUserPayload;
+      const { studentId } = request.params as { studentId: number };
 
-      return reply.send({});
+      const student = await StudentModel.getStudentById(studentId);
+
+      if (!student) {
+        return reply.code(404).send({
+          message: 'Student not found'
+        });
+      }
+
+      return reply.send(student);
     });
 }
 

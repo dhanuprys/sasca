@@ -12,7 +12,7 @@ export default function Home() {
   }
 
   if (user && !loading) {
-    router.push(`/${user.role}/home`);
+    router.replace(`/${user.role}/home`);
   }
 
   return (

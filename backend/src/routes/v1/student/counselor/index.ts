@@ -2,7 +2,7 @@
 
 import { FastifyReply } from 'fastify';
 import type { FastifyCustomRequestScheme, FastifyExtendedInstance, JWTUserPayload } from '../../../../blueprint';
-import CounselorClassesModel from '../../../../models/CounselorClassesModel';
+import StudentModel from '../../../../models/StudentModel';
 
 async function handler(fastify: FastifyExtendedInstance) {
   fastify.get(
@@ -16,7 +16,7 @@ async function handler(fastify: FastifyExtendedInstance) {
     ) {
     const { entity_id } = request.user as JWTUserPayload;
 
-    const counselor = await CounselorClassesModel.getStudentCounselor(entity_id);
+    const counselor = await StudentModel.getStudentCounselor(entity_id);
 
     if (!counselor) {
       return reply.code(404).send({
