@@ -117,7 +117,7 @@ function MapCore({ center, zoom, radius, pins, minUpdateInterval }: MapCoreProps
         <MapContainer
             className="rounded border h-full"
             center={center}
-            zoomControl={true}
+            zoomControl={false}
             scrollWheelZoom={false}
             dragging={true}
             tap={false}

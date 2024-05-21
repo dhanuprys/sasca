@@ -89,7 +89,7 @@ function Feedback() {
             </div>
             <div>
                 <label className="block mb-3 font-semibold">Saran</label>
-                <textarea onChange={(e) => setMessage(e.target.value)} className="px-4 py-2 border rounded-xl w-full" placeholder="Masukkan saran dan masukkan"></textarea>
+                <textarea onChange={(e) => setMessage(e.target.value)} className="px-4 py-2 border rounded-xl w-full" placeholder="Masukkan saran"></textarea>
             </div>
             <div>
                 <button disabled={isSubmitting} onClick={sendFeedback} className="disabled:bg-sky-500 w-full bg-sky-800 text-white px-4 py-2 rounded-xl">KIRIM</button>
