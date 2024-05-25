@@ -1,5 +1,6 @@
 'use client';
 
+import usePopup from "@/context/usePopup";
 import calculateDistance from "@/utils/calculateDistance";
 import { swrFetcher } from "@/utils/swrFetcher";
 import dynamic from "next/dynamic";
@@ -23,6 +24,8 @@ function IntuitiveMapContainer() {
         watchPosition: true,
         userDecisionTimeout: 10_000,
     });
+
+    const { addPopup } = usePopup();
 
     const { data: friendsLocation, error } = useSWR(
         '/api/v1/student/attendance/map',
@@ -94,11 +97,11 @@ function IntuitiveMapContainer() {
 
                 {
                     distance > 110 && <div className="absolute bottom-0 left-0 z-[502] w-full text-sm text-center animate-pulse bg-yellow-400 text-white px-4 py-2">
-                        Lokasi anda diluar jangkauan absensi!
+                        Anda berada diluar jangkauan absensi!
                     </div>
                 }
             </div>
-            <div className="bg-white p-4 rounded-b-xl">
+            <div onClick={() => addPopup('test', <>HELLO</>)} className="bg-white p-4 rounded-b-xl">
                 <h2 className="font-semibold text-center">SMK Negeri 3 Singaraja</h2>
                 <p className="text-center text-slate-400 text-xs md:text-sm">Jl. Gempol, Banyuning, Kec. Buleleng, Kabupaten Buleleng, Bali 81112</p>
                 <div className="grid grid-cols-12 gap-2 mt-6">

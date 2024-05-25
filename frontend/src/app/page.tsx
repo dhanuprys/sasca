@@ -1,5 +1,6 @@
 'use client';
 
+import SplashScreen from "@/components/SplashScreen";
 import useUser from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 
@@ -16,8 +17,6 @@ export default function Home() {
   }
 
   return (
-    <div>
-      Loading...
-    </div>
+    <SplashScreen />
   );
 }

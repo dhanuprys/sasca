@@ -18,20 +18,6 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 import AttendanceClosed from "@/components/students/AttendanceClosed";
 import AttendanceStatusBanner from "@/components/students/attendance/AttendanceStatusBanner";
 
-interface AttendanceButtonItemProps {
-    label: string;
-    color: string;
-    locked?: boolean;
-}
-
-function AttendanceButtonItem({ color, label, locked }: AttendanceButtonItemProps) {
-    return (
-        <div className={`px-4 py-2 bg-${color}-500 rounded-full text-xs text-white`}>
-            {label}
-        </div>
-    );
-}
-
 function AttendanceButton() {
     const router = useRouter();
     const { data: todaySchedule, error: scheduleError, isLoading: scheduleLoading } = useSWRImmutable<any>(

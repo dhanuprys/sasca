@@ -4,6 +4,7 @@ import "../globals.css";
 import UserProvider from "@/providers/UserProvider";
 import BottomModal from "@/components/BottomModal";
 import Script from "next/script";
+import PopupContainer from "@/components/PopupContainer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +37,7 @@ export default function RootLayout({
         <UserProvider strict={true} allowedRoles={['student']}>
           {children}
           <BottomModal />
+          <PopupContainer />
         </UserProvider>
       </body>
     </html>
