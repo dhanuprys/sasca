@@ -37,6 +37,30 @@ async function handler(fastify: FastifyExtendedInstance) {
 
       return reply.send(schedule);
     });
+
+    fastify.post(
+      '/',
+      {
+        schema: {
+          body: createSchema((yup) => ({
+            dates: yup.array().required(),
+            policy: yup.mixed().required()
+          }))
+        }
+      },
+      async function (
+        request: FastifyCustomRequestScheme,
+        reply: FastifyReply
+      ) {
+        const { dates, policy } = request.body as any; 
+
+        await SchoolDayScheduleModel.createSchedules(dates, policy);
+
+        reply.code(201).send({
+          message: 'Created'
+        });
+      }
+    );
 }
 
 export default handler;
