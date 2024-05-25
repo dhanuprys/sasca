@@ -7,6 +7,7 @@ import FlexColumn from "@/components/miscellaneous/FlexColumn";
 import BottomNavButton from "@/layouts/counselor/BottomNavButton";
 import CalendarReport from "@/layouts/counselor/CalendarReport";
 import CounselorHeader from "@/layouts/counselor/CounselorHeader";
+import FaceSample from "@/layouts/counselor/FaceSample";
 import CommonWrapper from "@/wrappers/CommonWrapper";
 
 export default function Home({ params }: { params: { studentId: number } }) {
@@ -19,6 +20,7 @@ export default function Home({ params }: { params: { studentId: number } }) {
           <StudentDetail studentId={params.studentId} />
           <StudentStats studentId={params.studentId} />
           <CalendarReport studentId={params.studentId} />
+          <FaceSample studentId={params.studentId} />
         </FlexColumn>
       </CommonWrapper>
       <BottomSpacer />
