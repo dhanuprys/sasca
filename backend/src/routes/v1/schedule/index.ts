@@ -46,7 +46,8 @@ async function handler(fastify: FastifyExtendedInstance) {
             dates: yup.array().required(),
             policy: yup.mixed().required()
           }))
-        }
+        },
+        onRequest: [fastify.only_allowed_roles(['admin'])]
       },
       async function (
         request: FastifyCustomRequestScheme,
