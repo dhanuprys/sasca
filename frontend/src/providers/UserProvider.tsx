@@ -75,7 +75,7 @@ function UserProvider({ children, strict = true, splash, allowedRoles, hitOnce }
         }, 2500);
     }, []);
 
-    if ((isLoading && !user && splash) || !isAllowOpen) {
+    if ((!user && splash) || !isAllowOpen) {
         return <SplashScreen />;
     }
 

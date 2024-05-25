@@ -32,7 +32,7 @@ export default function RootLayout({
           `}
         </Script>
       <body className={inter.className}>
-        <UserProvider splash={true} strict={false} hitOnce={true}>
+        <UserProvider splash={false} strict={false} hitOnce={true}>
           {children}
         </UserProvider>
       </body>
