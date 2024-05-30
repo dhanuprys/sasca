@@ -1,6 +1,7 @@
 import { CronJobItem } from "../../blueprint";
 import autoAlpha from "./executors/autoAlpha";
 import makeRank from "./executors/makeRank";
+import scheduleBriefingNotifier from "./executors/scheduleBriefingNotifier";
 
 const schedules: CronJobItem[] = [
     {
@@ -14,6 +15,12 @@ const schedules: CronJobItem[] = [
         description: 'Fetch ranking for student',
         executor: makeRank,
         schedule: '0 19 * * *'
+    },
+    {
+        name: 'Daily Schedule Briefing',
+        description: 'Send a notification to user',
+        executor: scheduleBriefingNotifier,
+        schedule: '55 5 * * *'
     }
 ];
 

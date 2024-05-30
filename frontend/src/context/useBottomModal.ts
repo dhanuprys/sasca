@@ -5,20 +5,22 @@ interface BottomModalState {
     isOpen: boolean;
     title?: ReactNode;
     content?: ReactNode;
-    open: (content?: ReactNode, title?: string) => void;
+    safeHeight?: boolean;
+    open: (content?: ReactNode, title?: string, safeHeight?: boolean) => void;
     close: () => void;
     closeAndClear: () => void;
 }
 
 const useBottomModalStore = create<BottomModalState>((set, get) => ({
     isOpen: false,
-    open(content?: ReactNode, title?: string) {
+    open(content?: ReactNode, title?: string, safeHeight?: boolean) {
         const current = get();
 
         set({
             isOpen: true,
             title: title || current.title,
-            content: content || current.content
+            content: content || current.content,
+            safeHeight: safeHeight !== undefined ? safeHeight : true
         })
     },
     close() {
@@ -30,7 +32,8 @@ const useBottomModalStore = create<BottomModalState>((set, get) => ({
         set({
             isOpen: false,
             title: null,
-            content: null
+            content: null,
+            safeHeight: true
         })
     }
 }));

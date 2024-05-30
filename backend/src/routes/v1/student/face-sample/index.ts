@@ -26,8 +26,12 @@ async function handler(fastify: FastifyExtendedInstance) {
       reply: FastifyReply
     ) {
       const { entity_id } = request.user as JWTUserPayload;
-      // Mendapatkan daftar sample wajah
-      const availability = await FaceSampleModel.isSampleAvailable(entity_id);
+
+      if (!fastify.faceSamples[entity_id]) {
+        await fastify.loadFaceSample(entity_id);
+      }
+
+      const availability = fastify.faceSamples[entity_id].length >= 3;
 
       // Jika sampel wajah tidak ditemukan maka respon yang
       // akan diberikan adalah 404

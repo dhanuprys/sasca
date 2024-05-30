@@ -1,6 +1,7 @@
 require('dotenv').config({ path: ['.env.local', '.env'] });
 
 const knexDB = require('../dist/utils/db').default;
+const Hash = require('../dist/services/Hash').default;
 
 async function start() {
     const counselors = await knexDB('counselors');
@@ -29,7 +30,7 @@ async function start() {
                 role: 'counselor',
                 entity_id: counselor.id,
                 username: counselor.nip,
-                password: counselor.nip
+                password: await Hash.hash(counselor.nip)
             });
     }
 

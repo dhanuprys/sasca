@@ -1,19 +1,20 @@
 'use client';
 
-import { MapContainer, TileLayer, Tooltip, Marker, useMap, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Tooltip, Marker, useMap, Polyline, CircleMarker, Circle } from 'react-leaflet';
 import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { ReactNode, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import addDistance from '@/utils/addDistance';
 import Skeleton from './Skeleton';
 import useMapStore from '@/context/useMapStore';
+import calculateDistance from '@/utils/calculateDistance';
 
 const MapController = ({ center, zoom }: { center: LatLngExpression, zoom: number }) => {
     const { previousCoordinates, setPreviousCoordinates, isAllowUpdate, restrictUpdate } = useMapStore();
     const map = useMap();
 
     if (
-        !isAllowUpdate 
+        !isAllowUpdate
         || (previousCoordinates && (JSON.stringify(center) === JSON.stringify(previousCoordinates)))
     ) {
         return null;
@@ -61,22 +62,30 @@ function MapCore({ center, zoom, radius, pins, minUpdateInterval }: MapCoreProps
         ]
     });
 
-    const radiusPaths = useMemo(() => {
-        if (!radius) return [];
+    // const radiusPaths = useMemo(() => {
+    //     if (!radius) return [];
 
-        let result = [];
-        for (let i = 1; i <= 360; i++) {
-            result.push(
-                addDistance(
-                    radius.center as [number, number],
-                    radius.length,
-                    i
-                ) as LatLngExpression
-            )
-        }
+    //     let result = [];
+    //     for (let i = 1; i <= 360; i++) {
+    //         result.push(
+    //             addDistance(
+    //                 radius.center as [number, number],
+    //                 radius.length,
+    //                 i
+    //             ) as LatLngExpression
+    //         )
+    //     }
 
-        return result;
-    }, []);
+    //     return result;
+    // }, []);
+
+    const isOutOfRange = useMemo(() => {
+        if (!radius || !radius.center) return 0;
+
+        const distance = calculateDistance(center as [number, number], radius.center as [number, number]) * 1000;
+
+        return distance > radius.length;
+    }, [center]);
 
     useLayoutEffect(() => {
         setMapReady(true);
@@ -117,7 +126,7 @@ function MapCore({ center, zoom, radius, pins, minUpdateInterval }: MapCoreProps
         <MapContainer
             className="rounded border h-full"
             center={center}
-            zoomControl={false}
+            zoomControl={true}
             scrollWheelZoom={false}
             dragging={true}
             tap={false}
@@ -129,12 +138,32 @@ function MapCore({ center, zoom, radius, pins, minUpdateInterval }: MapCoreProps
             zoom={zoom}
             maxZoom={22}>
             <MapController center={center} zoom={zoom} />
-            <TileLayer
+            {/* <TileLayer
+                attribution="Open Street Map"
                 maxZoom={25}
                 maxNativeZoom={25}
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            /> */}
+            <TileLayer
+                attribution="Google Maps"
+                maxZoom={25}
+                maxNativeZoom={25}
+                url="https://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}"
             />
-            <Polyline pathOptions={{ fill: true, fillColor: 'blue' }} positions={radiusPaths} />
+            {/* <Polyline pathOptions={{ fill: true, fillColor: 'blue' }} positions={radiusPaths} /> */}
+            {radius && <Circle center={radius.center} radius={radius.length} />}
+            {
+                radius && (
+                    <Polyline
+                        positions={[center, radius.center]}
+                        pathOptions={{
+                            opacity: isOutOfRange ? 1 : 0.3,
+                            color: isOutOfRange ? 'red' : 'green',
+                            weight: isOutOfRange ? 2 : 0.5
+                        }} />
+                )
+            }
+            {/* <Polyline pathOptions={{ color: 'red' }} positions={[]} /> */}
 
             {
                 pins && pins.map((pin) => {

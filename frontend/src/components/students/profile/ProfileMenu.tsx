@@ -1,8 +1,11 @@
 'use client';
 
+import StoredAccounts from "@/components/StoredAccounts";
+import useBottomModalStore from "@/context/useBottomModal";
 import useUser from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
+import { AiOutlineUserSwitch } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { TbHelp, TbKey, TbLogout2 } from "react-icons/tb";
 
@@ -28,13 +31,25 @@ function MenuItem({ icon, label, onClick }: MenuItemProps) {
 
 function ProfileMenu() {
     const router = useRouter();
-    const { signOut } = useUser();
+    const { user, signOut } = useUser();
+
+    const { open: openModal } = useBottomModalStore();
+
+    const openStoredAccount = () => {
+        openModal(
+            <StoredAccounts withSignInButton={true} excludeId={[user!.id]} />,
+            'Beralih akun',
+            false
+        );
+    }
 
     return (
         <div className="rounded-xl bg-white border">
             <MenuItem icon={<TbHelp />} label="Tutorial" />
             <hr />
             <MenuItem onClick={() => router.push('/auth/change-password')} icon={<TbKey />} label="Ganti Password" />
+            <hr />
+            <MenuItem onClick={openStoredAccount} icon={<AiOutlineUserSwitch />} label="Beralih Akun" />
             <hr />
             <MenuItem onClick={signOut} icon={<TbLogout2 className="text-red-500" />} label={<span className="text-red-500">Logout</span>} />
         </div>

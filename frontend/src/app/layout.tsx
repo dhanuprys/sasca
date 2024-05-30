@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import UserProvider from "@/providers/UserProvider";
 import Script from "next/script";
+import PopupContainer from "@/components/PopupContainer";
+import BottomModal from "@/components/BottomModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +36,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <UserProvider splash={false} strict={false} hitOnce={true}>
           {children}
+          <BottomModal />
+          <PopupContainer />
         </UserProvider>
       </body>
     </html>

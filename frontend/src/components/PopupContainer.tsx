@@ -23,9 +23,9 @@ function PopupContainer() {
                         <div key={stack.id} className="absolute w-screen">
                             <div className="mx-auto p-4 max-w-[28rem] md:max-w-[40rem]">
                                 <div className="bg-white p-4 rounded-xl min-h-[300px] md:min-h-[500px] max-h-[90vh] overflow-y-auto">
-                                    <div className="flex justify-end py-2">
+                                    {/* <div className="flex justify-end py-2">
                                         <IoIosClose onClick={() => closePopup(stack.id)} className="text-3xl" />
-                                    </div>
+                                    </div> */}
                                     <div>
                                         {stack.content}
                                     </div>

@@ -49,9 +49,11 @@
     "pg-native": "^3.0.1",
     "sharp": "^0.33.3",
     "shuffle-array": "^1.0.1",
+    "web-push": "^3.6.7",
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/bull": "^4.10.0",
     "@types/dotenv": "^8.2.0",
     "@types/fs-extra": "^11.0.4",
@@ -62,6 +64,7 @@
     "@types/node-pg-migrate": "^2.3.1",
     "@types/pg": "^8.11.6",
     "@types/shuffle-array": "^1.0.5",
+    "@types/web-push": "^3.6.3",
     "nodemon": "^3.1.0",
     "typescript": "^5.4.2"
   }

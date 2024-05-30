@@ -108,6 +108,7 @@ body {
   0% {
     left: 0;
     transform: scaleX(1);
+    opacity: 1;
     /* Normal orientation */
   }
 
@@ -118,11 +119,16 @@ body {
     /* Normal orientation */
   }
 
+  37% {
+    opacity: 1;
+  }
+
   40% {
     left: calc(100% - 120px);
     /* Middle of the screen */
     transform: scaleX(1);
     /* Normal orientation */
+    opacity: 0;
   }
 
   50% {
@@ -130,9 +136,14 @@ body {
     /* Right edge */
     transform: scaleX(-1);
     /* Flipped horizontally */
+    opacity: 0;
   }
 
-  75% {
+  52% {
+    opacity: 1;
+  }
+
+  58% {
     left: calc(100% - 120px);
     /* Middle of the screen */
     transform: scaleX(-1);
@@ -145,13 +156,19 @@ body {
     /* Normal orientation */
   }
 
+  94% {
+    opacity: 1;
+  }
+
   95% {
     left: 0;
     transform: scaleX(-1);
+    opacity: 0;
   }
 
   100% {
     left: 0;
     transform: scaleX(1);
+    opacity: 0;
   }
 }

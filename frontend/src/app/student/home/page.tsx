@@ -1,6 +1,7 @@
 import IntuitiveBackground from "@/components/IntuitiveBackground";
 import BottomSpacer from "@/components/miscellaneous/BottomSpacer";
 import FlexColumn from "@/components/miscellaneous/FlexColumn";
+import BrowserBanner from "@/components/shared/BrowserBanner";
 import ApplicationTestingBanner from "@/layouts/common/ApplicationTestingBanner";
 import ApplyForAbsent from "@/layouts/student/ApplyForAbsent";
 import AttendanceButton from "@/layouts/student/AttendanceButton";
@@ -24,7 +25,8 @@ export default function Home() {
             Untuk kedepannya, halaman web ini (<span className="underline">stemsi.my.id</span>) akan dipindah 
             secara permanen ke <Link className="underline" href="https://sasca.smkn3singaraja.sch.id">https://sasca.smkn3singaraja.sch.id</Link>
           </div>
-          <Feedback />
+          {/* <Feedback /> */}
+          <BrowserBanner />
           <AttendanceButton />
           <ApplyForAbsent />
           <hr />

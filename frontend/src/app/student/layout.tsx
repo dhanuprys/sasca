@@ -5,6 +5,7 @@ import UserProvider from "@/providers/UserProvider";
 import BottomModal from "@/components/BottomModal";
 import Script from "next/script";
 import PopupContainer from "@/components/PopupContainer";
+import Worker from "@/components/Worker";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,6 +40,7 @@ export default function RootLayout({
           <BottomModal />
           <PopupContainer />
         </UserProvider>
+        <Worker />
       </body>
     </html>
   );

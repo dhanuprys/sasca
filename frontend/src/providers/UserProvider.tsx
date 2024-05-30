@@ -8,6 +8,7 @@ import { ReactNode, createContext, useCallback, useEffect, useState } from "reac
 import useSWRImmutable from "swr/immutable";
 
 interface UserAuthPayload {
+    id: number;
     role: string;
     user: {
         id: number;
@@ -29,14 +30,22 @@ interface IUserContext {
     user?: UserAuthPayload;
     error?: any;
     // authenticated?: boolean;
-    signIn: () => void;
+    storeToken: (tokenId: number, tokenString: string) => void;
+    getAllToken: () => { [key: string]: string };
+    getToken: (tokenId: number) => string | null;
+    deleteToken: (tokenId: number) => void;
+    signIn: (force?: boolean) => void;
     signOut: () => void;
 }
 
 export const UserContext = createContext<IUserContext>({
     loading: true,
-    signIn: () => {},
-    signOut: () => {}
+    storeToken: () => { },
+    getAllToken: () => ({}),
+    getToken: () => null,
+    deleteToken: () => {},
+    signIn: () => { },
+    signOut: () => { }
 });
 
 interface UserProviderProps {
@@ -50,7 +59,7 @@ interface UserProviderProps {
 function UserProvider({ children, strict = true, splash, allowedRoles, hitOnce }: UserProviderProps) {
     const router = useRouter();
     const [isAllowOpen, setAllowOpen] = useState(false);
-    
+
     const { data: user, error, isLoading } = useSWRImmutable<UserAuthPayload>(
         '/api/v1/me',
         swrFetcher,
@@ -59,7 +68,70 @@ function UserProvider({ children, strict = true, splash, allowedRoles, hitOnce }
         }
     );
 
-    const signIn = useCallback(() => {
+    const getAllToken = useCallback(() => {
+        if (!window) return;
+
+        const storageKey = 'stored_token';
+        let storedTokens: any = localStorage.getItem(storageKey);
+
+        try {
+            storedTokens = JSON.parse(storedTokens) || {};
+        } catch (error) {
+            storedTokens = {};
+        }
+
+        return storedTokens;
+    }, []);
+
+    const storeToken = useCallback((tokenId: number, tokenString: string) => {
+        if (!window) return;
+
+        let storedTokens: any = getAllToken();
+
+        delete storedTokens[tokenId];
+
+        const keys = Object.keys(storedTokens);
+
+        if (keys.length >= 3) {
+            const keepedKeys = keys.slice(keys.length - 2);
+            let reconstructedTokens: any = {};
+
+            for (const activeKey of keepedKeys) {
+                reconstructedTokens[activeKey] = storedTokens[activeKey];
+            }
+
+            storedTokens = reconstructedTokens;
+        }
+
+        storedTokens[tokenId] = tokenString;
+
+        localStorage.setItem('stored_token', JSON.stringify(storedTokens));
+    }, []);
+
+    const getToken = useCallback((tokenId: number) => {
+        if (!window) return;
+
+        const storedTokens: any = getAllToken();
+
+        return storedTokens[tokenId] || null;
+    }, []);
+
+    const deleteToken = useCallback((tokenId: number) => {
+        if (!window) return;
+
+        const storedTokens: any = getAllToken();
+
+        delete storedTokens[tokenId];
+
+        localStorage.setItem('stored_token', JSON.stringify(storedTokens));
+    }, []);
+
+    const signIn = useCallback((force: boolean = false) => {
+        if (force) {
+            window.location.href = '/auth/login';
+            return;
+        }
+
         router.replace('/auth/login');
     }, []);
 
@@ -90,7 +162,17 @@ function UserProvider({ children, strict = true, splash, allowedRoles, hitOnce }
     }
 
     return (
-        <UserContext.Provider value={{ loading: isLoading, user, error, signIn, signOut }}>
+        <UserContext.Provider value={{
+            loading: isLoading,
+            user,
+            error,
+            storeToken,
+            getAllToken,
+            getToken,
+            deleteToken,
+            signIn,
+            signOut
+        }}>
             {children}
         </UserContext.Provider>
     );

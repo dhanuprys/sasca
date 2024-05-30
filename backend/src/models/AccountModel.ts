@@ -1,5 +1,6 @@
 import { JWTUserPayload } from "../blueprint";
 import Roles from "../constant/Roles";
+import Hash from "../services/Hash";
 import knexDB from "../utils/db";
 
 class AccountModel {
@@ -8,7 +9,7 @@ class AccountModel {
             .where({ username })
             .first();
 
-        if (!user || password !== user.password) {
+        if (!user || ! (await Hash.verify(password, user.password))) {
             return null;
         }
 
@@ -25,7 +26,7 @@ class AccountModel {
             .where({ id: accountId })
             .first();
 
-        if (!user || oldPassword !== user.password) {
+        if (!user || !(await Hash.verify(oldPassword, user.password))) {
             return null;
         }
 
@@ -33,7 +34,7 @@ class AccountModel {
         await knexDB('accounts')
             .where({ id: accountId })
             .update({
-                password: newPassword
+                password: await Hash.hash(newPassword)
             });
 
         return {

@@ -3,7 +3,6 @@
 import * as yup from 'yup';
 import {
   JWTUserPayload,
-  SampleProperty,
   type FastifyCustomRequestScheme,
   type FastifyExtendedInstance
 } from '../../../../blueprint';
@@ -74,17 +73,17 @@ async function handler(fastify: FastifyExtendedInstance) {
       } = request.body as { type: 'in' | 'out' | string, loc_lat: number, loc_long: number, photo: Buffer };
       const { notifyStudentAttendance } = AttendanceNotifier.model!;
 
-      // console.log('TRAFFIC PROCESS STARTING');
+      console.log('TRAFFIC PROCESS STARTING');
 
-      // const faceReferences = await FaceSampleModel.getStudentSamples(entity_id);
+      const faceReferences = await FaceSampleModel.getStudentSamples(entity_id);
       let result = null;
 
-      // if (faceReferences.length < 3) {
-      //   return reply.code(404).send({
-      //     code: 'EMPTY_DATASET',
-      //     message: 'Sampel wajah tidak ditemukan'
-      //   });
-      // }
+      if (faceReferences.length < 3) {
+        return reply.code(404).send({
+          code: 'EMPTY_DATASET',
+          message: 'Sampel wajah tidak ditemukan'
+        });
+      }
 
       const convertToComparableImage = async (inputImage: Buffer): Promise<
         WithFaceDescriptor<WithFaceLandmarks<{
@@ -102,25 +101,38 @@ async function handler(fastify: FastifyExtendedInstance) {
       }
 
       const compare = async (
-        referenceFace: SampleProperty,
+        referencePath: string,
         compareFace: WithFaceDescriptor<WithFaceLandmarks<{
           detection: FaceDetection;
         }, FaceLandmarks68>> | undefined
       ) => {
+        console.log('load reference');
+        let reference = (await canvas.loadImage(`./storage/public/samples/${referencePath}`)) as unknown as TNetInput;
+
+        console.log('get reference face descriptor');
+        const referenceFace = await faceapi
+          .detectSingleFace(reference, new faceapi.TinyFaceDetectorOptions({ scoreThreshold: 0.1 }))
+          .withFaceLandmarks()
+          .withFaceDescriptor();
+
+        // console.log(referenceFace);
+
         // Jika sistem tidak bisa mendeteksi salah satu atau kedua dari reference dan 
         // gambar absensi, maka sistem akan menyatakan kesalahan
-        if (!compareFace) {
+        if (!referenceFace || !compareFace) {
           console.log('cant detect reference or compare face');
 
           return null;
         }
 
         console.log('start face matcher')
-        const faceMatcher = new faceapi.FaceMatcher(referenceFace.descriptor);
+        const faceMatcher = new faceapi.FaceMatcher(referenceFace);
 
         compareFace = faceapi.resizeResults(compareFace, {
-          width: referenceFace.width,
-          height: referenceFace.height
+          // @ts-ignore
+          width: reference.width,
+          // @ts-ignore
+          height: reference.height
         });
 
         if (!compareFace) {
@@ -162,13 +174,9 @@ async function handler(fastify: FastifyExtendedInstance) {
 
       const inputImage = await convertToComparableImage(photo);
 
-      if (!fastify.faceSamples[entity_id]) {
-        await fastify.loadFaceSample(entity_id);
-      }
-
-      for (const reference of fastify.faceSamples[entity_id]) {
+      for (const reference of faceReferences) {
         try {
-          const result = await compare(reference, inputImage);
+          const result = await compare(reference.sample_path as string, inputImage);
 
           if (!result) continue;
 

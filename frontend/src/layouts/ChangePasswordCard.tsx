@@ -4,6 +4,7 @@ import useUser from '@/hooks/useUser';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/navigation';
+import { IoIosArrowBack } from 'react-icons/io';
 
 function ChangePasswordCard() {
     const router = useRouter();
@@ -18,6 +19,13 @@ function ChangePasswordCard() {
     return (
         <div className="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
             <div className="p-4 sm:p-7">
+                <div className="mb-6">
+                    <div onClick={() => router.replace('/')} className="flex items-center gap-4 text-blue-700 font-semibold hover:cursor-pointer">
+                        <IoIosArrowBack />
+                        Kembali
+                    </div>
+                </div>
+
                 <div className="text-center">
                     <h1 className="block text-xl font-bold text-gray-800 dark:text-white">Ganti Password</h1>
                     {/* <p className="mt-2 text-sm text-gray-600 dark:text-neutral-400">
@@ -51,10 +59,10 @@ function ChangePasswordCard() {
                                 loginResponse = await changePassword(old_password, password);
 
                                 if (loginResponse.status === 200) {
-                                    router.push('/');
+                                    router.replace('/');
                                 }
                             } catch (error) {
-                                
+
                             } finally {
                                 setSubmitting(false);
                             }

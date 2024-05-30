@@ -4,7 +4,6 @@ import AttendanceModel from '../../../models/AttendanceModel';
 import StudentModel from '../../../models/StudentModel';
 import { DateTime } from 'luxon';
 import chalk from 'chalk';
-import knexDB from '../../../utils/db';
 
 async function autoAlpha() {
     const now = DateTime.now();

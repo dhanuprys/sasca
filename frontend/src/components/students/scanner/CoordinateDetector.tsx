@@ -2,6 +2,7 @@
 
 import useScannerStore from "@/context/useScannerStore";
 import calculateDistance from "@/utils/calculateDistance";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ReactNode, useEffect, useState } from "react";
 import { useGeolocated } from "react-geolocated";
 import { GiPathDistance } from "react-icons/gi";
@@ -39,7 +40,12 @@ function CoordinateDetector() {
         // Jika coordinate yang akan dipakai sebagai sampel awal belum tersedia
         // maka program akan mengisinya terlebih dahulu
         if (!initialCoordinates) {
-            setIcon(<IoIosWalk className="moving-object w-[120px] h-[120px]" />)
+            // setIcon(<IoIosWalk className="moving-object w-[120px] h-[120px]" />)
+            setIcon(
+                <div className="moving-object w-[120px] h-[120px]">
+                    <DotLottieReact src="/walk.lottie" speed={0.8} autoplay loop />
+                </div>
+            )
             setTitle('Harap untuk berpindah tempat');
             setDescription('Ini dilakukan untuk mendeteksi akurasi dari perangkat anda')
             setInitialCoordinates(coordinate);

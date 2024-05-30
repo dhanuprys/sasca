@@ -4,19 +4,42 @@ import axios, { AxiosError } from 'axios';
 import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/navigation';
 import { mutate } from 'swr';
-import ApplicationTestingBanner from './common/ApplicationTestingBanner';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import useUser from '@/hooks/useUser';
+import useBottomModalStore from '@/context/useBottomModal';
+import StoredAccounts from '@/components/StoredAccounts';
+import usePopup from '@/context/usePopup';
+import { IoKeyOutline } from 'react-icons/io5';
+import BrowserBanner from '@/components/shared/BrowserBanner';
 
 function LoginCard() {
     const router = useRouter();
     const [loginSuccess, setLoginSuccess] = useState(false);
+
+    const { storeToken } = useUser();
+    const { addPopup, clearPopup } = usePopup();
+    const { open: openModal } = useBottomModalStore();
+
     const loginUser = useCallback((username: string, password: string) => {
         return axios.post('/api/v1/auth/login', {
             username,
             password
         });
     }, []);
+
+    const openDashboard = () => {
+        clearPopup();
+        router.replace('/');
+    }
+
+    const openStoredAccount = () => {
+        openModal(
+            <StoredAccounts />,
+            'Akun Tersimpan',
+            false
+        );
+    }
 
     if (loginSuccess) {
         return (
@@ -38,7 +61,7 @@ function LoginCard() {
                     <Formik
                         initialValues={{ username: '', password: '' }}
                         onSubmit={async ({ username, password }, { setSubmitting, setErrors }) => {
-                            let loginResponse = null;
+                            let loginResponse: any = null;
 
                             try {
                                 loginResponse = await loginUser(username, password);
@@ -46,10 +69,28 @@ function LoginCard() {
                                 if (loginResponse.status === 200) {
                                     setLoginSuccess(true);
                                     await mutate('/api/v1/me');
-                                    
-                                    setTimeout(() => {
-                                        router.replace('/');
-                                    }, 1000);
+
+                                    addPopup(
+                                        'store_account',
+                                        <div>
+                                            <div className="mb-4">
+                                                <div className="flex justify-center mb-4">
+                                                    <IoKeyOutline className="text-8xl" />
+                                                </div>
+                                                <h2 className="text-center font-semibold mb-4 text-xl">Simpan Akun?</h2>
+                                                <p className="text-center text-slate-400 text-sm">Dengan menyimpan informasi login, anda dapat dengan mudah beralih antar akun yang ada pada browser anda</p>
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <button onClick={openDashboard} className="px-4 py-2 text-center w-full bg-slate-100 hover:bg-slate-50 text-slate-700 rounded-xl">Tidak</button>
+                                                <button onClick={() => {
+                                                    storeToken(loginResponse.data.payload.id, loginResponse.data.token);
+                                                    openDashboard();
+                                                }} className="px-4 py-2 text-center w-full bg-sky-800 hover:bg-sky-600 text-white rounded-xl font-semibold">
+                                                    Simpan
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )
                                 }
                             } catch (error) {
                                 if (error && axios.isAxiosError(error)) {
@@ -68,8 +109,8 @@ function LoginCard() {
                         {({ isSubmitting, errors, touched }) => (
                             <Form>
                                 {
-                                    errors.username 
-                                    && touched.username 
+                                    errors.username
+                                    && touched.username
                                     && <p className="text-sm text-center text-red-600 my-2">{errors.username}</p>
                                 }
                                 <div className="grid gap-y-4">
@@ -126,10 +167,16 @@ function LoginCard() {
                 </div>
 
                 <div className="mt-5">
-                    <ApplicationTestingBanner />
+                    <p className="text-sm text-slate-400 text-center mb-4">atau</p>
+                    <button onClick={openStoredAccount} type="submit" className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-slate-100 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none">
+                        Buka Akun Tersimpan <span className="px-2 py-1 bg-yellow-500 rounded text-white text-xs">new</span>
+                    </button>
+                </div>
+                <div>
+                    <BrowserBanner />
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
 

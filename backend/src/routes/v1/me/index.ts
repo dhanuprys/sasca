@@ -17,10 +17,13 @@ async function handler(fastify: FastifyExtendedInstance) {
     },
     async function (request, reply) {
       const { all } = request.query as { all: boolean };
-      const { entity_id, role } = request.user as JWTUserPayload;
+      const { id, entity_id, role } = request.user as JWTUserPayload;
       const userSearch = await AccountModel.getUserByEntityId(entity_id, role, all);
 
+      console.log(fastify.faceSamples);
+
       return reply.send({
+        id,
         role,
         user: userSearch
       });

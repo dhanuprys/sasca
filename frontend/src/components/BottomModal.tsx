@@ -5,13 +5,19 @@ import CommonWrapper from "@/wrappers/CommonWrapper";
 import { AnimatePresence, motion } from "framer-motion";
 
 function BottomModal() {
-    const { isOpen, title, content, closeAndClear } = useBottomModalStore();
+    const {
+        isOpen,
+        title,
+        content,
+        safeHeight,
+        closeAndClear
+    } = useBottomModalStore();
 
     return (
         <AnimatePresence>
             {
                 isOpen
-                && <div className="fixed shadow-xl left-0 top-0 w-screen h-screen z-[650]">
+                && <div className="fixed shadow-xl left-0 top-0 w-screen h-screen z-[1010]">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 0.3 }}
@@ -36,7 +42,7 @@ function BottomModal() {
                             </div>
 
                             {/* CONTENT */}
-                            <CommonWrapper className="min-h-[70vh] overflow-auto max-h-[60vh]">
+                            <CommonWrapper style={{ minHeight: safeHeight ? '70vh' : '' }} className="overflow-auto max-h-[60vh] !px-0">
                                 {content}
                                 <div className="min-h-14"></div>
                             </CommonWrapper>

@@ -9,6 +9,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { BsPersonSlash } from "react-icons/bs";
 import { MdOutlineErrorOutline } from "react-icons/md";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 interface FaceScannerCommonProps {
     checkType: 'in' | 'out' | string;
@@ -21,6 +22,7 @@ function FaceScannerCommon({ checkType }: FaceScannerCommonProps) {
 
     const [modelsLoaded, setModelsLoaded] = useState(false);
     const [detectionColor, setDetectionColor] = useState('');
+    const [isDetectionHighlight, setHightlight] = useState(false);
     const [icon, setIcon] = useState<ReactNode | null>(null);
     const [message, setMessage] = useState<{ title?: string, description?: string }>({});
     const [faceDetecting, setFaceDetecting] = useState(false);
@@ -28,14 +30,15 @@ function FaceScannerCommon({ checkType }: FaceScannerCommonProps) {
     const ICON = useMemo(() => ({
         CHECKING: <AiOutlineLoading3Quarters className="animate-spin" />,
         UNRECOGNIZED: <BsPersonSlash />,
-        SUCCESS: <IoIosCheckmarkCircleOutline className="text-green-600" />,
+        // SUCCESS: <IoIosCheckmarkCircleOutline className="text-green-600" />,
+        SUCCESS: <DotLottieReact className="w-full h-full" src="/check.lottie" autoplay width={380} height={380} />,
         ERROR: <MdOutlineErrorOutline className="text-red-600" />
     }), []);
 
     const startCamera = useCallback(() => {
         if (!modelsLoaded) return;
 
-        setMessage({ title: 'Memulai kamera'});
+        setMessage({ title: 'Memulai kamera' });
         navigator.mediaDevices
             .getUserMedia({ video: { width: 300 } })
             .then(stream => {
@@ -48,7 +51,7 @@ function FaceScannerCommon({ checkType }: FaceScannerCommonProps) {
             })
             .catch(err => {
                 // setCameraError(true);
-                setMessage({ title: 'Gagal memuat akses kamera'});
+                setMessage({ title: 'Gagal memuat akses kamera' });
             });
     }, [modelsLoaded]);
 
@@ -62,7 +65,7 @@ function FaceScannerCommon({ checkType }: FaceScannerCommonProps) {
     const handleVideoOnPlay = useCallback(() => {
         let isLocked = false;
 
-        setMessage({ 
+        setMessage({
             title: '',
             description: ''
         });
@@ -83,12 +86,14 @@ function FaceScannerCommon({ checkType }: FaceScannerCommonProps) {
 
             if (!detection) {
                 setDetectionColor('gray');
+                setHightlight(false);
                 setMessage({ title: 'Mohon tampilkan wajah' });
                 return;
             };
 
             setMessage({ title: 'Harap senyum' });
             setDetectionColor('blue');
+            setHightlight(true);
 
             if ((detection!.detection.score > 0.4 && detection!.expressions.happy > 0.55) && !isLocked) {
                 isLocked = true;
@@ -162,9 +167,9 @@ function FaceScannerCommon({ checkType }: FaceScannerCommonProps) {
 
                                         setTimeout(() => {
                                             window.location.href = '/student/home';
-                                        }, 500);
-                                    }, 1000)
-                                }, 3000);
+                                        }, 1300);
+                                    }, 1500);
+                                }, 1000);
                             }).catch((err) => {
                                 if (err.response.status !== 404) {
                                     setIcon(ICON.ERROR);
@@ -173,7 +178,7 @@ function FaceScannerCommon({ checkType }: FaceScannerCommonProps) {
                                 }
 
                                 setIcon(ICON.UNRECOGNIZED);
-                                setMessage({ 
+                                setMessage({
                                     title: 'Wajah tidak dikenali',
                                     description: 'Ini mungkin terjadi karena beberapa faktor, harap untuk mencoba lagi'
                                 })
@@ -187,7 +192,7 @@ function FaceScannerCommon({ checkType }: FaceScannerCommonProps) {
                     }
                 }, 2000);
             }
-        }, 700);
+        }, 800);
     }, []);
 
     // Ini adalah awal mulai kode program dimana aplikasi akan mendownload
@@ -196,7 +201,7 @@ function FaceScannerCommon({ checkType }: FaceScannerCommonProps) {
         const loadModels = async () => {
             const MODEL_URL = '/models';
 
-            setMessage({ 
+            setMessage({
                 title: 'Menyiapkan model',
                 description: 'Kecepatan proses ini dipengaruhi oleh performa perangkat anda'
             });
@@ -221,14 +226,26 @@ function FaceScannerCommon({ checkType }: FaceScannerCommonProps) {
 
     return (
         <div className="flex flex-col gap-4 items-center">
-            <div className="w-[240px] h-[240px]">
-                <video
-                    className={`${faceDetecting ? '' : 'hidden'} w-full h-full transition border-8 rounded-full object-cover scale-x-[-1] border-${detectionColor}-600`}
-                    ref={videoRef}
-                    height={480}
-                    width={720}
-                    onAbort={(e) => console.log(e)}
-                    onPlay={handleVideoOnPlay} />
+            <div className="w-[250px] h-[250px]">
+                <div className={`relative w-full h-full ${faceDetecting ? '' : 'hidden'}`}>
+                    <video
+                        className={`w-full h-full transition border-8 rounded-full object-cover scale-x-[-1] border-${detectionColor}-600`}
+                        ref={videoRef}
+                        height={480}
+                        width={720}
+                        onAbort={(e) => console.log(e)}
+                        onPlay={handleVideoOnPlay} />
+                    <div
+                        className="absolute top-0 left-0 rounded-full w-full h-full z-10 border-[7px] border-transparent"
+                        >
+                            <div className={`${isDetectionHighlight ? 'opacity-80' : 'opacity-50'} bg-black w-full h-full rounded-full z-10`}
+                            style={{
+                                clipPath: 'polygon(19% 73%, 19% 19%, 0% 18%, 0% 100%, 100% 100%, 100% 0%, 0% 0%, 0% 20%, 19% 28%, 28% 19%, 73% 19%, 81% 28%, 81% 72%, 72% 81%, 29% 82%)'
+                            }}
+                            >
+                            </div>
+                    </div>
+                </div>
                 <div className={`${faceDetecting ? 'hidden' : ''} [&>*]:w-full [&>*]:h-full`}>
                     {icon}
                 </div>

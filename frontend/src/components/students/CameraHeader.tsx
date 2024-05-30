@@ -1,6 +1,6 @@
+'use client';
+
 import CommonWrapper from "@/wrappers/CommonWrapper";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { IoIosArrowBack, IoIosRefresh } from "react-icons/io";
 
 interface CameraHeaderProps {
@@ -8,10 +8,8 @@ interface CameraHeaderProps {
 }
 
 function CameraHeader({ title }: CameraHeaderProps) {
-    const router = useRouter();
-
     const backToHome = () => {
-        router.replace('/student/home');
+        window.location.href = '/student/home';
     };
 
     const forceRefresh = () => {

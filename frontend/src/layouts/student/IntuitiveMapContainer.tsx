@@ -66,7 +66,7 @@ function IntuitiveMapContainer() {
 
     return (
         <div className="border rounded-xl">
-            <div className="w-full h-[400px] rounded-t-xl bg-slate-300 relative">
+            <div className="w-full h-[350px] rounded-t-xl bg-slate-300 relative">
                 <MapCore
                     center={coords ? [coords.latitude, coords.longitude] : [-8.113959041983573, 115.09847264841139]}
                     radius={{
@@ -83,7 +83,7 @@ function IntuitiveMapContainer() {
                             ]
                             : friendsCoordinates
                     }
-                    zoom={17}
+                    zoom={18}
                     minUpdateInterval={30_000} />
                 {
                     (!isGeolocationEnabled || !isGeolocationAvailable) &&
@@ -96,7 +96,7 @@ function IntuitiveMapContainer() {
                 }
 
                 {
-                    distance > 110 && <div className="absolute bottom-0 left-0 z-[502] w-full text-sm text-center animate-pulse bg-yellow-400 text-white px-4 py-2">
+                    distance > 110 && <div className="absolute bottom-0 left-0 z-[502] w-full text-sm text-center animate-pulse bg-yellow-600 text-white px-4 py-2">
                         Anda berada diluar jangkauan absensi!
                     </div>
                 }

@@ -7,7 +7,7 @@ import { FastifyExtendedInstance } from './blueprint';
 require('@tensorflow/tfjs-node');
 
 async function main() {
-  const fastify: FastifyExtendedInstance = Fastify() as unknown as FastifyExtendedInstance
+  const fastify: FastifyExtendedInstance = Fastify({ logger: true }) as unknown as FastifyExtendedInstance
 
   console.log('Loading ENV');
   require('dotenv').config({ path: ['.env.local', '.env'] });
@@ -27,8 +27,7 @@ async function main() {
   });
 
   fastify.options('/*', (request, reply) => {
-    console.log('options called')
-    return reply.send('')
+    return reply.send('');
   })
 
   fastify.listen({ port: 8020, host: '0.0.0.0' }, (err, address) => {
@@ -36,6 +35,7 @@ async function main() {
       console.error(err)
       process.exit(1)
     }
+
     console.log(`fastify listening at ${address}`)
   })
 }
