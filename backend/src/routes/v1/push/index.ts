@@ -76,9 +76,7 @@ async function handler(fastify: FastifyExtendedInstance) {
         });
       }
 
-      reply.status(200).send({
-        message: 'Subscription available'
-      });
+      reply.status(200).send(currentSubscription);
     });
 
   fastify.post(
@@ -211,10 +209,12 @@ async function handler(fastify: FastifyExtendedInstance) {
     async (request, reply) => {
       const students = [];
 
+      return reply.send(subscriptions);
+
       for (const subscriptionId in subscriptions) {
         const subscription = subscriptions[subscriptionId];
 
-        if (subscription.role !== 'student') continue;;
+        if (subscription.role !== 'student') continue;
 
         const student = await StudentModel.getStudentById(subscription.entityId);
 
