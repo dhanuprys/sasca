@@ -188,6 +188,8 @@ async function handler(fastify: FastifyExtendedInstance) {
         }
       }
 
+      console.log(result);
+
       return result;
     });
 
