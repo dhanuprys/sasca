@@ -182,13 +182,13 @@ async function handler(fastify: FastifyExtendedInstance) {
           subscription.metadata,
           JSON.stringify(payload.notification)
         );
+
+        console.log(result.body);
       } catch (error: any) {
         if (error.statusCode === 410) {
           delete subscriptions[subscriptionId];
         }
       }
-
-      console.log(result);
 
       return result;
     });
@@ -210,8 +210,6 @@ async function handler(fastify: FastifyExtendedInstance) {
     '/subscriber/student',
     async (request, reply) => {
       const students = [];
-
-      return reply.send(subscriptions);
 
       for (const subscriptionId in subscriptions) {
         const subscription = subscriptions[subscriptionId];
