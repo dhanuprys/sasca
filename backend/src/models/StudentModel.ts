@@ -44,7 +44,7 @@ class StudentModel {
         const student = await StudentModel.getStudentById(studentId);
 
         if (!student) {
-            return null;
+            return [];
         }
 
         const classroom = await StudentModel.getClassroomTodaysAttendance(

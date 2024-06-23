@@ -7,10 +7,6 @@ import {
   type FastifyExtendedInstance
 } from '../../../../../blueprint';
 import { FastifyReply } from 'fastify';
-import canvas from 'canvas';
-import AttendanceModel from '../../../../../models/AttendanceModel';
-import createSchema from '../../../../../utils/schema';
-import { TNetInput } from 'face-api.js';
 import StudentModel from '../../../../../models/StudentModel';
 
 async function handler(fastify: FastifyExtendedInstance) {

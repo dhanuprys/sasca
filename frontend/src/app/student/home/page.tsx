@@ -21,10 +21,10 @@ export default function Home() {
       <StudentHeader />
       <CommonWrapper className="mt-5">
         <FlexColumn>
-          <div className="bg-red-500 border-2 border-red-700 text-white px-4 py-2 rounded-xl">
+          {/* <div className="bg-red-500 border-2 border-red-700 text-white px-4 py-2 rounded-xl">
             Untuk kedepannya, halaman web ini (<span className="underline">stemsi.my.id</span>) akan dipindah 
             secara permanen ke <Link className="underline" href="https://sasca.smkn3singaraja.sch.id">https://sasca.smkn3singaraja.sch.id</Link>
-          </div>
+          </div> */}
           {/* <Feedback /> */}
           <BrowserBanner />
           <AttendanceButton />
