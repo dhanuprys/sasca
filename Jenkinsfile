@@ -8,7 +8,7 @@ node {
         // Define the Docker image name and tag
         def gitCommit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
         def timestamp = new Date().format("yyyyMMdd_HHmmss")
-        def dynamicVersion = "v1.${timestamp}_${gitCommit}_#${buildNumber}"
+        def dynamicVersion = "v1.${timestamp}_${gitCommit}"
         def dockerImage = "scr.stemsi.cloud/sasca:${dynamicVersion}"
 
         // Build Docker image
