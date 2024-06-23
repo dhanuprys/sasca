@@ -1,4 +1,9 @@
 node {
+    def gitCommit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+    def timestamp = new Date().format("yyyyMMdd_HHmmss")
+    def dynamicVersion = "v1.${timestamp}_${gitCommit}"
+    def dockerImage = "scr.stemsi.cloud/sasca:${dynamicVersion}"
+
     stage('Clone Repository') {
         // Checkout your source code repository
         checkout scm
@@ -6,10 +11,6 @@ node {
 
     stage('Build Docker Image') {
         // Define the Docker image name and tag
-        def gitCommit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-        def timestamp = new Date().format("yyyyMMdd_HHmmss")
-        def dynamicVersion = "v1.${timestamp}_${gitCommit}"
-        def dockerImage = "scr.stemsi.cloud/sasca:${dynamicVersion}"
 
         // Build Docker image
         script {
@@ -46,6 +47,6 @@ node {
     // }
 
     stage('Cleanup Image') {
-        sh 'docker rmi scr.stemsi.cloud/sasca'
+        sh "docker rmi scr.stemsi.cloud/${dockerImage}"
     }
 }
