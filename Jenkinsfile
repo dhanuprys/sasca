@@ -6,7 +6,10 @@ node {
 
     stage('Build Docker Image') {
         // Define the Docker image name and tag
-        def dockerImage = 'scr.stemsi.cloud/sasca:latest'
+        def gitCommit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        def timestamp = new Date().format("yyyyMMdd_HHmmss")
+        def dynamicVersion = "v1.${timestamp}_${gitCommit}_#${buildNumber}"
+        def dockerImage = "scr.stemsi.cloud/sasca:${dynamicVersion}"
 
         // Build Docker image
         script {
@@ -19,28 +22,28 @@ node {
         }
     }
 
-    stage('Deploy via SSH') {
-        withCredentials([string(credentialsId: 'jenkins-client', variable: 'SSH_PASSWORD')]) {
-            // Run a Docker container based on the Ubuntu image
-            def containerId = sh(returnStdout: true, script: 'docker run -d ringcentral/sshpass:latest tail -f /dev/null').trim()
+    // stage('Deploy via SSH') {
+    //     withCredentials([string(credentialsId: 'jenkins-client', variable: 'SSH_PASSWORD')]) {
+    //         // Run a Docker container based on the Ubuntu image
+    //         def containerId = sh(returnStdout: true, script: 'docker run -d ringcentral/sshpass:latest tail -f /dev/null').trim()
 
-            // Define SSH connection details
-            def sshHost = 'stemsi.my.id'
-            def sshUser = 'jenkins-client'
-            def sshPort = '2192'
+    //         // Define SSH connection details
+    //         def sshHost = 'stemsi.my.id'
+    //         def sshUser = 'jenkins-client'
+    //         def sshPort = '2192'
 
-            // Define the command to execute over SSH
-            def sshCommand = 'cd /applications/sasca && ./update-only.sh'
+    //         // Define the command to execute over SSH
+    //         def sshCommand = 'cd /applications/sasca && ./update-only.sh'
 
-            // Execute the SSH command using sshpass inside the container
-            sh "docker exec ${containerId} sshpass -v -p '${SSH_PASSWORD}' ssh -o StrictHostKeyChecking=no ${sshUser}@${sshHost} -p ${sshPort} '${sshCommand}'"
-            // sh "docker exec public_server_remote echo 'ayamgoreng' | ssh -o StrictHostKeyChecking=no ${sshUser}@${sshHost} -s -p ${sshPort} '${sshCommand}'"
+    //         // Execute the SSH command using sshpass inside the container
+    //         sh "docker exec ${containerId} sshpass -v -p '${SSH_PASSWORD}' ssh -o StrictHostKeyChecking=no ${sshUser}@${sshHost} -p ${sshPort} '${sshCommand}'"
+    //         // sh "docker exec public_server_remote echo 'ayamgoreng' | ssh -o StrictHostKeyChecking=no ${sshUser}@${sshHost} -s -p ${sshPort} '${sshCommand}'"
 
-            // Stop and remove the Docker container
-            sh "docker stop ${containerId}"
-            sh "docker rm ${containerId}"
-        }
-    }
+    //         // Stop and remove the Docker container
+    //         sh "docker stop ${containerId}"
+    //         sh "docker rm ${containerId}"
+    //     }
+    // }
 
     stage('Cleanup Image') {
         sh 'docker rmi scr.stemsi.cloud/sasca'
