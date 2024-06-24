@@ -2,6 +2,8 @@ import Knex from 'knex';
 import { attachPaginate } from 'knex-paginate';
 import pg from 'pg';
 
+require('dotenv').config({ path: ['.env.local', '.env'] });
+
 pg.types.setTypeParser(1082, (str: string) => str);
 
 const knexDB = Knex({

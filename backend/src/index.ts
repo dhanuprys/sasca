@@ -2,12 +2,13 @@ import Fastify from 'fastify'
 import Autoload from '@fastify/autoload';
 import path from 'path';
 import { FastifyExtendedInstance } from './blueprint';
+import makeRank from './daemon/cron/executors/makeRank';
 
 // face-api.js speed boost
 require('@tensorflow/tfjs-node');
 
 async function main() {
-  const fastify: FastifyExtendedInstance = Fastify({ logger: true }) as unknown as FastifyExtendedInstance
+  const fastify: FastifyExtendedInstance = Fastify({ logger: true }) as unknown as FastifyExtendedInstance;
 
   console.log('Loading ENV');
   require('dotenv').config({ path: ['.env.local', '.env'] });
@@ -31,6 +32,8 @@ async function main() {
   })
 
   fastify.listen({ port: 8020, host: '0.0.0.0' }, (err, address) => {
+    makeRank();
+
     if (err) {
       console.error(err)
       process.exit(1)

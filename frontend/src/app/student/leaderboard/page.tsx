@@ -9,7 +9,7 @@ import CommonWrapper from "@/wrappers/CommonWrapper";
 export default function NotificationPage() {
   return (
     <div>
-      <IntuitiveBackground className="bg-sky-950" />
+      {/* <IntuitiveBackground className="bg-sky-950" /> */}
       {/* <StudentHeader /> */}
       {/* <CommonWrapper className="mt-5"> */}
         <FlexColumn>

@@ -62,7 +62,7 @@ function Calendar({ onDateChange, onCell, onCellClick }: CalendarProps) {
                     <IoIosArrowBack />
                 </div>
                 <div className="flex flex-col justify-center items-center">
-                    <h2>{currentMonth.monthLong}</h2>
+                    <h2 className="text-lg">{currentMonth.monthLong}</h2>
                     <span className="font-semibold text-sm">{currentMonth.year}</span>
                 </div>
                 <div className="hover:cursor-pointer" onClick={openNextMonth}>
@@ -110,7 +110,7 @@ function Calendar({ onDateChange, onCell, onCellClick }: CalendarProps) {
                                                 }
                                             )
                                             : <div className="flex flex-col items-center">
-                                                <span className="text-sm md:text-base">{output}</span>
+                                                <span className="md:text-base">{output}</span>
                                             </div>;
 
                                         return renderRow;
