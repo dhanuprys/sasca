@@ -10,7 +10,7 @@ if (
     && SERVICE_MODE !== 'JOB'
 ) {
     console.error('Queue inactive');
-    process.exit(1);
+    while (true) { /* SUSPEND PROCESS */ }
 }
 
 for (const job of jobs) {

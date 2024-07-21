@@ -12,7 +12,7 @@ if (
     && SERVICE_MODE !== 'JOB'
 ) {
     console.error('Cronjob inactive');
-    process.exit(1);
+    while (true) { /* SUSPEND PROCESS */ }
 }
 
 const now = DateTime.now();

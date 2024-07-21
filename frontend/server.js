@@ -16,7 +16,7 @@ if (
     && SERVICE_MODE !== 'FE'
 ) {
     console.error('Frontend inactive');
-    process.exit(1);
+    while (true) { /* SUSPEND PROCESS */ }
 }
 
 const dev = process.env.NODE_ENV !== 'production';

@@ -11,7 +11,7 @@ if (
     && SERVICE_MODE !== 'BE'
 ) {
     console.error('Backend inactive');
-    process.exit(1);
+    while (true) { /* SUSPEND PROCESS */ }
 }
 
 // face-api.js speed boost
