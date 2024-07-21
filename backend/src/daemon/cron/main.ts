@@ -5,6 +5,16 @@ import { DateTime } from 'luxon';
 import chalk from 'chalk';
 import schedules from './kernel';
 
+const SERVICE_MODE: string | undefined = process.env.SERVICE_MODE
+
+if (
+    SERVICE_MODE !== 'ALL'
+    && SERVICE_MODE !== 'JOB'
+) {
+    console.error('Cronjob inactive');
+    process.exit(1);
+}
+
 const now = DateTime.now();
 
 console.log(chalk.blue(`Starting cronjob services at ${now.toFormat('yyyy-MM-dd HH:mm:ss')}`));

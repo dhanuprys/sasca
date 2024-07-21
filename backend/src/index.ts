@@ -4,6 +4,16 @@ import path from 'path';
 import { FastifyExtendedInstance } from './blueprint';
 import makeRank from './daemon/cron/executors/makeRank';
 
+const SERVICE_MODE = process.env.SERVICE_MODE
+
+if (
+    SERVICE_MODE !== 'ALL'
+    && SERVICE_MODE !== 'BE'
+) {
+    console.error('Backend inactive');
+    process.exit(1);
+}
+
 // face-api.js speed boost
 require('@tensorflow/tfjs-node');
 

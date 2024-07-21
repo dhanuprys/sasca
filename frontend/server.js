@@ -8,6 +8,17 @@ require('dotenv').config({
     path: ['.env.local', '.env']
 });
 
+
+const SERVICE_MODE = process.env.SERVICE_MODE
+
+if (
+    SERVICE_MODE !== 'ALL'
+    && SERVICE_MODE !== 'FE'
+) {
+    console.error('Frontend inactive');
+    process.exit(1);
+}
+
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();

@@ -3,6 +3,16 @@ require('dotenv').config({ path: ['.env.local', '.env'] });
 import jobs from './kernel';
 import chalk from 'chalk';
 
+const SERVICE_MODE: string | undefined = process.env.SERVICE_MODE
+
+if (
+    SERVICE_MODE !== 'ALL'
+    && SERVICE_MODE !== 'JOB'
+) {
+    console.error('Queue inactive');
+    process.exit(1);
+}
+
 for (const job of jobs) {
     const { name, description, queue } = job;
 
