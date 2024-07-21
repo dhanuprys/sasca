@@ -47,6 +47,6 @@ node {
     // }
 
     stage('Cleanup Image') {
-        sh "docker rmi scr.stemsi.cloud/${dockerImage}"
+        sh "docker rmi ${dockerImage}"
     }
 }
