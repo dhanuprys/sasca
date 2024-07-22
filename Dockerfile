@@ -2,8 +2,8 @@ FROM node:20.10.0
 
 WORKDIR /app
 
-RUN apt update && apt install supervisor libpq-dev g++ make iputils-ping nano wget -y
-RUN apt install libnss3-dev libgdk-pixbuf2.0-dev libgtk-3-dev libxss-dev install libasound2
+RUN apt update && apt install supervisor libpq-dev g++ make iputils-ping nano wget \
+    libnss3-dev libgdk-pixbuf2.0-dev libgtk-3-dev libxss-dev install libasound2 -y
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && apt -y install ./google-chrome-stable_current_amd64.deb
 
