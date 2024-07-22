@@ -1,7 +1,6 @@
 node {
-    def gitCommit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
     def timestamp = new Date().format("yyyyMMdd_HHmmss")
-    def dynamicVersion = "v1.${timestamp}_${gitCommit}"
+    def dynamicVersion = "v1.${timestamp}"
     def dockerImage = "scr.stemsi.cloud/sasca:${dynamicVersion}"
 
     stage('Clone Repository') {
