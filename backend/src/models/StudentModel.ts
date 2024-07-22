@@ -1,6 +1,14 @@
 import knexDB, { knexDBHelpers } from "../utils/db";
 
 class StudentModel {
+    static async getStudentByNisn(nisnInput: string) {
+        const student = await knexDB('students')
+            .where('nisn', nisnInput)
+            .first();
+
+        return student;
+    }
+
     static async getStudentById(studentId: number) {
         const student = await knexDB('students')
             .select([
