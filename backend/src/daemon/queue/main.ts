@@ -1,8 +1,4 @@
 require('dotenv').config({ path: ['.env.local', '.env'] });
-
-import jobs from './kernel';
-import chalk from 'chalk';
-
 const SERVICE_MODE: string | undefined = process.env.SERVICE_MODE
 
 if (
@@ -12,6 +8,9 @@ if (
     console.error('Queue inactive');
     while (true) { /* SUSPEND PROCESS */ }
 }
+
+import jobs from './kernel';
+import chalk from 'chalk';
 
 for (const job of jobs) {
     const { name, description, queue } = job;

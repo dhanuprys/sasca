@@ -1,9 +1,4 @@
-import Fastify from 'fastify'
-import Autoload from '@fastify/autoload';
-import path from 'path';
-import { FastifyExtendedInstance } from './blueprint';
-import makeRank from './daemon/cron/executors/makeRank';
-
+require('dotenv').config({ path: ['.env.local', '.env'] });
 const SERVICE_MODE = process.env.SERVICE_MODE
 
 if (
@@ -14,14 +9,18 @@ if (
     while (true) { /* SUSPEND PROCESS */ }
 }
 
+import Fastify from 'fastify'
+import Autoload from '@fastify/autoload';
+import path from 'path';
+import { FastifyExtendedInstance } from './blueprint';
+import makeRank from './daemon/cron/executors/makeRank';
+
+
 // face-api.js speed boost
 require('@tensorflow/tfjs-node');
 
 async function main() {
   const fastify: FastifyExtendedInstance = Fastify({ logger: true }) as unknown as FastifyExtendedInstance;
-
-  console.log('Loading ENV');
-  require('dotenv').config({ path: ['.env.local', '.env'] });
 
   fastify.register(Autoload, {
     dir: path.join(__dirname, 'plugins')

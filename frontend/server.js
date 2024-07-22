@@ -1,9 +1,3 @@
-// server.js
-const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('next');
-const { createProxyMiddleware } = require('http-proxy-middleware');
-
 require('dotenv').config({
     path: ['.env.local', '.env']
 });
@@ -18,6 +12,12 @@ if (
     console.error('Frontend inactive');
     while (true) { /* SUSPEND PROCESS */ }
 }
+
+// server.js
+const { createServer } = require('http');
+const { parse } = require('url');
+const next = require('next');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });

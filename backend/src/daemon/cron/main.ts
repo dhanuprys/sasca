@@ -1,10 +1,4 @@
 require('dotenv').config({ path: ['.env.local', '.env'] });
-
-import cron from 'node-cron';
-import { DateTime } from 'luxon';
-import chalk from 'chalk';
-import schedules from './kernel';
-
 const SERVICE_MODE: string | undefined = process.env.SERVICE_MODE
 
 if (
@@ -14,6 +8,12 @@ if (
     console.error('Cronjob inactive');
     while (true) { /* SUSPEND PROCESS */ }
 }
+
+
+import cron from 'node-cron';
+import { DateTime } from 'luxon';
+import chalk from 'chalk';
+import schedules from './kernel';
 
 const now = DateTime.now();
 
