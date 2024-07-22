@@ -12,7 +12,7 @@ COPY ./frontend .
 
 # BUILD FRONTEND
 RUN npm ci && npm run build
-RUN rm -rf src
+# RUN rm -rf src
 
 WORKDIR /app/backend
 
