@@ -18,4 +18,5 @@ ALL -> Menghidupkan semua service pada container
 JOB -> Hanya menghidupkan service cronjob atau queue
 FE  -> Hanya menghidupkan service frontend
 BE  -> Hanya menhidupkan service backend
+WA  -> Hanya menghidupkan service whatsapp
 ```
