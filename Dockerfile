@@ -20,6 +20,6 @@ COPY ./backend .
 
 # BUILD BACKEND
 RUN npm ci --loglevel=error && npm rebuild @tensorflow/tfjs-node build-addon-from-source && npm run build
-RUN rm -rf src
+# RUN rm -rf src
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
